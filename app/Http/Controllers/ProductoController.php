@@ -78,9 +78,4 @@ class ProductoController extends Controller
         return response()->json(['mensaje' => 'Producto eliminado correctamente']);
     }
 
-    // 
-    public function generarCatalogoPdf()
-    {
-        // ver libreria barryvdh/laravel-dompdf)
-    }
 }
