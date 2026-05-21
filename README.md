@@ -1,59 +1,118 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# IG-WEB — Instrucciones para poner en funcionamiento
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Requisitos
 
-## About Laravel
+- PHP >= 8.2
+- Composer
+- Node.js + npm
+- SQLite (viene con PHP)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Pasos
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### 1. Clonar el repositorio
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+```bash
+git clone <url-del-repo>
+cd IG-WEB-main
+```
 
-## Learning Laravel
+### 2. Instalar dependencias
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+```bash
+composer install
+npm install
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 3. Configurar entorno
 
-## Laravel Sponsors
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 4. Crear la base de datos SQLite
 
-### Premium Partners
+```bash
+touch database/database.sqlite
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### 5. Ejecutar migraciones (crea las tablas)
 
-## Contributing
+```bash
+php artisan migrate
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 6. Poblar con datos de prueba
 
-## Code of Conduct
+```bash
+php artisan db:seed
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Esto inserta:
+- 3 Rubros
+- 6 Subrubros
+- 12 Categorías
+- 24 Productos
+- 6 Consultas
 
-## Security Vulnerabilities
+### 7. (Opcional) Crear enlace para imágenes
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+php artisan storage:link
+```
 
-## License
+### 8. Iniciar el servidor
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+php artisan serve
+```
+
+La API corre en `http://localhost:8000`.
+
+---
+
+## Endpoints disponibles
+
+| Método | URL | Descripción |
+|--------|-----|-------------|
+| GET | `/api/rubros` | Listar rubros |
+| POST | `/api/rubros` | Crear rubro |
+| GET | `/api/rubros/{id}` | Ver rubro |
+| PUT | `/api/rubros/{id}` | Actualizar rubro |
+| DELETE | `/api/rubros/{id}` | Eliminar rubro |
+| GET | `/api/subrubros` | Listar subrubros |
+| POST | `/api/subrubros` | Crear subrubro |
+| GET | `/api/subrubros/{id}` | Ver subrubro |
+| PUT | `/api/subrubros/{id}` | Actualizar subrubro |
+| DELETE | `/api/subrubros/{id}` | Eliminar subrubro |
+| GET | `/api/categorias` | Listar categorías |
+| POST | `/api/categorias` | Crear categoría |
+| GET | `/api/categorias/{id}` | Ver categoría |
+| PUT | `/api/categorias/{id}` | Actualizar categoría |
+| DELETE | `/api/categorias/{id}` | Eliminar categoría |
+| GET | `/api/productos` | Listar productos |
+| POST | `/api/productos` | Crear producto (con imagen) |
+| GET | `/api/productos/{id}` | Ver producto |
+| PUT | `/api/productos/{id}` | Actualizar producto |
+| DELETE | `/api/productos/{id}` | Eliminar producto |
+| GET | `/api/consultas` | Listar consultas |
+| POST | `/api/consultas` | Crear consulta |
+| GET | `/api/user` | Usuario autenticado (requiere token) |
+
+---
+
+## Estructura entregada
+
+```
+app/
+├── Http/
+│   ├── Controllers/    → Controladores de la API
+│   └── Requests/       → Validación de producto
+├── Models/              → Modelos Eloquent
+database/
+├── migrations/          → Estructura de tablas
+├── seeders/             → Datos de prueba
+routes/
+├── api.php              → Rutas de la API
+└── web.php              → Ruta de bienvenida
+```
