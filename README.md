@@ -120,6 +120,22 @@ routes/
 
 ## Incremento 2 — Autenticación + Frontend React + Rediseño de Esquema
 
+### Cambios en el backend (auth)
+
+- Creado `AuthController` con `register`, `login` y `logout`
+- Agregado trait `HasApiTokens` al modelo `User`
+- Agregadas rutas de autenticación en `routes/api.php`
+- Mejorada validación en `ProductoController@update`
+
+**Nuevos endpoints de API:**
+
+| Método | Ruta | Descripción | Auth |
+|--------|------|-------------|------|
+| POST | `/api/register` | Registro (name, email, password, password_confirmation) | No |
+| POST | `/api/login` | Login (email, password) → devuelve `{ user, token }` | No |
+| POST | `/api/logout` | Revoca el token actual | Sí |
+| GET | `/api/user` | Usuario autenticado | Sí |
+
 ### Fundamentos del rediseño
 
 **Problema original:** La jerarquía `Rubro → Subrubro → Categoria → Producto` usaba relaciones 1:N rígidas:
@@ -195,17 +211,88 @@ Para instalar:
 composer require intervention/image-laravel
 ```
 
-### Cambios en el frontend
+### Frontend React + Vite
+
+- Creado proyecto React + Vite en `frontend/` (separado del backend)
+- Catálogo público de productos en la raíz (`/`) visible sin autenticación
+- Admin protegido bajo `/admin/*` con login, registro y CRUD completo
+- Navbar público con acceso a login y navbar de admin con links a gestión
+- Proxy de Vite configurado para comunicarse con el backend en `localhost:8000`
+
+**Rutas del frontend:**
+
+| Ruta | Acceso | Descripción |
+|------|--------|-------------|
+| `/` | Público | Catálogo de productos con imágenes, precio y categoría |
+| `/login` | Público | Inicio de sesión de administrador |
+| `/register` | Público | Registro de administrador |
+| `/admin/dashboard` | Requiere auth | Panel principal con acceso rápido a gestión |
+| `/admin/rubros` | Requiere auth | CRUD de rubros |
+| `/admin/subrubros` | Requiere auth | CRUD de subrubros |
+| `/admin/categorias` | Requiere auth | CRUD de categorías |
+| `/admin/productos` | Requiere auth | Listado de productos |
+| `/admin/productos/nuevo` | Requiere auth | Crear producto con imagen |
+| `/admin/productos/{id}/editar` | Requiere auth | Editar producto |
+
+**Componentes React creados:**
+
+| Componente | Acceso | Función |
+|------------|--------|---------|
+| `NavbarPublico` | Público | Navbar con logo + botón "Iniciar Sesión" |
+| `LayoutPublico` | Público | Layout del sitio público |
+| `Catalogo` | Público | Grid público de productos |
+| `Login` | Público | Formulario de inicio de sesión |
+| `Register` | Público | Formulario de registro |
+| `ProtectedRoute` | — | Redirige a `/login` si no hay token |
+| `Navbar` | Admin | Navbar con links a CRUDs + logout |
+| `Layout` | Admin | Layout del panel de admin |
+| `Dashboard` | Admin | Panel con cards de acceso rápido + "PRÓXIMAMENTE CONSULTAS" |
+| `Rubros` | Admin | CRUD de rubros |
+| `Subrubros` | Admin | CRUD de subrubros |
+| `Categorias` | Admin | CRUD de categorías (con multi-select de subrubros) |
+| `Productos` | Admin | Listado de productos con edición/eliminación |
+| `ProductoForm` | Admin | Formulario crear/editar producto con cascading selects y subida de imagen |
+
+**Servicios:**
+
+| Archivo | Función |
+|---------|---------|
+| `api.js` | Axios con `baseURL: /api`. Agrega token Bearer desde localStorage. Si hay error 401, limpia token y redirige a `/login` |
+
+**Flujo de autenticación:**
+1. El frontend envía `POST /api/login` con email y password
+2. El backend devuelve `{ user, token }` (token de Sanctum)
+3. El frontend guarda el token en localStorage y lo envía en cada request como `Authorization: Bearer <token>`
+
+**Mapeo API → Frontend:**
+
+```
+API                           Frontend
+POST /api/login        →     Login.jsx (guarda token)
+POST /api/register     →     Register.jsx (guarda token)
+POST /api/logout       →     Navbar.jsx (botón "Salir")
+GET  /api/productos    →     Catalogo.jsx (público) + Productos.jsx (admin)
+GET  /api/rubros       →     Rubros.jsx + Subrubros.jsx + ProductoForm.jsx (select)
+GET  /api/subrubros    →     Subrubros.jsx + Categorias.jsx + ProductoForm.jsx (select)
+GET  /api/categorias   →     Categorias.jsx + ProductoForm.jsx (checkboxes)
+POST/PUT/DELETE ...    →     CRUDs respectivos
+```
+
+### Cambios en componentes por el rediseño
 
 #### ProductoForm — Cascading selects
 
 El formulario de producto ahora tiene un selector en cascada:
 
-1. **Rubro** (select) → carga los subrubros de ese rubro
-2. **Subrubro** (select, se desbloquea al elegir rubro) → carga las categorías de ese subrubro (filtrando por pivot)
+1. **Rubro** (select) → filtra los subrubros disponibles
+2. **Subrubro** (select, se desbloquea al elegir rubro) → filtra las categorías disponibles (vía pivot)
 3. **Categorías** (checkboxes, aparecen al elegir subrubro) → selección múltiple
 
 En edición, se precargan los valores existentes (rubro, subrubro, categorías marcadas).
+
+#### Categorias — Multi-subrubro
+
+El formulario de categorías ahora usa checkboxes para seleccionar múltiples subrubros (antes era un select único). La tabla muestra los subrubros separados por coma.
 
 #### Productos.jsx
 
@@ -223,21 +310,43 @@ Muestra la lista de categorías separada por comas en lugar de una categoría ú
 - `CategoriaSeeder`: cada categoría se crea sin FK directo y se asocia a subrubros vía pivot `categoria_subrubro` (la última categoría se asocia a 2 subrubros para demostrar M:N)
 - `ProductoSeeder`: cada producto recibe `rubro_id`, `subrubro_id` y se asocia a una categoría vía pivot `categoria_producto`
 
+### Estructura completa del proyecto
+
+```
+IG-WEB/
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/       → Controladores de la API (incluye AuthController)
+│   │   └── Requests/          → Validación de producto
+│   ├── Models/                → Modelos Eloquent
+├── frontend/
+│   ├── src/
+│   │   ├── components/        → Navbar, Layout, ProtectedRoute
+│   │   ├── pages/             → Login, Register, Dashboard, CRUDs, Catálogo público
+│   │   ├── services/          → api.js (Axios con interceptor de token)
+│   │   ├── App.jsx            → Router principal
+│   │   └── main.jsx           → Entry point React
+│   ├── index.html
+│   └── vite.config.js         → Proxy a localhost:8000
+├── database/
+│   ├── migrations/            → Estructura de tablas (se agregaron pivots en Inc. 2)
+│   ├── seeders/               → Datos de prueba (actualizados en Inc. 2)
+├── routes/
+│   ├── api.php                → Rutas de la API
+│   └── web.php                → Ruta de bienvenida
+```
+
 ### Comandos para aplicar los cambios
 
 ```bash
 # 1. Instalar nuevas dependencias
 composer require intervention/image-laravel
-composer update
 
 # 2. Refrescar base de datos con nuevo esquema + seeders
 php artisan migrate:fresh --seed
 
 # 3. Crear enlace para imágenes (si no existe)
 php artisan storage:link
-
-# 4. (Opcional) Publicar config de Intervention Image
-php artisan vendor:publish --provider="Intervention\Image\Laravel\ServiceProvider"
 ```
 
 ---
