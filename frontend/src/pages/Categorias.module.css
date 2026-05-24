@@ -15,3 +15,6 @@
 .btnDelete { padding: 0.25rem 0.75rem; background: none; border: 1px solid var(--danger); color: var(--danger); border-radius: var(--radius); cursor: pointer; font-size: 0.8rem; }
 .btnDelete:hover { background: var(--danger); color: white; }
 .empty { text-align: center; color: var(--text-muted); padding: 2rem !important; }
+.subrubroCheckbox { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center; flex: 1; min-width: 200px; }
+.subrubroLabel { font-size: 0.8rem; color: var(--text-muted); white-space: nowrap; }
+.chip { display: flex; align-items: center; gap: 0.3rem; font-size: 0.8rem; padding: 0.2rem 0.5rem; background: var(--bg); border-radius: var(--radius); cursor: pointer; }

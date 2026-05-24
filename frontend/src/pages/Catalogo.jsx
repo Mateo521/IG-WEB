@@ -28,7 +28,7 @@ function Catalogo() {
                             <h2 className={styles.nombre}>{p.nombreProducto}</h2>
                             <p className={styles.desc}>{p.descripcion}</p>
                             <span className={styles.precio}>${Number(p.precio).toFixed(2)}</span>
-                            <span className={styles.categoria}>{p.categoria?.nombreCategoria || ''}</span>
+                            <span className={styles.categoria}>{p.categorias?.map(c => c.nombreCategoria).join(', ') || p.rubro?.nombreRubro || ''}</span>
                         </div>
                     </div>
                 ))}

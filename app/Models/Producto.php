@@ -5,16 +5,27 @@ use Illuminate\Database\Eloquent\Model;
 class Producto extends Model
 {
     protected $fillable = [
-        'nombreProducto',  
+        'nombreProducto',
         'descripcion',
         'precio',
         'rutaImg',
-        'categoria_id'  
+        'rubro_id',
+        'subrubro_id',
     ];
 
-    public function categoria()
+    public function rubro()
     {
-        return $this->belongsTo(Categoria::class);
+        return $this->belongsTo(Rubro::class);
+    }
+
+    public function subrubro()
+    {
+        return $this->belongsTo(Subrubro::class);
+    }
+
+    public function categorias()
+    {
+        return $this->belongsToMany(Categoria::class, 'categoria_producto');
     }
 
     public function consultas()

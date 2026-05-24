@@ -4,15 +4,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Categoria extends Model
 {
-    protected $fillable = ['nombreCategoria', 'subrubro_id'];
+    protected $fillable = ['nombreCategoria'];
 
-    public function subrubro()
+    public function subrubros()
     {
-        return $this->belongsTo(Subrubro::class);
+        return $this->belongsToMany(Subrubro::class, 'categoria_subrubro');
     }
 
     public function productos()
     {
-        return $this->hasMany(Producto::class);
+        return $this->belongsToMany(Producto::class, 'categoria_producto');
     }
 }

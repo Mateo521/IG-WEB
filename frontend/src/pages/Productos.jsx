@@ -24,9 +24,9 @@ function Productos() {
                             <td>{p.rutaImg ? <img src={`/storage/${p.rutaImg}`} alt={p.nombreProducto} className={styles.img} /> : <span className={styles.noImg}>-</span>}</td>
                             <td>{p.nombreProducto}</td>
                             <td>${Number(p.precio).toFixed(2)}</td>
-                            <td>{p.categoria?.subrubro?.rubro?.nombreRubro || '-'}</td>
-                            <td>{p.categoria?.subrubro?.nombreSubrubro || '-'}</td>
-                            <td>{p.categoria?.nombreCategoria || '-'}</td>
+                            <td>{p.rubro?.nombreRubro || '-'}</td>
+                            <td>{p.subrubro?.nombreSubrubro || '-'}</td>
+                            <td>{p.categorias?.map(c => c.nombreCategoria).join(', ') || '-'}</td>
                             <td className={styles.actions}>
                                 <Link to={`/admin/productos/${p.id}/editar`} className={styles.btnEdit}>Editar</Link>
                                 <button onClick={() => handleDelete(p.id)} className={styles.btnDelete}>Eliminar</button>
