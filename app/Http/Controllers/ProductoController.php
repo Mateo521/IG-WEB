@@ -11,7 +11,7 @@ class ProductoController extends Controller
 {
     public function index()
     {
-        $productos = Producto::with('categoria')->orderBy('id', 'desc')->get();
+        $productos = Producto::with('categoria.subrubro.rubro')->orderBy('id', 'desc')->get();
         return response()->json($productos);
     }
 
@@ -43,14 +43,16 @@ class ProductoController extends Controller
     public function update(Request $request, $id)
     {
         $producto = Producto::findOrFail($id);
-        
-        // validar los datos nuevos (ver)
 
-        $datos = $request->all();
-
+        $datos = $request->validate([
+            'nombreProducto' => 'required|string|max:255',
+            'descripcion'    => 'required|string',
+            'precio'         => 'required|numeric|min:0',
+            'categoria_id'   => 'required|exists:categorias,id',
+            'imagen'         => 'sometimes|image|max:2048',
+        ]);
 
         if ($request->hasFile('imagen')) {
-
             if ($producto->rutaImg) {
                 Storage::disk('public')->delete($producto->rutaImg);
             }

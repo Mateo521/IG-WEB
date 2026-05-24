@@ -9,7 +9,7 @@ class CategoriaController extends Controller
 {
     public function index()
     {
-        return response()->json(Categoria::with('productos')->get());
+        return response()->json(Categoria::with('subrubro', 'productos')->get());
     }
 
     public function store(Request $request)
