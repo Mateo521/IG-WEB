@@ -10,4 +10,9 @@ class Rubro extends Model
     {
         return $this->hasMany(Subrubro::class);
     }
+
+    public function productos()
+    {
+        return $this->hasMany(Producto::class);
+    }
 }

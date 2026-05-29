@@ -9,7 +9,7 @@ class SubrubroController extends Controller
 {
     public function index()
     {
-        return response()->json(Subrubro::with('categorias')->get());
+        return response()->json(Subrubro::with('rubro', 'categorias')->get());
     }
 
     public function store(Request $request) 
@@ -24,7 +24,7 @@ class SubrubroController extends Controller
 
     public function show($id)
     {
-        $subrubro = Subrubro::with('categorias')->findOrFail($id);
+        $subrubro = Subrubro::with('rubro', 'categorias')->findOrFail($id);
         return response()->json($subrubro);
     }
 

@@ -1,51 +1,44 @@
-# IG-WEB — Instrucciones para poner en funcionamiento
+# IG-WEB
 
-## Requisitos
+---
+
+## Incremento 1 — API Laravel
+
+**Backend REST API** para catálogo jerárquico de productos con gestión de consultas.
+
+### Requisitos
 
 - PHP >= 8.2
 - Composer
-- Node.js + npm
 - SQLite (viene con PHP)
 
-## Pasos
-
-### 1. Clonar el repositorio
+### Pasos de instalación
 
 ```bash
+# 1. Clonar e instalar dependencias
 git clone <url-del-repo>
-cd IG-WEB-main
-```
-
-### 2. Instalar dependencias
-
-```bash
+cd IG-WEB
 composer install
-npm install
-```
 
-### 3. Configurar entorno
-
-```bash
+# 2. Configurar entorno
 cp .env.example .env
 php artisan key:generate
-```
 
-### 4. Crear la base de datos SQLite
-
-```bash
+# 3. Crear base de datos SQLite
 touch database/database.sqlite
-```
 
-### 5. Ejecutar migraciones (crea las tablas)
-
-```bash
+# 4. Migraciones y seeders
 php artisan migrate
-```
-
-### 6. Poblar con datos de prueba
-
-```bash
 php artisan db:seed
+
+# 5. Enlace para imágenes
+php artisan storage:link
+
+# 6. (Requerido desde Inc. 2) Compresión de imágenes
+composer require intervention/image-laravel
+
+# 7. Refrescar BD con seeders (incluye pivots M:N)
+php artisan migrate:fresh --seed
 ```
 
 Esto inserta:
@@ -55,23 +48,48 @@ Esto inserta:
 - 24 Productos
 - 6 Consultas
 
-### 7. (Opcional) Crear enlace para imágenes
+### Estructura del backend
 
-```bash
-php artisan storage:link
+```
+app/
+├── Http/
+│   ├── Controllers/    → Controladores de la API
+│   └── Requests/       → Validación de producto
+├── Models/              → Modelos Eloquent
+database/
+├── migrations/          → Estructura de tablas
+├── seeders/             → Datos de prueba
+routes/
+├── api.php              → Rutas de la API
+└── web.php              → Ruta de bienvenida
 ```
 
-### 8. Iniciar el servidor
+### Modelos (base de datos)
 
-```bash
-php artisan serve
-```
+| Modelo | Tabla | Relaciones (desde Incremento 2) |
+|--------|-------|----------------------------------|
+| `Rubro` | `rubros` | `hasMany(Subrubro)`, `hasMany(Producto)` |
+| `Subrubro` | `subrubros` | `belongsTo(Rubro)`, `belongsToMany(Categoria)` |
+| `Categoria` | `categorias` | `belongsToMany(Subrubro)`, `belongsToMany(Producto)` |
+| `Producto` | `productos` | `belongsTo(Rubro)`, `belongsTo(Subrubro)`, `belongsToMany(Categoria)`, `hasMany(Consulta)` |
+| `Consulta` | `consultas` | `belongsTo(Producto)` |
+| `User` | `users` | — |
 
-La API corre en `http://localhost:8000`.
+**Jerarquía:** `Rubro → Subrubro → Categoria` (M:N entre Subrubro y Categoria, M:N entre Producto y Categoria)
 
----
+> **Nota:** En Incremento 1 las relaciones eran todas 1:N (`Categoria → Subrubro` y `Producto → Categoria`). En Incremento 2 se migró a M:N para mayor flexibilidad. Ver sección "Fundamentos del rediseño" en Incremento 2.
 
-## Endpoints disponibles
+### Controladores (API)
+
+| Controlador | Rutas |
+|-------------|-------|
+| `RubroController` | CRUD `/api/rubros` |
+| `SubrubroController` | CRUD `/api/subrubros` |
+| `CategoriaController` | CRUD `/api/categorias` |
+| `ProductoController` | CRUD `/api/productos` (con imágenes) |
+| `ConsultaController` | CRUD `/api/consultas` |
+
+### Endpoints disponibles
 
 | Método | URL | Descripción |
 |--------|-----|-------------|
@@ -97,22 +115,250 @@ La API corre en `http://localhost:8000`.
 | DELETE | `/api/productos/{id}` | Eliminar producto |
 | GET | `/api/consultas` | Listar consultas |
 | POST | `/api/consultas` | Crear consulta |
-| GET | `/api/user` | Usuario autenticado (requiere token) |
 
 ---
 
-## Estructura entregada
+## Incremento 2 — Autenticación + Frontend React + Rediseño de Esquema
+
+### Cambios en el backend (auth)
+
+- Creado `AuthController` con `register`, `login` y `logout`
+- Agregado trait `HasApiTokens` al modelo `User`
+- Agregadas rutas de autenticación en `routes/api.php`
+- Mejorada validación en `ProductoController@update`
+
+**Nuevos endpoints de API:**
+
+| Método | Ruta | Descripción | Auth |
+|--------|------|-------------|------|
+| POST | `/api/register` | Registro (name, email, password, password_confirmation) | No |
+| POST | `/api/login` | Login (email, password) → devuelve `{ user, token }` | No |
+| POST | `/api/logout` | Revoca el token actual | Sí |
+| GET | `/api/user` | Usuario autenticado | Sí |
+
+### Fundamentos del rediseño
+
+**Problema original:** La jerarquía `Rubro → Subrubro → Categoria → Producto` usaba relaciones 1:N rígidas:
+- Una `Categoría` solo podía pertenecer a un `Subrubro`
+- Un `Producto` solo podía tener una `Categoría`
+
+Esto limitaba casos reales (ej. una categoría "Accesorios" compartida por múltiples subrubros, o un producto que abarca varias categorías).
+
+**Solución:** Migrar a relaciones Many-to-Many:
+- `Categoria ↔ Subrubro`: Una categoría puede estar en varios subrubros (pivot `categoria_subrubro`)
+- `Producto ↔ Categoria`: Un producto puede tener varias categorías (pivot `categoria_producto`)
+- `Producto` ahora referencia directamente `rubro_id` y `subrubro_id` como claves foráneas
+
+**¿Por qué se mantienen rubro_id y subrubro_id directos en Producto?** Para preservar la cascada de selección en el formulario (Rubro → Subrubro → Categorías) sin joins adicionales, y porque un producto siempre tiene exactamente un rubro y un subrubro.
+
+### Cambios en el backend
+
+#### Nuevas migraciones
+
+| Migración | Descripción |
+|-----------|-------------|
+| `2026_05_24_000001_create_categoria_subrubro_table` | Pivot M:N entre categorías y subrubros |
+| `2026_05_24_000002_create_categoria_producto_table` | Pivot M:N entre productos y categorías |
+| `2026_05_24_000003_modify_categorias_table` | Elimina `subrubro_id` de `categorias` |
+| `2026_05_24_000004_modify_productos_table` | Agrega `rubro_id`, `subrubro_id`; elimina `categoria_id` de `productos` |
+
+#### Modelos actualizados
+
+| Modelo | Relaciones nuevas/cambiadas |
+|--------|----------------------------|
+| `Rubro` | + `hasMany(Producto)` |
+| `Subrubro` | `hasMany(Categoria)` → `belongsToMany(Categoria)` |
+| `Categoria` | `belongsTo(Subrubro)` → `belongsToMany(Subrubro)`; `hasMany(Producto)` → `belongsToMany(Producto)` |
+| `Producto` | `belongsTo(Categoria)` → `belongsToMany(Categoria)`; + `belongsTo(Rubro)`, + `belongsTo(Subrubro)` |
+
+**Nuevo esquema de tablas:**
 
 ```
-app/
-├── Http/
-│   ├── Controllers/    → Controladores de la API
-│   └── Requests/       → Validación de producto
-├── Models/              → Modelos Eloquent
-database/
-├── migrations/          → Estructura de tablas
-├── seeders/             → Datos de prueba
-routes/
-├── api.php              → Rutas de la API
-└── web.php              → Ruta de bienvenida
+rubros
+  ├── subrubros (FK rubro_id)
+  │     └── categoria_subrubro (pivot)
+  │           └── categorias
+  │                 └── categoria_producto (pivot)
+  │                       └── productos (FK rubro_id, subrubro_id)
+  └── productos (FK rubro_id)
 ```
+
+#### Controladores actualizados
+
+**`ProductoController`:**
+- `index/show` ahora carga eager: `rubro`, `subrubro`, `categorias`
+- `store/update` acepta `rubro_id`, `subrubro_id`, `categorias[]` (array de IDs)
+- Sincroniza pivot `categoria_producto` con `attach()`/`sync()`
+- Compresión de imagen con Intervention Image (si está instalado): `scaleDown(800px)` + calidad 75%
+
+**`CategoriaController`:**
+- `store` acepta `subrubros[]` (array de IDs) en lugar de `subrubro_id`
+- `update` sincera pivot `categoria_subrubro` con `sync()`
+- Soporta filtro por `subrubro_id` vía `?subrubro_id=X` en `index`
+
+**`AlmacenarProductoRequest`:**
+- Reemplaza `categoria_id` por `rubro_id`, `subrubro_id`, `categorias[]`
+
+#### Image compression
+
+Se instaló `intervention/image-laravel` para comprimir imágenes subidas:
+- La imagen se escala a 800px de ancho (manteniendo aspect ratio)
+- Se guarda con calidad 75%
+- Si el paquete no está instalado, la imagen se sube sin compresión (fallback seguro)
+
+Para instalar:
+```bash
+composer require intervention/image-laravel
+```
+
+### Frontend React + Vite
+
+- Creado proyecto React + Vite en `frontend/` (separado del backend)
+- Catálogo público de productos en la raíz (`/`) visible sin autenticación
+- Admin protegido bajo `/admin/*` con login, registro y CRUD completo
+- Navbar público con acceso a login y navbar de admin con links a gestión
+- Proxy de Vite configurado para comunicarse con el backend en `localhost:8000`
+
+**Rutas del frontend:**
+
+| Ruta | Acceso | Descripción |
+|------|--------|-------------|
+| `/` | Público | Catálogo de productos con imágenes, precio y categoría |
+| `/login` | Público | Inicio de sesión de administrador |
+| `/register` | Público | Registro de administrador |
+| `/admin/dashboard` | Requiere auth | Panel principal con acceso rápido a gestión |
+| `/admin/rubros` | Requiere auth | CRUD de rubros |
+| `/admin/subrubros` | Requiere auth | CRUD de subrubros |
+| `/admin/categorias` | Requiere auth | CRUD de categorías |
+| `/admin/productos` | Requiere auth | Listado de productos |
+| `/admin/productos/nuevo` | Requiere auth | Crear producto con imagen |
+| `/admin/productos/{id}/editar` | Requiere auth | Editar producto |
+
+**Componentes React creados:**
+
+| Componente | Acceso | Función |
+|------------|--------|---------|
+| `NavbarPublico` | Público | Navbar con logo + botón "Iniciar Sesión" |
+| `LayoutPublico` | Público | Layout del sitio público |
+| `Catalogo` | Público | Grid público de productos |
+| `Login` | Público | Formulario de inicio de sesión |
+| `Register` | Público | Formulario de registro |
+| `ProtectedRoute` | — | Redirige a `/login` si no hay token |
+| `Navbar` | Admin | Navbar con links a CRUDs + logout |
+| `Layout` | Admin | Layout del panel de admin |
+| `Dashboard` | Admin | Panel con cards de acceso rápido + "PRÓXIMAMENTE CONSULTAS" |
+| `Rubros` | Admin | CRUD de rubros |
+| `Subrubros` | Admin | CRUD de subrubros |
+| `Categorias` | Admin | CRUD de categorías (con multi-select de subrubros) |
+| `Productos` | Admin | Listado de productos con edición/eliminación |
+| `ProductoForm` | Admin | Formulario crear/editar producto con cascading selects y subida de imagen |
+
+**Servicios:**
+
+| Archivo | Función |
+|---------|---------|
+| `api.js` | Axios con `baseURL: /api`. Agrega token Bearer desde localStorage. Si hay error 401, limpia token y redirige a `/login` |
+
+**Flujo de autenticación:**
+1. El frontend envía `POST /api/login` con email y password
+2. El backend devuelve `{ user, token }` (token de Sanctum)
+3. El frontend guarda el token en localStorage y lo envía en cada request como `Authorization: Bearer <token>`
+
+**Mapeo API → Frontend:**
+
+```
+API                           Frontend
+POST /api/login        →     Login.jsx (guarda token)
+POST /api/register     →     Register.jsx (guarda token)
+POST /api/logout       →     Navbar.jsx (botón "Salir")
+GET  /api/productos    →     Catalogo.jsx (público) + Productos.jsx (admin)
+GET  /api/rubros       →     Rubros.jsx + Subrubros.jsx + ProductoForm.jsx (select)
+GET  /api/subrubros    →     Subrubros.jsx + Categorias.jsx + ProductoForm.jsx (select)
+GET  /api/categorias   →     Categorias.jsx + ProductoForm.jsx (checkboxes)
+POST/PUT/DELETE ...    →     CRUDs respectivos
+```
+
+### Cambios en componentes por el rediseño
+
+#### ProductoForm — Cascading selects
+
+El formulario de producto ahora tiene un selector en cascada:
+
+1. **Rubro** (select) → filtra los subrubros disponibles
+2. **Subrubro** (select, se desbloquea al elegir rubro) → filtra las categorías disponibles (vía pivot)
+3. **Categorías** (checkboxes, aparecen al elegir subrubro) → selección múltiple
+
+En edición, se precargan los valores existentes (rubro, subrubro, categorías marcadas).
+
+#### Categorias — Multi-subrubro
+
+El formulario de categorías ahora usa checkboxes para seleccionar múltiples subrubros (antes era un select único). La tabla muestra los subrubros separados por coma.
+
+#### Productos.jsx
+
+Las columnas ahora usan las nuevas relaciones:
+- Rubro: `p.rubro?.nombreRubro`
+- Subrubro: `p.subrubro?.nombreSubrubro`
+- Categoría: `p.categorías?.map(c => c.nombreCategoria).join(', ')`
+
+#### Catalogo.jsx
+
+Muestra la lista de categorías separada por comas en lugar de una categoría única.
+
+### Seeders actualizados
+
+- `CategoriaSeeder`: cada categoría se crea sin FK directo y se asocia a subrubros vía pivot `categoria_subrubro` (la última categoría se asocia a 2 subrubros para demostrar M:N)
+- `ProductoSeeder`: cada producto recibe `rubro_id`, `subrubro_id` y se asocia a una categoría vía pivot `categoria_producto`
+
+### Estructura completa del proyecto
+
+```
+IG-WEB/
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/       → Controladores de la API (incluye AuthController)
+│   │   └── Requests/          → Validación de producto
+│   ├── Models/                → Modelos Eloquent
+├── frontend/
+│   ├── src/
+│   │   ├── components/        → Navbar, Layout, ProtectedRoute
+│   │   ├── pages/             → Login, Register, Dashboard, CRUDs, Catálogo público
+│   │   ├── services/          → api.js (Axios con interceptor de token)
+│   │   ├── App.jsx            → Router principal
+│   │   └── main.jsx           → Entry point React
+│   ├── index.html
+│   └── vite.config.js         → Proxy a localhost:8000
+├── database/
+│   ├── migrations/            → Estructura de tablas (se agregaron pivots en Inc. 2)
+│   ├── seeders/               → Datos de prueba (actualizados en Inc. 2)
+├── routes/
+│   ├── api.php                → Rutas de la API
+│   └── web.php                → Ruta de bienvenida
+```
+
+### Comandos para aplicar los cambios
+
+```bash
+# 1. Instalar nuevas dependencias
+composer require intervention/image-laravel
+
+# 2. Refrescar base de datos con nuevo esquema + seeders
+php artisan migrate:fresh --seed
+
+# 3. Crear enlace para imágenes (si no existe)
+php artisan storage:link
+```
+
+---
+
+## Cómo levantar el proyecto completo
+
+```bash
+# Terminal 1 — Backend (Laravel)
+php artisan serve                               # http://localhost:8000
+
+# Terminal 2 — Frontend (React)
+cd frontend && npm run dev                      # http://localhost:5173
+```
+
+Abrir `http://localhost:5173` para ver el catálogo público.
