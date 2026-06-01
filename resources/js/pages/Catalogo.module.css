@@ -1,0 +1,120 @@
+/* =============================================
+   CATÁLOGO PÚBLICO — Neumorphism
+   ============================================= */
+
+.page {
+    padding: 1.5rem 0;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.title {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    color: var(--text);
+}
+
+.sub {
+    color: var(--text-muted);
+    margin-bottom: 2.5rem;
+    font-size: 0.95rem;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.75rem;
+}
+
+.card {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-neu);
+    transition: var(--transition);
+}
+
+.card:hover {
+    box-shadow: var(--shadow-neu-lg);
+    transform: translateY(-4px);
+}
+
+.imgWrap {
+    width: 100%;
+    height: 190px;
+    overflow: hidden;
+    background: var(--bg);
+    box-shadow: var(--shadow-inset-sm);
+}
+
+.img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.35s ease;
+}
+
+.card:hover .img {
+    transform: scale(1.04);
+}
+
+.noImg {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-faint);
+    font-size: 0.85rem;
+}
+
+.body {
+    padding: 1.25rem;
+}
+
+.nombre {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+}
+
+.desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 0.9rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.5;
+}
+
+.precio {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--primary);
+    display: block;
+    margin-bottom: 0.3rem;
+}
+
+.categoria {
+    font-size: 0.78rem;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 600;
+}
+
+.empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: var(--text-muted);
+    padding: 3rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-inset);
+}

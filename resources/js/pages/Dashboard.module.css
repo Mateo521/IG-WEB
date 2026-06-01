@@ -1,0 +1,84 @@
+/* =============================================
+   DASHBOARD — Neumorphism
+   ============================================= */
+
+.page {
+    padding: 1.5rem 0;
+}
+
+.welcome {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    color: var(--text);
+}
+
+.sub {
+    color: var(--text-muted);
+    margin-bottom: 2.5rem;
+    font-size: 0.95rem;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.5rem;
+}
+
+.card {
+    background: var(--bg-card);
+    padding: 1.75rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-neu);
+    text-decoration: none;
+    color: var(--text);
+    transition: var(--transition);
+    display: block;
+}
+
+.card:hover {
+    box-shadow: var(--shadow-neu-lg);
+    transform: translateY(-3px);
+}
+
+.card:active {
+    box-shadow: var(--shadow-inset-sm);
+    transform: translateY(0);
+}
+
+.cardTitle {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--primary);
+}
+
+.cardDesc {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+.proximamente {
+    margin-top: 3rem;
+    padding: 2rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-inset);
+    text-align: center;
+}
+
+.proxTitle {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+}
+
+.proxDesc {
+    font-size: 0.85rem;
+    color: var(--text-faint);
+}

@@ -1,0 +1,55 @@
+/* =============================================
+   NAVBAR PÚBLICO — Neumorphism
+   ============================================= */
+
+.nav {
+    background: var(--bg);
+    border-bottom: none;
+    box-shadow: 0 4px 10px #b8bec9, 0 -1px 4px #ffffff;
+    padding: 0 1.5rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+}
+
+.brand {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 1.3rem;
+    color: var(--primary);
+    text-decoration: none;
+    letter-spacing: -0.02em;
+}
+
+.loginBtn {
+    padding: 0.4rem 1.2rem;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius-full);
+    font-size: 0.88rem;
+    font-weight: 700;
+    font-family: 'Nunito Sans', sans-serif;
+    text-decoration: none;
+    box-shadow: 4px 4px 8px rgba(var(--primary-rgb), 0.35), -4px -4px 8px #ffffff;
+    transition: var(--transition);
+    display: inline-block;
+}
+
+.loginBtn:hover {
+    background: var(--primary-hover);
+    box-shadow: 2px 2px 5px rgba(var(--primary-rgb), 0.3), -2px -2px 5px #ffffff;
+}
+
+.loginBtn:active {
+    box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.2);
+}

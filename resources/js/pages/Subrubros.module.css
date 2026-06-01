@@ -1,0 +1,179 @@
+/* =============================================
+   SUBRUBROS — Neumorphism
+   ============================================= */
+
+.page {
+    padding: 1.5rem 0;
+}
+
+.title {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 1.75rem;
+    color: var(--text);
+}
+
+.form {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    background: var(--bg);
+    padding: 1.25rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-neu);
+}
+
+.input {
+    flex: 1;
+    min-width: 150px;
+    padding: 0.7rem 1.1rem;
+    border: none;
+    border-radius: var(--radius);
+    font-size: 0.9rem;
+    font-family: 'Nunito Sans', sans-serif;
+    outline: none;
+    background: var(--bg);
+    color: var(--text);
+    box-shadow: var(--shadow-inset);
+    transition: var(--transition);
+}
+
+.input::placeholder {
+    color: var(--text-faint);
+}
+
+.input:focus {
+    box-shadow: var(--shadow-inset), 0 0 0 2px rgba(var(--primary-rgb), 0.22);
+}
+
+.btn {
+    padding: 0.6rem 1.4rem;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    font-size: 0.88rem;
+    font-weight: 700;
+    font-family: 'Nunito Sans', sans-serif;
+    box-shadow: 5px 5px 10px rgba(var(--primary-rgb), 0.35), -5px -5px 10px #ffffff;
+    transition: var(--transition);
+}
+
+.btn:hover {
+    background: var(--primary-hover);
+    box-shadow: 3px 3px 6px rgba(var(--primary-rgb), 0.3), -3px -3px 6px #ffffff;
+}
+
+.btn:active {
+    box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+.btnCancel {
+    padding: 0.6rem 1.4rem;
+    background: var(--bg);
+    color: var(--text-muted);
+    border: none;
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    font-size: 0.88rem;
+    font-weight: 600;
+    font-family: 'Nunito Sans', sans-serif;
+    box-shadow: var(--shadow-neu-sm);
+    transition: var(--transition);
+}
+
+.btnCancel:hover {
+    box-shadow: var(--shadow-inset-sm);
+    color: var(--text);
+}
+
+.table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-neu);
+}
+
+.table th,
+.table td {
+    text-align: left;
+    padding: 0.85rem 1.1rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.table th {
+    background: var(--bg);
+    font-weight: 700;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--text-muted);
+    box-shadow: 0 3px 6px rgba(184, 190, 201, 0.5);
+}
+
+.table tbody tr {
+    transition: var(--transition);
+}
+
+.table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.45);
+}
+
+.table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btnEdit {
+    padding: 0.3rem 0.85rem;
+    background: var(--bg);
+    border: none;
+    color: var(--primary);
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 700;
+    font-family: 'Nunito Sans', sans-serif;
+    box-shadow: var(--shadow-neu-sm);
+    transition: var(--transition);
+}
+
+.btnEdit:hover {
+    box-shadow: var(--shadow-inset-sm);
+    color: var(--primary-hover);
+}
+
+.btnDelete {
+    padding: 0.3rem 0.85rem;
+    background: var(--bg);
+    border: none;
+    color: var(--danger);
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 700;
+    font-family: 'Nunito Sans', sans-serif;
+    box-shadow: var(--shadow-neu-sm);
+    transition: var(--transition);
+}
+
+.btnDelete:hover {
+    box-shadow: var(--shadow-inset-sm);
+    color: var(--danger-hover);
+}
+
+.empty {
+    text-align: center;
+    color: var(--text-muted);
+    padding: 2rem !important;
+}

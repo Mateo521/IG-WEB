@@ -1,0 +1,2198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neumorphism UI Kit</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&family=Nunito+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+
+/* =============================================
+   NEUMORPHISM UI KIT — CSS VARIABLES & RESET
+   ============================================= */
+
+:root {
+  --bg: #e0e5ec;
+  --bg-dark: #c8cfd9;
+  --surface: #e0e5ec;
+  --text-primary: #2d3748;
+  --text-secondary: #718096;
+  --text-muted: #a0aec0;
+  --accent: #6c63ff;
+  --accent-light: #8b85ff;
+  --accent-dark: #4f46e5;
+  --success: #38a169;
+  --warning: #d69e2e;
+  --danger: #e53e3e;
+  --info: #3182ce;
+
+  /* Sombras neumórficas principales */
+  --shadow-neu: 6px 6px 12px #b8bec9, -6px -6px 12px #ffffff;
+  --shadow-neu-sm: 3px 3px 7px #b8bec9, -3px -3px 7px #ffffff;
+  --shadow-neu-lg: 10px 10px 20px #b8bec9, -10px -10px 20px #ffffff;
+  --shadow-inset: inset 4px 4px 8px #b8bec9, inset -4px -4px 8px #ffffff;
+  --shadow-inset-sm: inset 2px 2px 5px #b8bec9, inset -2px -2px 5px #ffffff;
+  --shadow-pressed: inset 3px 3px 7px #b8bec9, inset -3px -3px 7px #ffffff;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 30px;
+  --radius-full: 9999px;
+
+  --font-display: 'Nunito', sans-serif;
+  --font-body: 'Nunito Sans', sans-serif;
+
+  --transition: all 0.2s ease;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* =============================================
+   LAYOUT & NAVIGATION
+   ============================================= */
+
+.page-wrapper {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 260px;
+  min-height: 100vh;
+  background: var(--bg);
+  box-shadow: var(--shadow-neu);
+  padding: 2rem 1.5rem;
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  z-index: 100;
+}
+
+.sidebar-logo {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid transparent;
+  background: linear-gradient(var(--bg), var(--bg)) padding-box,
+              linear-gradient(135deg, #b8bec9, #ffffff) border-box;
+}
+
+.sidebar-section {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 1rem 0 0.4rem;
+}
+
+.sidebar-link {
+  display: block;
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.sidebar-link:hover {
+  color: var(--text-primary);
+  box-shadow: var(--shadow-neu-sm);
+}
+
+.sidebar-link.active {
+  color: var(--accent);
+  box-shadow: var(--shadow-inset-sm);
+}
+
+.main-content {
+  flex: 1;
+  padding: 3rem;
+  max-width: 1100px;
+}
+
+/* =============================================
+   SECCIONES
+   ============================================= */
+
+.section {
+  margin-bottom: 5rem;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.section-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+}
+
+.divider {
+  height: 2px;
+  background: linear-gradient(90deg, var(--bg-dark), var(--bg));
+  border: none;
+  margin: 1.5rem 0 2rem;
+}
+
+/* =============================================
+   TIPOGRAFÍA
+   ============================================= */
+
+.neu-card {
+  background: var(--bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-neu);
+  padding: 2rem;
+}
+
+.type-display { font-family: var(--font-display); font-size: 2.5rem; font-weight: 700; line-height: 1.2; }
+.type-h1 { font-family: var(--font-display); font-size: 2rem; font-weight: 700; }
+.type-h2 { font-family: var(--font-display); font-size: 1.6rem; font-weight: 600; }
+.type-h3 { font-family: var(--font-display); font-size: 1.3rem; font-weight: 600; }
+.type-h4 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; }
+.type-body { font-size: 1rem; line-height: 1.7; }
+.type-small { font-size: 0.85rem; color: var(--text-secondary); }
+.type-caption { font-size: 0.75rem; color: var(--text-muted); letter-spacing: 0.02em; }
+.type-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
+.type-mono { font-family: 'Courier New', monospace; font-size: 0.9rem; }
+
+.type-row { margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(184,190,201,0.4); }
+.type-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+/* =============================================
+   BOTONES
+   ============================================= */
+
+.btn-group { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.5rem;
+  border-radius: var(--radius-full);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: var(--transition);
+  text-decoration: none;
+  background: var(--bg);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-neu);
+}
+
+.btn:hover { box-shadow: var(--shadow-neu-sm); }
+.btn:active { box-shadow: var(--shadow-inset-sm); }
+
+.btn-primary {
+  background: var(--accent);
+  color: white;
+  box-shadow: 5px 5px 10px rgba(108,99,255,0.3), -5px -5px 10px #ffffff;
+}
+.btn-primary:hover { background: var(--accent-light); box-shadow: 3px 3px 6px rgba(108,99,255,0.3), -3px -3px 6px #ffffff; }
+.btn-primary:active { box-shadow: inset 3px 3px 6px rgba(0,0,0,0.2); }
+
+.btn-success { background: var(--success); color: white; box-shadow: 5px 5px 10px rgba(56,161,105,0.3), -5px -5px 10px #ffffff; }
+.btn-success:hover { box-shadow: 3px 3px 6px rgba(56,161,105,0.3), -3px -3px 6px #ffffff; }
+
+.btn-danger { background: var(--danger); color: white; box-shadow: 5px 5px 10px rgba(229,62,62,0.3), -5px -5px 10px #ffffff; }
+.btn-danger:hover { box-shadow: 3px 3px 6px rgba(229,62,62,0.3), -3px -3px 6px #ffffff; }
+
+.btn-warning { background: var(--warning); color: white; box-shadow: 5px 5px 10px rgba(214,158,46,0.3), -5px -5px 10px #ffffff; }
+
+.btn-outline {
+  background: var(--bg);
+  color: var(--accent);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  box-shadow: var(--shadow-neu);
+}
+
+.btn-flat {
+  box-shadow: none;
+  background: transparent;
+  color: var(--accent);
+}
+.btn-flat:hover { box-shadow: var(--shadow-neu-sm); }
+
+.btn-icon {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: 50%;
+}
+
+.btn-sm { padding: 0.45rem 1rem; font-size: 0.8rem; }
+.btn-lg { padding: 0.9rem 2rem; font-size: 1rem; }
+
+.btn:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
+
+/* =============================================
+   FORMULARIOS & INPUTS
+   ============================================= */
+
+.form-group { margin-bottom: 1.5rem; }
+
+.form-label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-secondary);
+  margin-bottom: 0.6rem;
+}
+
+.neu-input {
+  width: 100%;
+  background: var(--bg);
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1.2rem;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  box-shadow: var(--shadow-inset);
+  outline: none;
+  transition: var(--transition);
+}
+
+.neu-input::placeholder { color: var(--text-muted); }
+.neu-input:focus { box-shadow: var(--shadow-inset), 0 0 0 2px rgba(108,99,255,0.25); }
+.neu-input:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.neu-input.error { box-shadow: var(--shadow-inset), 0 0 0 2px rgba(229,62,62,0.35); }
+.neu-input.success { box-shadow: var(--shadow-inset), 0 0 0 2px rgba(56,161,105,0.35); }
+
+.input-icon-wrap { position: relative; }
+.input-icon-wrap .neu-input { padding-left: 2.8rem; }
+.input-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  width: 18px;
+  height: 18px;
+}
+
+.form-hint { font-size: 0.78rem; color: var(--text-muted); margin-top: 0.4rem; }
+.form-error { font-size: 0.78rem; color: var(--danger); margin-top: 0.4rem; }
+
+.neu-textarea {
+  width: 100%;
+  min-height: 120px;
+  resize: vertical;
+  background: var(--bg);
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1.2rem;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  box-shadow: var(--shadow-inset);
+  outline: none;
+  transition: var(--transition);
+}
+.neu-textarea:focus { box-shadow: var(--shadow-inset), 0 0 0 2px rgba(108,99,255,0.25); }
+
+.neu-select {
+  width: 100%;
+  background: var(--bg);
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 0.85rem 2.5rem 0.85rem 1.2rem;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  box-shadow: var(--shadow-inset);
+  outline: none;
+  appearance: none;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23718096'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 16px;
+  transition: var(--transition);
+}
+.neu-select:focus { box-shadow: var(--shadow-inset), 0 0 0 2px rgba(108,99,255,0.25); }
+
+/* Checkbox & Radio */
+.neu-check-group { display: flex; flex-direction: column; gap: 0.8rem; }
+
+.neu-check {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  user-select: none;
+}
+
+.neu-check input { display: none; }
+
+.neu-check-box {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: var(--bg);
+  box-shadow: var(--shadow-inset-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  flex-shrink: 0;
+}
+
+.neu-check input:checked + .neu-check-box {
+  background: var(--accent);
+  box-shadow: inset 2px 2px 5px rgba(0,0,0,0.2);
+}
+.neu-check input:checked + .neu-check-box::after {
+  content: '';
+  width: 5px;
+  height: 9px;
+  border-right: 2px solid white;
+  border-bottom: 2px solid white;
+  transform: rotate(45deg) translate(-1px, -1px);
+}
+
+.neu-radio-box {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--bg);
+  box-shadow: var(--shadow-inset-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  flex-shrink: 0;
+}
+.neu-check input:checked + .neu-radio-box {
+  box-shadow: var(--shadow-inset-sm);
+}
+.neu-check input:checked + .neu-radio-box::after {
+  content: '';
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+/* Toggle */
+.neu-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  user-select: none;
+}
+.neu-toggle input { display: none; }
+
+.neu-toggle-track {
+  width: 50px;
+  height: 26px;
+  border-radius: var(--radius-full);
+  background: var(--bg);
+  box-shadow: var(--shadow-inset-sm);
+  position: relative;
+  transition: var(--transition);
+}
+.neu-toggle-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--bg);
+  box-shadow: var(--shadow-neu-sm);
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  transition: var(--transition);
+}
+.neu-toggle input:checked ~ .neu-toggle-track { background: rgba(108,99,255,0.15); }
+.neu-toggle input:checked ~ .neu-toggle-track .neu-toggle-thumb {
+  transform: translateX(24px);
+  background: var(--accent);
+  box-shadow: 2px 2px 5px rgba(108,99,255,0.4);
+}
+
+/* Range slider */
+.neu-range {
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: var(--bg);
+  box-shadow: var(--shadow-inset-sm);
+  outline: none;
+}
+.neu-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--bg);
+  box-shadow: var(--shadow-neu-sm);
+  cursor: pointer;
+  transition: var(--transition);
+}
+.neu-range::-webkit-slider-thumb:active { box-shadow: var(--shadow-inset-sm); }
+
+/* Form layout */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+.form-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
+
+/* =============================================
+   CARDS
+   ============================================= */
+
+.cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; }
+
+.card {
+  background: var(--bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-neu);
+  padding: 1.5rem;
+  transition: var(--transition);
+}
+.card:hover { box-shadow: var(--shadow-neu-lg); }
+
+.card-flat {
+  background: var(--bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-inset);
+  padding: 1.5rem;
+}
+
+.card-accent {
+  background: var(--accent);
+  border-radius: var(--radius-lg);
+  box-shadow: 8px 8px 16px rgba(108,99,255,0.3), -8px -8px 16px #ffffff;
+  padding: 1.5rem;
+  color: white;
+}
+
+.card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+.card-title { font-family: var(--font-display); font-size: 1rem; font-weight: 700; }
+.card-body { font-size: 0.9rem; color: var(--text-secondary); }
+.card-footer { margin-top: 1.2rem; padding-top: 1rem; border-top: 1px solid rgba(184,190,201,0.4); }
+
+.card-metric { text-align: center; }
+.card-metric-value { font-family: var(--font-display); font-size: 2.2rem; font-weight: 700; color: var(--accent); }
+.card-metric-label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 0.2rem; }
+
+.card-profile { text-align: center; padding: 2rem 1.5rem; }
+.avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--bg);
+  box-shadow: var(--shadow-neu);
+  margin: 0 auto 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+.avatar-sm { width: 40px; height: 40px; font-size: 0.9rem; border-radius: 50%; background: var(--bg); box-shadow: var(--shadow-neu-sm); display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--accent); }
+.avatar-lg { width: 96px; height: 96px; font-size: 1.6rem; }
+
+/* =============================================
+   BADGES & TAGS
+   ============================================= */
+
+.badge-group { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; }
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: var(--bg);
+  color: var(--text-secondary);
+  box-shadow: var(--shadow-neu-sm);
+}
+
+.badge-accent { background: rgba(108,99,255,0.12); color: var(--accent); box-shadow: none; }
+.badge-success { background: rgba(56,161,105,0.12); color: var(--success); box-shadow: none; }
+.badge-warning { background: rgba(214,158,46,0.12); color: var(--warning); box-shadow: none; }
+.badge-danger { background: rgba(229,62,62,0.12); color: var(--danger); box-shadow: none; }
+.badge-info { background: rgba(49,130,206,0.12); color: var(--info); box-shadow: none; }
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.9rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: var(--bg);
+  color: var(--text-secondary);
+  box-shadow: var(--shadow-inset-sm);
+}
+.tag-close {
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+  opacity: 0.6;
+}
+.tag-close:hover { opacity: 1; }
+
+/* =============================================
+   ALERTS & NOTIFICACIONES
+   ============================================= */
+
+.alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  background: var(--bg);
+  box-shadow: var(--shadow-neu-sm);
+}
+
+.alert-icon { flex-shrink: 0; margin-top: 0.05rem; }
+.alert-content strong { display: block; margin-bottom: 0.2rem; }
+.alert-success { box-shadow: 4px 4px 8px #b8bec9, -4px -4px 8px #ffffff, inset 3px 0 0 var(--success); }
+.alert-warning { box-shadow: 4px 4px 8px #b8bec9, -4px -4px 8px #ffffff, inset 3px 0 0 var(--warning); }
+.alert-danger { box-shadow: 4px 4px 8px #b8bec9, -4px -4px 8px #ffffff, inset 3px 0 0 var(--danger); }
+.alert-info { box-shadow: 4px 4px 8px #b8bec9, -4px -4px 8px #ffffff, inset 3px 0 0 var(--info); }
+
+/* =============================================
+   TABLA
+   ============================================= */
+
+.table-wrapper {
+  background: var(--bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-neu);
+  overflow: hidden;
+}
+
+.neu-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.neu-table thead {
+  background: var(--bg);
+  box-shadow: 0 3px 8px rgba(184,190,201,0.6);
+}
+
+.neu-table th {
+  padding: 1rem 1.25rem;
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-secondary);
+}
+
+.neu-table td {
+  padding: 0.9rem 1.25rem;
+  color: var(--text-primary);
+  border-bottom: 1px solid rgba(184,190,201,0.35);
+}
+
+.neu-table tbody tr:last-child td { border-bottom: none; }
+
+.neu-table tbody tr { transition: var(--transition); }
+.neu-table tbody tr:hover { background: rgba(255,255,255,0.5); }
+
+.table-actions { display: flex; gap: 0.4rem; }
+
+/* =============================================
+   LISTAS
+   ============================================= */
+
+.list-group {
+  background: var(--bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-neu);
+  overflow: hidden;
+}
+
+.list-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid rgba(184,190,201,0.3);
+  transition: var(--transition);
+  cursor: pointer;
+}
+.list-item:last-child { border-bottom: none; }
+.list-item:hover { background: rgba(255,255,255,0.5); }
+
+.list-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  box-shadow: var(--shadow-inset-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.list-content { flex: 1; }
+.list-title { font-size: 0.9rem; font-weight: 600; }
+.list-desc { font-size: 0.8rem; color: var(--text-muted); }
+.list-meta { font-size: 0.78rem; color: var(--text-muted); }
+
+/* =============================================
+   NAVEGACIÓN & TABS
+   ============================================= */
+
+.tabs {
+  display: flex;
+  gap: 0.3rem;
+  background: var(--bg);
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-inset);
+  padding: 0.3rem;
+  width: fit-content;
+}
+
+.tab-btn {
+  padding: 0.5rem 1.2rem;
+  border-radius: var(--radius-full);
+  border: none;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: var(--transition);
+}
+.tab-btn.active {
+  background: var(--bg);
+  color: var(--accent);
+  box-shadow: var(--shadow-neu-sm);
+}
+.tab-btn:hover:not(.active) { color: var(--text-primary); }
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+.breadcrumb a { color: var(--text-secondary); text-decoration: none; }
+.breadcrumb a:hover { color: var(--accent); }
+.breadcrumb .current { color: var(--text-primary); font-weight: 600; }
+.breadcrumb-sep { color: var(--text-muted); }
+
+.pagination {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+.page-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: none;
+  background: var(--bg);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  box-shadow: var(--shadow-neu-sm);
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.page-btn:hover { color: var(--accent); }
+.page-btn.active { box-shadow: var(--shadow-inset-sm); color: var(--accent); }
+
+/* =============================================
+   PROGRESO & STATS
+   ============================================= */
+
+.progress-bar {
+  width: 100%;
+  height: 10px;
+  background: var(--bg);
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-inset-sm);
+  overflow: hidden;
+  margin-bottom: 0.8rem;
+}
+.progress-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  background: var(--accent);
+  box-shadow: 2px 0 8px rgba(108,99,255,0.4);
+  transition: width 0.6s ease;
+}
+.progress-fill.success { background: var(--success); box-shadow: 2px 0 8px rgba(56,161,105,0.4); }
+.progress-fill.warning { background: var(--warning); box-shadow: 2px 0 8px rgba(214,158,46,0.4); }
+.progress-fill.danger { background: var(--danger); box-shadow: 2px 0 8px rgba(229,62,62,0.4); }
+
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1.2rem; }
+
+.stat-item {
+  background: var(--bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-neu);
+  padding: 1.25rem;
+  text-align: center;
+}
+.stat-value { font-family: var(--font-display); font-size: 1.8rem; font-weight: 700; color: var(--accent); }
+.stat-label { font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 0.2rem; }
+.stat-trend { font-size: 0.78rem; margin-top: 0.4rem; }
+.stat-up { color: var(--success); }
+.stat-down { color: var(--danger); }
+
+/* =============================================
+   MODALES & OVERLAYS
+   ============================================= */
+
+.modal-backdrop {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 320px;
+  background: rgba(189,195,209,0.5);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-inset);
+}
+
+.modal {
+  background: var(--bg);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-neu-lg);
+  padding: 2rem;
+  width: 100%;
+  max-width: 420px;
+}
+
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem; }
+.modal-title { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; }
+.modal-close { width: 32px; height: 32px; border-radius: 50%; border: none; background: var(--bg); box-shadow: var(--shadow-neu-sm); cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 1.1rem; }
+.modal-body { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.5rem; }
+.modal-footer { display: flex; gap: 0.8rem; justify-content: flex-end; }
+
+/* Tooltip */
+.tooltip-wrap { position: relative; display: inline-block; }
+.tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg);
+  box-shadow: var(--shadow-neu);
+  border-radius: var(--radius-sm);
+  padding: 0.4rem 0.8rem;
+  font-size: 0.78rem;
+  color: var(--text-primary);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+  z-index: 10;
+}
+.tooltip-wrap:hover .tooltip { opacity: 1; }
+.tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: var(--bg);
+}
+
+/* =============================================
+   STEPPER
+   ============================================= */
+
+.stepper { display: flex; align-items: center; gap: 0; }
+.step-item { display: flex; flex-direction: column; align-items: center; gap: 0.4rem; flex: 1; }
+.step-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--bg);
+  box-shadow: var(--shadow-neu-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  transition: var(--transition);
+  position: relative;
+  z-index: 1;
+}
+.step-item.done .step-circle { background: var(--success); color: white; box-shadow: 3px 3px 8px rgba(56,161,105,0.35), -3px -3px 8px #ffffff; }
+.step-item.active .step-circle { background: var(--accent); color: white; box-shadow: 3px 3px 8px rgba(108,99,255,0.35), -3px -3px 8px #ffffff; }
+.step-label { font-size: 0.75rem; font-weight: 600; color: var(--text-muted); text-align: center; }
+.step-item.active .step-label { color: var(--accent); }
+.step-line { flex: 1; height: 2px; background: var(--bg-dark); box-shadow: 0 1px 2px rgba(255,255,255,0.7); margin-bottom: 1.4rem; }
+.step-line.done { background: var(--success); }
+
+/* =============================================
+   SECTION HERO
+   ============================================= */
+
+.hero-section {
+  background: var(--bg);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-neu-lg);
+  padding: 4rem 3rem;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.hero-label {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  background: rgba(108,99,255,0.1);
+  padding: 0.35rem 1rem;
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-inset-sm);
+  margin-bottom: 1.2rem;
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+.hero-subtitle {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  max-width: 540px;
+  margin: 0 auto 2rem;
+  line-height: 1.7;
+}
+
+/* =============================================
+   SEARCH BAR
+   ============================================= */
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  background: var(--bg);
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-inset);
+  padding: 0.4rem 0.5rem 0.4rem 1.5rem;
+  gap: 0.5rem;
+}
+.search-bar input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  outline: none;
+}
+.search-bar input::placeholder { color: var(--text-muted); }
+
+/* =============================================
+   DROPDOWN
+   ============================================= */
+
+.dropdown-wrap { position: relative; display: inline-block; }
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  min-width: 180px;
+  background: var(--bg);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-neu);
+  overflow: hidden;
+  z-index: 50;
+}
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.7rem 1rem;
+  font-size: 0.88rem;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: var(--transition);
+  border-bottom: 1px solid rgba(184,190,201,0.25);
+}
+.dropdown-item:last-child { border-bottom: none; }
+.dropdown-item:hover { background: rgba(255,255,255,0.5); color: var(--accent); }
+.dropdown-divider { height: 1px; background: rgba(184,190,201,0.4); margin: 0.3rem 0; }
+
+/* =============================================
+   LOADING STATES
+   ============================================= */
+
+.skeleton {
+  background: var(--bg);
+  box-shadow: var(--shadow-inset-sm);
+  border-radius: var(--radius-sm);
+  animation: shimmer 1.8s infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+.skeleton-text { height: 14px; margin-bottom: 0.5rem; }
+.skeleton-title { height: 22px; width: 60%; margin-bottom: 0.75rem; }
+.skeleton-circle { width: 48px; height: 48px; border-radius: 50%; }
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--bg);
+  box-shadow: var(--shadow-neu);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: spin 1s linear infinite;
+}
+.spinner-inner {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  border-top-color: var(--accent);
+  box-shadow: var(--shadow-inset-sm);
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* =============================================
+   CODE BLOCK
+   ============================================= */
+
+.code-block {
+  background: var(--bg);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-inset);
+  padding: 1.2rem 1.5rem;
+  font-family: 'Courier New', monospace;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  overflow-x: auto;
+  line-height: 1.6;
+}
+.code-keyword { color: var(--accent); font-weight: 600; }
+.code-string { color: var(--success); }
+.code-comment { color: var(--text-muted); font-style: italic; }
+
+/* =============================================
+   ACCORDION
+   ============================================= */
+
+.accordion {
+  background: var(--bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-neu);
+  overflow: hidden;
+}
+.accordion-item { border-bottom: 1px solid rgba(184,190,201,0.3); }
+.accordion-item:last-child { border-bottom: none; }
+.accordion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.1rem 1.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  transition: var(--transition);
+}
+.accordion-header:hover { color: var(--accent); }
+.accordion-arrow {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s;
+  color: var(--text-muted);
+}
+.accordion-item.open .accordion-arrow { transform: rotate(180deg); }
+.accordion-body {
+  display: none;
+  padding: 0 1.5rem 1.2rem;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.accordion-item.open .accordion-body { display: block; }
+
+/* =============================================
+   NOTIFICATIONS
+   ============================================= */
+
+.notification {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: var(--bg);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-neu-sm);
+  margin-bottom: 0.75rem;
+  transition: var(--transition);
+  cursor: pointer;
+}
+.notification:hover { box-shadow: var(--shadow-neu); }
+.notification.unread { box-shadow: var(--shadow-neu-sm), inset 3px 0 0 var(--accent); }
+
+.notif-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  margin-top: 0.4rem;
+  flex-shrink: 0;
+}
+
+/* =============================================
+   RADIO GROUPS PILL
+   ============================================= */
+
+.radio-pill-group { display: flex; background: var(--bg); border-radius: var(--radius-full); box-shadow: var(--shadow-inset); padding: 0.25rem; gap: 0.2rem; }
+.radio-pill { flex: 1; text-align: center; }
+.radio-pill input { display: none; }
+.radio-pill label {
+  display: block;
+  padding: 0.45rem 1rem;
+  border-radius: var(--radius-full);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: var(--transition);
+}
+.radio-pill input:checked + label {
+  background: var(--bg);
+  color: var(--accent);
+  box-shadow: var(--shadow-neu-sm);
+}
+
+/* =============================================
+   MISCELLANEOUS
+   ============================================= */
+
+.divider-text {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  margin: 1rem 0;
+}
+.divider-text::before,
+.divider-text::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(184,190,201,0.5);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: var(--radius-full);
+  background: var(--bg);
+  box-shadow: var(--shadow-inset-sm);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.chip-group { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+/* =============================================
+   GRID HELPER
+   ============================================= */
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+.col-span-2 { grid-column: span 2; }
+
+@media (max-width: 768px) {
+  .page-wrapper { flex-direction: column; }
+  .sidebar { width: 100%; min-height: auto; position: static; }
+  .main-content { padding: 1.5rem; }
+  .form-grid, .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .col-span-2 { grid-column: span 1; }
+  .hero-title { font-size: 1.8rem; }
+}
+
+</style>
+</head>
+<body>
+
+<div class="page-wrapper">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:-5px; margin-right:8px"><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="9" stroke-width="1"/></svg>
+      Neu UI Kit
+    </div>
+
+    <span class="sidebar-section">Fundamentos</span>
+    <a href="#typography" class="sidebar-link active">Tipografía</a>
+    <a href="#colors" class="sidebar-link">Colores</a>
+
+    <span class="sidebar-section">Elementos</span>
+    <a href="#buttons" class="sidebar-link">Botones</a>
+    <a href="#badges" class="sidebar-link">Badges & Tags</a>
+    <a href="#alerts" class="sidebar-link">Alertas</a>
+
+    <span class="sidebar-section">Formularios</span>
+    <a href="#inputs" class="sidebar-link">Inputs</a>
+    <a href="#selects" class="sidebar-link">Selects & Checks</a>
+    <a href="#forms" class="sidebar-link">Forms</a>
+
+    <span class="sidebar-section">Contenido</span>
+    <a href="#cards" class="sidebar-link">Cards</a>
+    <a href="#tables" class="sidebar-link">Tablas</a>
+    <a href="#lists" class="sidebar-link">Listas</a>
+
+    <span class="sidebar-section">Navegación</span>
+    <a href="#nav" class="sidebar-link">Tabs & Nav</a>
+    <a href="#modals" class="sidebar-link">Modales</a>
+
+    <span class="sidebar-section">Feedback</span>
+    <a href="#progress" class="sidebar-link">Progreso</a>
+    <a href="#loading" class="sidebar-link">Loading</a>
+  </nav>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="main-content">
+
+    <!-- HERO -->
+    <div class="hero-section" style="margin-bottom:4rem;">
+      <div class="hero-label">UI Component Library</div>
+      <h1 class="hero-title">Neumorphism<br>Design System</h1>
+      <p class="hero-subtitle">Template completo de componentes con estilo neumórfico. Sombras suaves, superficies extruidas y profundidad táctil para interfaces modernas.</p>
+      <div class="btn-group" style="justify-content:center;">
+        <button class="btn btn-primary btn-lg">Comenzar proyecto</button>
+        <button class="btn btn-lg">Ver documentación</button>
+      </div>
+    </div>
+
+
+    <!-- ======================== TIPOGRAFÍA ======================== -->
+    <section class="section" id="typography">
+      <h2 class="section-title">Tipografía</h2>
+      <p class="section-subtitle">Sistema tipográfico jerárquico — Nunito Display + Nunito Sans body.</p>
+      <hr class="divider">
+
+      <div class="neu-card">
+        <div class="type-row">
+          <div class="type-display">Display — 2.5rem 700</div>
+          <div class="type-caption">font: Nunito Display • weight: 700</div>
+        </div>
+        <div class="type-row">
+          <div class="type-h1">Heading 1 — 2rem semibold</div>
+          <div class="type-caption">font: Nunito Display • weight: 700</div>
+        </div>
+        <div class="type-row">
+          <div class="type-h2">Heading 2 — 1.6rem</div>
+        </div>
+        <div class="type-row">
+          <div class="type-h3">Heading 3 — 1.3rem</div>
+        </div>
+        <div class="type-row">
+          <div class="type-h4">Heading 4 — 1.1rem</div>
+        </div>
+        <div class="type-row">
+          <div class="type-body">Body — Nunito Sans 1rem. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+        </div>
+        <div class="type-row">
+          <div class="type-small">Small text — 0.85rem color secundario</div>
+        </div>
+        <div class="type-row">
+          <div class="type-caption">Caption text — 0.75rem muted</div>
+        </div>
+        <div class="type-row">
+          <div class="type-label">Label uppercase — 0.75rem tracking wide</div>
+        </div>
+        <div>
+          <div class="type-mono">monospace — code, variables, tokens</div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ======================== BOTONES ======================== -->
+    <section class="section" id="buttons">
+      <h2 class="section-title">Botones</h2>
+      <p class="section-subtitle">Variantes, tamaños y estados. Superficie elevada extruida con sombra neumórfica.</p>
+      <hr class="divider">
+
+      <div class="neu-card" style="margin-bottom:1.5rem;">
+        <p class="type-label" style="margin-bottom:1rem;">Variantes</p>
+        <div class="btn-group">
+          <button class="btn btn-primary">Primario</button>
+          <button class="btn">Default</button>
+          <button class="btn btn-success">Éxito</button>
+          <button class="btn btn-warning">Alerta</button>
+          <button class="btn btn-danger">Peligro</button>
+          <button class="btn btn-outline">Outline</button>
+          <button class="btn btn-flat">Flat</button>
+        </div>
+      </div>
+
+      <div class="neu-card" style="margin-bottom:1.5rem;">
+        <p class="type-label" style="margin-bottom:1rem;">Tamaños</p>
+        <div class="btn-group">
+          <button class="btn btn-primary btn-sm">Pequeño</button>
+          <button class="btn btn-primary">Normal</button>
+          <button class="btn btn-primary btn-lg">Grande</button>
+        </div>
+      </div>
+
+      <div class="neu-card">
+        <p class="type-label" style="margin-bottom:1rem;">Iconos & estados</p>
+        <div class="btn-group">
+          <button class="btn btn-primary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+            Con icono
+          </button>
+          <button class="btn btn-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+          </button>
+          <button class="btn btn-icon btn-primary">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+          </button>
+          <button class="btn" disabled>Deshabilitado</button>
+          <div class="tooltip-wrap">
+            <button class="btn">Hover tooltip
+              <span class="tooltip">Acción disponible</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ======================== BADGES ======================== -->
+    <section class="section" id="badges">
+      <h2 class="section-title">Badges & Tags</h2>
+      <p class="section-subtitle">Etiquetas de estado, categorías y chips filtrables.</p>
+      <hr class="divider">
+
+      <div class="neu-card" style="margin-bottom:1.5rem;">
+        <p class="type-label" style="margin-bottom:1rem;">Badges de estado</p>
+        <div class="badge-group">
+          <span class="badge">Default</span>
+          <span class="badge badge-accent">Activo</span>
+          <span class="badge badge-success">Completado</span>
+          <span class="badge badge-warning">Pendiente</span>
+          <span class="badge badge-danger">Error</span>
+          <span class="badge badge-info">Info</span>
+        </div>
+      </div>
+
+      <div class="neu-card" style="margin-bottom:1.5rem;">
+        <p class="type-label" style="margin-bottom:1rem;">Tags con acción</p>
+        <div class="badge-group">
+          <span class="tag">
+            Diseño
+            <svg class="tag-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </span>
+          <span class="tag">
+            Desarrollo
+            <svg class="tag-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </span>
+          <span class="tag">
+            UX Research
+            <svg class="tag-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </span>
+        </div>
+      </div>
+
+      <div class="neu-card">
+        <p class="type-label" style="margin-bottom:1rem;">Chips filtro (radio pill)</p>
+        <div class="radio-pill-group" style="max-width:380px;">
+          <div class="radio-pill">
+            <input type="radio" name="filter" id="f1" checked>
+            <label for="f1">Todo</label>
+          </div>
+          <div class="radio-pill">
+            <input type="radio" name="filter" id="f2">
+            <label for="f2">Activo</label>
+          </div>
+          <div class="radio-pill">
+            <input type="radio" name="filter" id="f3">
+            <label for="f3">Pausado</label>
+          </div>
+          <div class="radio-pill">
+            <input type="radio" name="filter" id="f4">
+            <label for="f4">Cerrado</label>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ======================== ALERTAS ======================== -->
+    <section class="section" id="alerts">
+      <h2 class="section-title">Alertas & Notificaciones</h2>
+      <p class="section-subtitle">Mensajes de feedback con borde lateral y accento de color.</p>
+      <hr class="divider">
+
+      <div class="alert alert-success">
+        <svg class="alert-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#38a169" stroke-width="2.5"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <div class="alert-content">
+          <strong>Guardado correctamente</strong>
+          Los cambios han sido publicados y están activos.
+        </div>
+      </div>
+
+      <div class="alert alert-info">
+        <svg class="alert-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3182ce" stroke-width="2.5"><path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <div class="alert-content">
+          <strong>Nueva versión disponible</strong>
+          Actualiza para acceder a las últimas funciones del sistema.
+        </div>
+      </div>
+
+      <div class="alert alert-warning">
+        <svg class="alert-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d69e2e" stroke-width="2.5"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+        <div class="alert-content">
+          <strong>Límite próximo</strong>
+          Has usado el 85% de tu almacenamiento disponible.
+        </div>
+      </div>
+
+      <div class="alert alert-danger">
+        <svg class="alert-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e53e3e" stroke-width="2.5"><path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <div class="alert-content">
+          <strong>Error de conexión</strong>
+          No se pudo conectar al servidor. Verifica tu red e intenta nuevamente.
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ======================== INPUTS ======================== -->
+    <section class="section" id="inputs">
+      <h2 class="section-title">Inputs & Fields</h2>
+      <p class="section-subtitle">Campos de texto con sombra inset, variantes y estados de validación.</p>
+      <hr class="divider">
+
+      <div class="neu-card">
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Nombre de usuario</label>
+            <input type="text" class="neu-input" placeholder="Ingresa tu nombre">
+            <span class="form-hint">Solo letras y números, sin espacios.</span>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Correo electrónico</label>
+            <div class="input-icon-wrap">
+              <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+              <input type="email" class="neu-input" placeholder="usuario@correo.com">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Válido</label>
+            <input type="text" class="neu-input success" value="contenido correcto">
+            <span class="form-error" style="color: var(--success);">Campo verificado correctamente.</span>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Con error</label>
+            <input type="text" class="neu-input error" value="dato inválido">
+            <span class="form-error">Este campo contiene un error.</span>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Deshabilitado</label>
+            <input type="text" class="neu-input" disabled value="Campo bloqueado">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Contraseña</label>
+            <div class="input-icon-wrap">
+              <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+              <input type="password" class="neu-input" placeholder="••••••••">
+            </div>
+          </div>
+          <div class="form-group col-span-2">
+            <label class="form-label">Mensaje / Textarea</label>
+            <textarea class="neu-textarea" placeholder="Escribe tu mensaje aquí..."></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Selector</label>
+            <select class="neu-select">
+              <option>Selecciona una opción</option>
+              <option>Diseñador UI</option>
+              <option>Desarrollador Frontend</option>
+              <option>Product Manager</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Rango</label>
+            <input type="range" class="neu-range" min="0" max="100" value="65" style="margin-top:0.5rem;">
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ======================== CHECKS ======================== -->
+    <section class="section" id="selects">
+      <h2 class="section-title">Checks, Radio & Toggles</h2>
+      <p class="section-subtitle">Controles de selección con estilo neumórfico inset.</p>
+      <hr class="divider">
+
+      <div class="grid-3">
+        <div class="neu-card">
+          <p class="type-label" style="margin-bottom:1rem;">Checkboxes</p>
+          <div class="neu-check-group">
+            <label class="neu-check">
+              <input type="checkbox" checked>
+              <span class="neu-check-box"></span>
+              Opción seleccionada
+            </label>
+            <label class="neu-check">
+              <input type="checkbox">
+              <span class="neu-check-box"></span>
+              Opción disponible
+            </label>
+            <label class="neu-check">
+              <input type="checkbox">
+              <span class="neu-check-box"></span>
+              Recibir notificaciones
+            </label>
+          </div>
+        </div>
+
+        <div class="neu-card">
+          <p class="type-label" style="margin-bottom:1rem;">Radio Buttons</p>
+          <div class="neu-check-group">
+            <label class="neu-check">
+              <input type="radio" name="plan" checked>
+              <span class="neu-radio-box"></span>
+              Plan básico
+            </label>
+            <label class="neu-check">
+              <input type="radio" name="plan">
+              <span class="neu-radio-box"></span>
+              Plan profesional
+            </label>
+            <label class="neu-check">
+              <input type="radio" name="plan">
+              <span class="neu-radio-box"></span>
+              Plan empresarial
+            </label>
+          </div>
+        </div>
+
+        <div class="neu-card">
+          <p class="type-label" style="margin-bottom:1rem;">Toggles</p>
+          <div style="display:flex; flex-direction:column; gap:1rem;">
+            <label class="neu-toggle">
+              <input type="checkbox" checked>
+              <div class="neu-toggle-track"><div class="neu-toggle-thumb"></div></div>
+              <span style="font-size:0.9rem;">Notificaciones</span>
+            </label>
+            <label class="neu-toggle">
+              <input type="checkbox">
+              <div class="neu-toggle-track"><div class="neu-toggle-thumb"></div></div>
+              <span style="font-size:0.9rem;">Modo oscuro</span>
+            </label>
+            <label class="neu-toggle">
+              <input type="checkbox" checked>
+              <div class="neu-toggle-track"><div class="neu-toggle-thumb"></div></div>
+              <span style="font-size:0.9rem;">Sincronizar datos</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ======================== FORM COMPLETO ======================== -->
+    <section class="section" id="forms">
+      <h2 class="section-title">Formulario completo</h2>
+      <p class="section-subtitle">Ejemplo de formulario de registro con validación visual.</p>
+      <hr class="divider">
+
+      <div class="neu-card" style="max-width:560px;">
+        <h3 class="type-h3" style="margin-bottom:1.5rem;">Crear cuenta nueva</h3>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Nombre</label>
+            <input type="text" class="neu-input" placeholder="Ana">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Apellido</label>
+            <input type="text" class="neu-input" placeholder="García">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <div class="input-icon-wrap">
+            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            <input type="email" class="neu-input" placeholder="ana@ejemplo.com">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Contraseña</label>
+          <input type="password" class="neu-input" placeholder="Mínimo 8 caracteres">
+          <span class="form-hint">Usa una combinación de letras, números y símbolos.</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Rol</label>
+          <select class="neu-select">
+            <option>Selecciona tu rol</option>
+            <option>Diseñador</option>
+            <option>Desarrollador</option>
+            <option>Manager</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="neu-check">
+            <input type="checkbox">
+            <span class="neu-check-box"></span>
+            Acepto los términos y condiciones
+          </label>
+        </div>
+
+        <div class="divider-text">o continúa con</div>
+
+        <div class="btn-group" style="margin-bottom:1.2rem;">
+          <button class="btn" style="flex:1;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 10-16 0"/></svg>
+            Google
+          </button>
+          <button class="btn" style="flex:1;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/></svg>
+            GitHub
+          </button>
+        </div>
+
+        <button class="btn btn-primary" style="width:100%; padding:0.9rem;">Crear cuenta</button>
+      </div>
+    </section>
+
+
+    <!-- ======================== CARDS ======================== -->
+    <section class="section" id="cards">
+      <h2 class="section-title">Cards</h2>
+      <p class="section-subtitle">Tarjetas elevadas, planas, de perfil y métricas.</p>
+      <hr class="divider">
+
+      <div class="stats-grid" style="margin-bottom:2rem;">
+        <div class="stat-item">
+          <div class="stat-value">2.4k</div>
+          <div class="stat-label">Usuarios</div>
+          <div class="stat-trend stat-up">▲ 12% este mes</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">98%</div>
+          <div class="stat-label">Uptime</div>
+          <div class="stat-trend stat-up">▲ 0.3%</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">$14k</div>
+          <div class="stat-label">Ingresos</div>
+          <div class="stat-trend stat-down">▼ 3% vs anterior</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">142</div>
+          <div class="stat-label">Tareas</div>
+          <div class="stat-trend stat-up">▲ 27 nuevas</div>
+        </div>
+      </div>
+
+      <div class="cards-grid">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Proyecto Alpha</span>
+            <span class="badge badge-success">Activo</span>
+          </div>
+          <div class="card-body">Sistema de gestión de usuarios con integración OAuth y panel administrativo.</div>
+          <div class="card-footer" style="display:flex; justify-content:space-between; align-items:center;">
+            <div style="display:flex; gap:-8px;">
+              <div class="avatar-sm" style="margin-right:4px;">AG</div>
+              <div class="avatar-sm" style="margin-right:4px;">MR</div>
+              <div class="avatar-sm">+3</div>
+            </div>
+            <span class="type-small">Entrega: Jun 15</span>
+          </div>
+        </div>
+
+        <div class="card card-flat">
+          <div class="card-header">
+            <span class="card-title">Card Inset</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-muted)"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+          </div>
+          <div class="card-body">Variante con sombra inset para indicar contenido seleccionado o activo.</div>
+        </div>
+
+        <div class="card card-accent">
+          <div class="card-header" style="color:rgba(255,255,255,0.8);">
+            <span class="card-title" style="color:white;">Pro Plan</span>
+            <span style="background:rgba(255,255,255,0.2); padding:0.2rem 0.6rem; border-radius:99px; font-size:0.75rem; font-weight:700;">POPULAR</span>
+          </div>
+          <div style="font-size:2rem; font-weight:700; margin:0.5rem 0; color:white;">$29<span style="font-size:1rem; opacity:0.75;">/mes</span></div>
+          <div style="font-size:0.85rem; opacity:0.8; margin-bottom:1.2rem;">Todo incluido para equipos de hasta 10 personas.</div>
+          <button class="btn" style="background:white; color:var(--accent); width:100%; font-weight:700; box-shadow:none;">Comenzar gratis</button>
+        </div>
+
+        <div class="card card-profile">
+          <div class="avatar">CR</div>
+          <div class="type-h4">Carlos Romero</div>
+          <div class="type-small">Senior Frontend Dev</div>
+          <div class="chip-group" style="justify-content:center; margin-top:0.75rem;">
+            <span class="chip">React</span>
+            <span class="chip">CSS</span>
+            <span class="chip">Figma</span>
+          </div>
+          <div class="card-footer" style="display:flex; justify-content:center; gap:0.75rem; margin-top:1rem;">
+            <button class="btn btn-primary btn-sm">Seguir</button>
+            <button class="btn btn-sm">Mensaje</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ======================== TABLA ======================== -->
+    <section class="section" id="tables">
+      <h2 class="section-title">Tabla de datos</h2>
+      <p class="section-subtitle">Tabla elevada con encabezados, estados y acciones por fila.</p>
+      <hr class="divider">
+
+      <div class="table-wrapper">
+        <table class="neu-table">
+          <thead>
+            <tr>
+              <th>Usuario</th>
+              <th>Proyecto</th>
+              <th>Rol</th>
+              <th>Estado</th>
+              <th>Fecha</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div style="display:flex; align-items:center; gap:0.75rem;">
+                  <div class="avatar-sm">AG</div>
+                  <div>
+                    <div style="font-weight:600; font-size:0.88rem;">Ana García</div>
+                    <div class="type-caption">ana@ejemplo.com</div>
+                  </div>
+                </div>
+              </td>
+              <td>Alpha Platform</td>
+              <td><span class="type-small">Diseñadora UI</span></td>
+              <td><span class="badge badge-success">Activo</span></td>
+              <td><span class="type-small">12 Jun 2025</span></td>
+              <td>
+                <div class="table-actions">
+                  <button class="btn btn-icon btn-sm" style="width:32px;height:32px;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                  </button>
+                  <button class="btn btn-icon btn-sm" style="width:32px;height:32px; color:var(--danger);">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div style="display:flex; align-items:center; gap:0.75rem;">
+                  <div class="avatar-sm" style="background:rgba(56,161,105,0.12); color:var(--success);">MR</div>
+                  <div>
+                    <div style="font-weight:600; font-size:0.88rem;">Marco Ruiz</div>
+                    <div class="type-caption">marco@ejemplo.com</div>
+                  </div>
+                </div>
+              </td>
+              <td>Beta Dashboard</td>
+              <td><span class="type-small">Desarrollador</span></td>
+              <td><span class="badge badge-warning">Pendiente</span></td>
+              <td><span class="type-small">08 Jun 2025</span></td>
+              <td>
+                <div class="table-actions">
+                  <button class="btn btn-icon btn-sm" style="width:32px;height:32px;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                  </button>
+                  <button class="btn btn-icon btn-sm" style="width:32px;height:32px; color:var(--danger);">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div style="display:flex; align-items:center; gap:0.75rem;">
+                  <div class="avatar-sm" style="background:rgba(229,62,62,0.12); color:var(--danger);">LP</div>
+                  <div>
+                    <div style="font-weight:600; font-size:0.88rem;">Laura Pérez</div>
+                    <div class="type-caption">laura@ejemplo.com</div>
+                  </div>
+                </div>
+              </td>
+              <td>Core API</td>
+              <td><span class="type-small">PM</span></td>
+              <td><span class="badge badge-danger">Inactivo</span></td>
+              <td><span class="type-small">01 Jun 2025</span></td>
+              <td>
+                <div class="table-actions">
+                  <button class="btn btn-icon btn-sm" style="width:32px;height:32px;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                  </button>
+                  <button class="btn btn-icon btn-sm" style="width:32px;height:32px; color:var(--danger);">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+
+    <!-- ======================== LISTAS ======================== -->
+    <section class="section" id="lists">
+      <h2 class="section-title">Listas</h2>
+      <p class="section-subtitle">List groups con icono, meta información y acciones.</p>
+      <hr class="divider">
+
+      <div class="grid-2">
+        <div class="list-group">
+          <div class="list-item">
+            <div class="list-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>
+            </div>
+            <div class="list-content">
+              <div class="list-title">Documentación técnica</div>
+              <div class="list-desc">Guía de componentes y estilos</div>
+            </div>
+            <span class="badge badge-accent">Nuevo</span>
+          </div>
+          <div class="list-item">
+            <div class="list-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            </div>
+            <div class="list-content">
+              <div class="list-title">Auditoría de seguridad</div>
+              <div class="list-desc">Revisión completada sin incidencias</div>
+            </div>
+            <span class="badge badge-success">OK</span>
+          </div>
+          <div class="list-item">
+            <div class="list-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--warning)" stroke-width="2"><path d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+            </div>
+            <div class="list-content">
+              <div class="list-title">Actualización pendiente</div>
+              <div class="list-desc">Versión 2.1 disponible</div>
+            </div>
+            <span class="badge badge-warning">!</span>
+          </div>
+          <div class="list-item">
+            <div class="list-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--info)" stroke-width="2"><path d="M20 7H4a2 2 0 00-2 2v6a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+            </div>
+            <div class="list-content">
+              <div class="list-title">Servidor de producción</div>
+              <div class="list-desc">us-east-1 • Uptime 99.9%</div>
+            </div>
+            <span class="type-small" style="color:var(--success);">Online</span>
+          </div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:0.75rem;">
+          <div class="notification unread">
+            <div class="notif-dot"></div>
+            <div style="flex:1;">
+              <div style="font-size:0.88rem; font-weight:600;">Nuevo comentario en Alpha</div>
+              <div class="type-caption">Marco Ruiz dejó una revisión • hace 5 min</div>
+            </div>
+          </div>
+          <div class="notification">
+            <div class="notif-dot" style="background:var(--success);"></div>
+            <div style="flex:1;">
+              <div style="font-size:0.88rem; font-weight:600;">Tarea completada</div>
+              <div class="type-caption">Diseño de dashboard finalizado • hace 1 h</div>
+            </div>
+          </div>
+          <div class="notification">
+            <div class="notif-dot" style="background:var(--warning);"></div>
+            <div style="flex:1;">
+              <div style="font-size:0.88rem; font-weight:600;">Límite de almacenamiento</div>
+              <div class="type-caption">Has alcanzado el 85% • hace 3 h</div>
+            </div>
+          </div>
+          <div class="notification">
+            <div class="notif-dot" style="background:var(--text-muted);"></div>
+            <div style="flex:1;">
+              <div style="font-size:0.88rem; font-weight:600;">Reunión programada</div>
+              <div class="type-caption">Daily standup mañana 9:00 AM • ayer</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ======================== NAVEGACIÓN ======================== -->
+    <section class="section" id="nav">
+      <h2 class="section-title">Navegación</h2>
+      <p class="section-subtitle">Tabs, breadcrumbs, paginación y search bar.</p>
+      <hr class="divider">
+
+      <div class="neu-card" style="margin-bottom:1.5rem;">
+        <p class="type-label" style="margin-bottom:1rem;">Tabs</p>
+        <div class="tabs" style="margin-bottom:1.5rem;">
+          <button class="tab-btn active">Resumen</button>
+          <button class="tab-btn">Actividad</button>
+          <button class="tab-btn">Archivos</button>
+          <button class="tab-btn">Ajustes</button>
+        </div>
+
+        <p class="type-label" style="margin-bottom:0.8rem;">Breadcrumb</p>
+        <nav class="breadcrumb">
+          <a href="#">Inicio</a>
+          <span class="breadcrumb-sep">/</span>
+          <a href="#">Proyectos</a>
+          <span class="breadcrumb-sep">/</span>
+          <a href="#">Alpha Platform</a>
+          <span class="breadcrumb-sep">/</span>
+          <span class="current">Diseño</span>
+        </nav>
+      </div>
+
+      <div class="neu-card" style="margin-bottom:1.5rem;">
+        <p class="type-label" style="margin-bottom:1rem;">Barra de búsqueda</p>
+        <div class="search-bar" style="max-width:400px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input type="text" placeholder="Buscar proyectos, archivos...">
+          <button class="btn btn-primary btn-sm">Buscar</button>
+        </div>
+      </div>
+
+      <div class="neu-card">
+        <p class="type-label" style="margin-bottom:1rem;">Paginación</p>
+        <div class="pagination">
+          <button class="page-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <button class="page-btn">1</button>
+          <button class="page-btn active">2</button>
+          <button class="page-btn">3</button>
+          <button class="page-btn">4</button>
+          <span style="color:var(--text-muted); padding:0 0.3rem;">...</span>
+          <button class="page-btn">12</button>
+          <button class="page-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ======================== MODALES ======================== -->
+    <section class="section" id="modals">
+      <h2 class="section-title">Modales & Overlays</h2>
+      <p class="section-subtitle">Modal centrado, acordeón y dropdown contextual.</p>
+      <hr class="divider">
+
+      <div class="grid-2" style="margin-bottom:2rem;">
+        <div class="modal-backdrop">
+          <div class="modal">
+            <div class="modal-header">
+              <div class="modal-title">Confirmar acción</div>
+              <button class="modal-close">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+              </button>
+            </div>
+            <div class="modal-body">
+              ¿Estás seguro de que deseas eliminar este proyecto? Esta acción no se puede deshacer y se perderán todos los datos asociados.
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-sm">Cancelar</button>
+              <button class="btn btn-danger btn-sm">Eliminar</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="neu-card">
+          <p class="type-label" style="margin-bottom:1rem;">Acordeón</p>
+          <div class="accordion">
+            <div class="accordion-item open">
+              <div class="accordion-header" onclick="toggleAccordion(this)">
+                ¿Qué incluye el plan básico?
+                <svg class="accordion-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg>
+              </div>
+              <div class="accordion-body">El plan básico incluye acceso a todas las funciones principales, hasta 3 proyectos activos y soporte por email en horario laboral.</div>
+            </div>
+            <div class="accordion-item">
+              <div class="accordion-header" onclick="toggleAccordion(this)">
+                ¿Puedo cambiar de plan en cualquier momento?
+                <svg class="accordion-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg>
+              </div>
+              <div class="accordion-body">Sí, puedes hacer upgrade o downgrade de tu plan en cualquier momento desde tu panel de configuración.</div>
+            </div>
+            <div class="accordion-item">
+              <div class="accordion-header" onclick="toggleAccordion(this)">
+                ¿Ofrecen reembolsos?
+                <svg class="accordion-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg>
+              </div>
+              <div class="accordion-body">Ofrecemos garantía de devolución de 30 días sin preguntas en todos los planes de pago.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="neu-card">
+        <p class="type-label" style="margin-bottom:1rem;">Dropdown contextual</p>
+        <div class="dropdown-wrap">
+          <button class="btn">
+            Opciones
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div class="dropdown-menu" style="position:static; margin-top:0.5rem; display:inline-block;">
+            <div class="dropdown-item">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+              Editar
+            </div>
+            <div class="dropdown-item">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+              Duplicar
+            </div>
+            <div class="dropdown-item">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
+              Compartir
+            </div>
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-item" style="color:var(--danger);">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
+              Eliminar
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ======================== PROGRESO ======================== -->
+    <section class="section" id="progress">
+      <h2 class="section-title">Progreso & Stepper</h2>
+      <p class="section-subtitle">Barras de progreso y flujos paso a paso.</p>
+      <hr class="divider">
+
+      <div class="neu-card" style="margin-bottom:1.5rem;">
+        <p class="type-label" style="margin-bottom:1.2rem;">Barras de progreso</p>
+
+        <div style="display:flex; justify-content:space-between; margin-bottom:0.4rem;">
+          <span class="type-small">Diseño UI</span><span class="type-small" style="color:var(--accent);">78%</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" style="width:78%;"></div></div>
+
+        <div style="display:flex; justify-content:space-between; margin-bottom:0.4rem;">
+          <span class="type-small">Desarrollo</span><span class="type-small" style="color:var(--success);">52%</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill success" style="width:52%;"></div></div>
+
+        <div style="display:flex; justify-content:space-between; margin-bottom:0.4rem;">
+          <span class="type-small">QA Testing</span><span class="type-small" style="color:var(--warning);">30%</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill warning" style="width:30%;"></div></div>
+
+        <div style="display:flex; justify-content:space-between; margin-bottom:0.4rem;">
+          <span class="type-small">Deploy</span><span class="type-small" style="color:var(--danger);">8%</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill danger" style="width:8%;"></div></div>
+      </div>
+
+      <div class="neu-card">
+        <p class="type-label" style="margin-bottom:1.5rem;">Stepper de proceso</p>
+        <div class="stepper">
+          <div class="step-item done">
+            <div class="step-circle">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M5 12l4 4L19 7"/></svg>
+            </div>
+            <span class="step-label">Cuenta</span>
+          </div>
+          <div class="step-line done"></div>
+          <div class="step-item done">
+            <div class="step-circle">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M5 12l4 4L19 7"/></svg>
+            </div>
+            <span class="step-label">Perfil</span>
+          </div>
+          <div class="step-line done"></div>
+          <div class="step-item active">
+            <div class="step-circle">3</div>
+            <span class="step-label">Plan</span>
+          </div>
+          <div class="step-line"></div>
+          <div class="step-item">
+            <div class="step-circle">4</div>
+            <span class="step-label">Pago</span>
+          </div>
+          <div class="step-line"></div>
+          <div class="step-item">
+            <div class="step-circle">5</div>
+            <span class="step-label">Listo</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ======================== LOADING ======================== -->
+    <section class="section" id="loading">
+      <h2 class="section-title">Loading & Skeletons</h2>
+      <p class="section-subtitle">Estados de carga y placeholders animados.</p>
+      <hr class="divider">
+
+      <div class="grid-2">
+        <div class="neu-card">
+          <p class="type-label" style="margin-bottom:1.2rem;">Skeleton loader</p>
+          <div style="display:flex; align-items:center; gap:1rem; margin-bottom:1.2rem;">
+            <div class="skeleton skeleton-circle" style="width:48px; height:48px;"></div>
+            <div style="flex:1;">
+              <div class="skeleton skeleton-title"></div>
+              <div class="skeleton skeleton-text" style="width:80%;"></div>
+            </div>
+          </div>
+          <div class="skeleton skeleton-text"></div>
+          <div class="skeleton skeleton-text" style="width:90%;"></div>
+          <div class="skeleton skeleton-text" style="width:70%;"></div>
+        </div>
+
+        <div class="neu-card" style="display:flex; flex-direction:column; gap:1.5rem; align-items:center; justify-content:center;">
+          <p class="type-label">Spinners</p>
+          <div style="display:flex; gap:2rem; align-items:center;">
+            <div class="spinner">
+              <div class="spinner-inner"></div>
+            </div>
+            <div class="spinner" style="width:56px;height:56px;">
+              <div class="spinner-inner" style="width:36px;height:36px; border-width:4px; border-top-color:var(--success);"></div>
+            </div>
+            <div class="spinner" style="width:30px;height:30px;">
+              <div class="spinner-inner" style="width:18px;height:18px; border-width:2.5px; border-top-color:var(--warning);"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="neu-card" style="margin-top:1.5rem;">
+        <p class="type-label" style="margin-bottom:1rem;">Bloque de código</p>
+        <div class="code-block">
+<span class="code-comment">/* Variables CSS Neumorphism */</span>
+<span class="code-keyword">:root</span> {
+  --bg: <span class="code-string">#e0e5ec</span>;
+  --shadow-neu: <span class="code-string">6px 6px 12px #b8bec9, -6px -6px 12px #fff</span>;
+  --shadow-inset: <span class="code-string">inset 4px 4px 8px #b8bec9, inset -4px -4px 8px #fff</span>;
+}
+
+<span class="code-keyword">.neu-card</span> {
+  background: <span class="code-string">var(--bg)</span>;
+  box-shadow: <span class="code-string">var(--shadow-neu)</span>;
+  border-radius: <span class="code-string">20px</span>;
+}
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+function toggleAccordion(header) {
+  const item = header.parentElement;
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.accordion-item').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    btn.closest('.tabs').querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
+
+document.querySelectorAll('.sidebar-link').forEach(link => {
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+    link.classList.add('active');
+    const target = document.querySelector(link.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+</script>
+
+</body>
+</html>

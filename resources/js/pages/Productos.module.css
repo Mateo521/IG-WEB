@@ -1,0 +1,148 @@
+/* =============================================
+   PRODUCTOS (tabla admin) — Neumorphism
+   ============================================= */
+
+.page {
+    padding: 1.5rem 0;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.75rem;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.title {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.btnNuevo {
+    padding: 0.5rem 1.3rem;
+    background: var(--success);
+    color: white;
+    border: none;
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    font-size: 0.88rem;
+    font-weight: 700;
+    font-family: 'Nunito Sans', sans-serif;
+    text-decoration: none;
+    display: inline-block;
+    box-shadow: 4px 4px 8px rgba(56, 161, 105, 0.3), -4px -4px 8px #ffffff;
+    transition: var(--transition);
+}
+
+.btnNuevo:hover {
+    box-shadow: 2px 2px 5px rgba(56, 161, 105, 0.3), -2px -2px 5px #ffffff;
+    opacity: 0.95;
+}
+
+.table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-neu);
+    overflow: hidden;
+}
+
+.table th,
+.table td {
+    text-align: left;
+    padding: 0.85rem 1.1rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.table th {
+    background: var(--bg);
+    font-weight: 700;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--text-muted);
+    box-shadow: 0 3px 6px rgba(184, 190, 201, 0.5);
+}
+
+.table tbody tr {
+    transition: var(--transition);
+}
+
+.table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.45);
+}
+
+.table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.img {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-neu-sm);
+}
+
+.noImg {
+    color: var(--text-faint);
+    font-size: 0.82rem;
+}
+
+.actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.btnEdit {
+    padding: 0.3rem 0.85rem;
+    background: var(--bg);
+    border: none;
+    color: var(--primary);
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 700;
+    font-family: 'Nunito Sans', sans-serif;
+    text-decoration: none;
+    display: inline-block;
+    box-shadow: var(--shadow-neu-sm);
+    transition: var(--transition);
+}
+
+.btnEdit:hover {
+    box-shadow: var(--shadow-inset-sm);
+    color: var(--primary-hover);
+}
+
+.btnDelete {
+    padding: 0.3rem 0.85rem;
+    background: var(--bg);
+    border: none;
+    color: var(--danger);
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 700;
+    font-family: 'Nunito Sans', sans-serif;
+    box-shadow: var(--shadow-neu-sm);
+    transition: var(--transition);
+}
+
+.btnDelete:hover {
+    box-shadow: var(--shadow-inset-sm);
+    color: var(--danger-hover);
+}
+
+.empty {
+    text-align: center;
+    color: var(--text-muted);
+    padding: 2.5rem !important;
+}

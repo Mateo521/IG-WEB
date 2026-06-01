@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&family=Nunito+Sans:wght@300;400;600;700&display=swap');
+
+:root {
+    /* ---- Colores base neumórficos ---- */
+    --bg:             #e0e5ec;
+    --bg-card:        #e0e5ec;
+    --bg-dark:        #c8cfd9;
+    --surface:        #e0e5ec;
+
+    /* ---- Textos ---- */
+    --text:           #2d3748;
+    --text-muted:     #718096;
+    --text-faint:     #a0aec0;
+
+    /* ---- Accent — bordo/rojo ---- */
+    --primary:        #c0392b;
+    --primary-hover:  #e74c3c;
+    --primary-rgb:    192, 57, 43;
+
+    /* ---- Estados ---- */
+    --danger:         #e53e3e;
+    --danger-hover:   #c53030;
+    --success:        #38a169;
+    --warning:        #d69e2e;
+    --info:           #3182ce;
+
+    /* ---- Separadores ---- */
+    --border:         rgba(184, 190, 201, 0.45);
+
+    /* ---- Radio ---- */
+    --radius:         12px;
+    --radius-sm:      8px;
+    --radius-lg:      20px;
+    --radius-xl:      30px;
+    --radius-full:    9999px;
+
+    /* ---- Sombras neumórficas ---- */
+    --shadow-neu:      6px 6px 12px #b8bec9, -6px -6px 12px #ffffff;
+    --shadow-neu-sm:   3px 3px 7px  #b8bec9, -3px -3px 7px  #ffffff;
+    --shadow-neu-lg:   10px 10px 20px #b8bec9, -10px -10px 20px #ffffff;
+    --shadow-inset:    inset 4px 4px 8px #b8bec9, inset -4px -4px 8px #ffffff;
+    --shadow-inset-sm: inset 2px 2px 5px #b8bec9, inset -2px -2px 5px #ffffff;
+
+    /* ---- Transición ---- */
+    --transition: all 0.2s ease;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Nunito Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+}
