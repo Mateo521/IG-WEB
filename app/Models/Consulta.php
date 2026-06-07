@@ -10,7 +10,8 @@ class Consulta extends Model
         'nombreConsulta', 
         'email', 
         'mensaje', 
-        'producto_id' 
+        'producto_id',
+        'visto',
     ];
 
     public function producto()

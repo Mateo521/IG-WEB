@@ -57,32 +57,75 @@
 
 .right {
     margin-left: auto;
+    position: relative;
     display: flex;
     align-items: center;
-    gap: 1rem;
 }
 
-.user {
-    font-size: 0.82rem;
-    color: var(--text-muted);
-    font-weight: 600;
-}
-
-.logout {
-    background: var(--bg);
+.userBtn {
+    width: 36px;
+    height: 36px;
     border: none;
-    padding: 0.35rem 1rem;
-    border-radius: var(--radius-full);
+    border-radius: 50%;
+    background: var(--bg);
+    color: var(--text-muted);
     cursor: pointer;
-    font-size: 0.82rem;
-    font-weight: 700;
-    color: var(--danger);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     box-shadow: var(--shadow-neu-sm);
     transition: var(--transition);
-    font-family: 'Nunito Sans', sans-serif;
 }
 
-.logout:hover {
+.userBtn:hover {
+    color: var(--text);
+    box-shadow: var(--shadow-neu);
+}
+
+.userBtn:active {
     box-shadow: var(--shadow-inset-sm);
-    color: var(--danger-hover);
+}
+
+.dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-neu-lg);
+    padding: 0.5rem;
+    min-width: 170px;
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.dropdownName {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text);
+    white-space: nowrap;
+}
+
+.dropdownLogout {
+    background: none;
+    border: none;
+    padding: 0.45rem 0.75rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--danger);
+    text-align: left;
+    font-family: inherit;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+}
+
+.dropdownLogout:hover {
+    background: rgba(229, 62, 62, 0.08);
 }

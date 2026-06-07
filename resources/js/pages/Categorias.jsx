@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import api from '../services/api';
+import FloatingIcons from '../components/FloatingIcons/FloatingIcons';
 import styles from './Categorias.module.css';
+
+const SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z"/><path d="M6 6h.008v.008H6V6z"/></svg>';
 
 function Categorias() {
     const [categorias, setCategorias] = useState([]);
@@ -43,6 +46,7 @@ function Categorias() {
 
     return (
         <div className={styles.page}>
+            <FloatingIcons svg={SVG} />
             <h1 className={styles.title}>Categorías</h1>
             <form className={styles.form} onSubmit={handleSubmit}>
                 <input type="text" name="nombreCategoria" value={form.nombreCategoria} onChange={handleChange} placeholder="Nombre de la categoría" className={styles.input} required />

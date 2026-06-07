@@ -1,45 +1,46 @@
-/* =============================================
-   DASHBOARD — Neumorphism
-   ============================================= */
-
 .page {
-    padding: 1.5rem 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
-.welcome {
-    font-family: 'Nunito', sans-serif;
-    font-size: 1.8rem;
-    font-weight: 700;
-    margin-bottom: 0.25rem;
-    color: var(--text);
-}
-
-.sub {
-    color: var(--text-muted);
-    margin-bottom: 2.5rem;
-    font-size: 0.95rem;
-}
-
+/* ───── Bento grid ───── */
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+        "rubros    subrubros"
+        "productos productos"
+        "categorias consultas";
     gap: 1.5rem;
+    width: 100%;
 }
 
+.card--rubros     { grid-area: rubros; }
+.card--subrubros  { grid-area: subrubros; }
+.card--productos  { grid-area: productos; }
+.card--categorias { grid-area: categorias; }
+.card--consultas  { grid-area: consultas; }
+
+/* ───── Tarjeta con icono SVG de fondo ───── */
 .card {
+    position: relative;
     background: var(--bg-card);
-    padding: 1.75rem;
+    padding: 2rem 2rem 1.75rem;
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-neu);
     text-decoration: none;
     color: var(--text);
     transition: var(--transition);
+    overflow: hidden;
     display: block;
 }
 
 .card:hover {
     box-shadow: var(--shadow-neu-lg);
-    transform: translateY(-3px);
+    transform: translateY(-4px);
 }
 
 .card:active {
@@ -47,38 +48,130 @@
     transform: translateY(0);
 }
 
+/* Card hero (Productos) — más grande, más presencia */
+.card--productos {
+    padding: 2.5rem 2.5rem 2.25rem;
+}
+
+.card--productos .contador {
+    font-size: 3.6rem;
+}
+
+.card--productos .iconBg {
+    width: 170px;
+    height: 170px;
+    opacity: 0.12;
+}
+
+.card--productos:hover .iconBg {
+    opacity: 0.25;
+}
+
+.card--productos .cardTitle {
+    font-size: 1.3rem;
+}
+
+.card--productos .cardDesc {
+    font-size: 0.92rem;
+}
+
+/* SVG decorativo semi-transparente a la derecha */
+.iconBg {
+    position: absolute;
+    right: 1.25rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 130px;
+    height: 130px;
+    opacity: 0.10;
+    color: var(--primary);
+    pointer-events: none;
+    transition: transform 0.35s ease, opacity 0.35s ease;
+}
+
+.card:hover .iconBg {
+    transform: translateY(-50%) rotate(15deg) scale(1.25);
+    opacity: 0.20;
+}
+
+.cardBody {
+    position: relative;
+    z-index: 1;
+}
+
+.contador {
+    font-family: 'Nunito', sans-serif;
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 0.65rem;
+    min-height: 3.6rem;
+    display: flex;
+    align-items: center;
+}
+
+@keyframes parpadeo {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0.4; }
+}
+
+.skeletonNumero {
+    display: inline-block;
+    width: 64px;
+    height: 2.6rem;
+    border-radius: var(--radius-sm);
+    background: var(--bg-dark);
+    animation: parpadeo 1.2s ease-in-out infinite;
+}
+
 .cardTitle {
     font-family: 'Nunito', sans-serif;
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     font-weight: 700;
-    margin-bottom: 0.5rem;
-    color: var(--primary);
+    margin-bottom: 0.35rem;
+    color: var(--text);
 }
 
 .cardDesc {
-    font-size: 0.875rem;
+    font-size: 0.92rem;
     color: var(--text-muted);
     line-height: 1.5;
 }
 
-.proximamente {
-    margin-top: 3rem;
-    padding: 2rem;
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-inset);
-    text-align: center;
-}
+/* ───── Responsive: 1 columna en mobile ───── */
+@media (max-width: 640px) {
+    .grid {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "rubros"
+            "subrubros"
+            "productos"
+            "categorias"
+            "consultas";
+    }
 
-.proxTitle {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-bottom: 0.5rem;
-    font-weight: 700;
-}
+    .card--productos {
+        padding: 2rem;
+    }
 
-.proxDesc {
-    font-size: 0.85rem;
-    color: var(--text-faint);
+    .card--productos .contador {
+        font-size: 3rem;
+    }
+
+    .card--productos .iconBg {
+        width: 130px;
+        height: 130px;
+    }
+
+    .card--productos .cardTitle {
+        font-size: 1.15rem;
+    }
+
+    .card--productos .cardDesc {
+        font-size: 0.92rem;
+    }
+
+    .card--productos:hover .iconBg {
+        opacity: 0.20;
+    }
 }

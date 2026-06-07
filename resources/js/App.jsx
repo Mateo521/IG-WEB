@@ -7,7 +7,9 @@ import Subrubros from './pages/Subrubros';
 import Categorias from './pages/Categorias';
 import Productos from './pages/Productos';
 import ProductoForm from './pages/ProductoForm';
+import Consultas from './pages/Consultas';
 import Catalogo from './pages/Catalogo';
+import ProductoDetalle from './pages/ProductoDetalle';
 import Layout from './components/Layout/Layout';
 import LayoutPublico from './components/LayoutPublico/LayoutPublico';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -18,6 +20,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<LayoutPublico />}>
                     <Route index element={<Catalogo />} />
+                    <Route path="producto/:id" element={<ProductoDetalle />} />
                 </Route>
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
@@ -30,6 +33,7 @@ function App() {
                     <Route path="productos" element={<Productos />} />
                     <Route path="productos/nuevo" element={<ProductoForm />} />
                     <Route path="productos/:id/editar" element={<ProductoForm />} />
+                    <Route path="consultas" element={<Consultas />} />
                 </Route>
             </Routes>
         </BrowserRouter>

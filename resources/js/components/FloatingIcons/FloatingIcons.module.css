@@ -1,0 +1,22 @@
+.container {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.icon {
+    position: absolute;
+    opacity: 0.045;
+    color: var(--primary);
+    animation: flotar var(--dur, 10s) ease-in-out infinite;
+    animation-delay: var(--del, 0s);
+}
+
+@keyframes flotar {
+    0%, 100% { transform: translateY(0) scale(1); }
+    25%      { transform: translateY(-18px) scale(1.06); }
+    50%      { transform: translateY(6px) scale(0.95); }
+    75%      { transform: translateY(-10px) scale(1.03); }
+}

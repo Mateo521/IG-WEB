@@ -474,3 +474,146 @@ php artisan serve
 ```
 
 Vite compila los assets en `public/build/` y Laravel los sirve automáticamente.
+
+---
+
+### Filtros y búsqueda en el Catálogo público
+
+#### ¿Qué se agregó?
+
+El catálogo público (`/`) pasó de mostrar todos los productos sin ningún control a tener un sistema completo de filtrado y paginación server-side.
+
+#### Backend — `ProductoController@index`
+
+El método `index()` ahora acepta los siguientes query params opcionales:
+
+| Parámetro | Tipo | Descripción |
+|---|---|---|
+| `search` | string | Busca en `nombreProducto` y `descripcion` (LIKE) |
+| `rubro_id` | integer | Filtra por rubro |
+| `subrubro_id` | integer | Filtra por subrubro |
+| `categoria_id` | integer | Filtra por categoría (busca en el pivot M:N) |
+| `precio_min` | numeric | Precio mayor o igual a este valor |
+| `precio_max` | numeric | Precio menor o igual a este valor |
+| `sort` | string | `reciente` (default), `precio_asc`, `precio_desc`, `nombre_asc` |
+| `por_pagina` | integer | Resultados por página (1–50, default 12) |
+| `paginate` | string | `false` para devolver todos sin paginar (uso interno del admin) |
+
+**Respuesta paginada** (cuando `paginate` ≠ `false`):
+```json
+{
+  "data": [...],
+  "current_page": 1,
+  "last_page": 3,
+  "total": 24,
+  "per_page": 12
+}
+```
+
+El flag `?paginate=false` permite que la tabla del admin (`/admin/productos`) siga recibiendo un array plano sin romper su lógica existente.
+
+#### Frontend — nuevos componentes
+
+| Componente | Ubicación | Función |
+|---|---|---|
+| `SidebarFiltros` | `components/SidebarFiltros/` | Panel lateral con selects en cascada (Rubro → Subrubro → Categoría), rango de precio y ordenamiento |
+| `Paginacion` | `components/Paginacion/` | Botones numerados `‹ 1 2 3 … N ›` con separadores inteligentes |
+| `ProductoCardSkeleton` | `components/ProductoCardSkeleton/` | Tarjetas placeholder animadas (shimmer) mientras cargan los datos |
+
+#### Frontend — `Catalogo.jsx` (reescrito)
+
+- **Estado de filtros**: objeto `filtros` con todos los parámetros, estado `pagina` para la página actual.
+- **Debounce**: las peticiones al servidor se retrasan 350ms para no saturar la API mientras el usuario escribe.
+- **Cascada**: elegir un Rubro limpia el Subrubro seleccionado; elegir un Subrubro limpia la Categoría.
+- **Chips de filtros activos**: fila de etiquetas sobre la grilla que muestra qué está aplicado. Cada chip tiene un `×` para quitarlo individualmente.
+- **Contador de resultados**: el subtítulo muestra "N productos encontrados" o "Buscando…" según el estado.
+- **Responsive**: en pantallas menores a 768px el sidebar se apila sobre la grilla.
+- **Toggle grilla/lista**: botón de dos estados en el encabezado del catálogo. La preferencia se guarda en `localStorage` para que se recuerde entre visitas. En modo lista cada tarjeta muestra imagen a la izquierda y descripción completa (3 líneas) a la derecha.
+
+---
+
+### Dashboard con métricas reales
+
+#### ¿Qué se agregó?
+
+El dashboard dejó de ser una página estática con links fijos. Ahora muestra contadores reales de cada entidad y la tarjeta de "PRÓXIMAMENTE CONSULTAS" fue reemplazada por una tarjeta funcional de Consultas.
+
+#### Backend — `DashboardController`
+
+Nuevo controlador en `app/Http/Controllers/DashboardController.php`.
+
+**Endpoint:**
+
+| Método | URL | Auth | Descripción |
+|---|---|---|---|
+| `GET` | `/api/stats` | No | Devuelve el conteo de cada entidad |
+
+**Respuesta:**
+```json
+{
+  "rubros":     3,
+  "subrubros":  6,
+  "categorias": 12,
+  "productos":  24,
+  "consultas":  6
+}
+```
+
+Usa `Model::count()` directo sobre cada tabla, sin joins ni relaciones. Es la forma más eficiente para un simple conteo.
+
+#### Frontend — `Dashboard.jsx` (reescrito)
+
+- Llama a `GET /api/stats` al montar el componente.
+- Mientras espera la respuesta muestra un skeleton animado (parpadeo) en el lugar del número.
+- Si la petición falla muestra `—` en lugar de un número para no ocultar el error al usuario.
+- Las 5 tarjetas (Rubros, Subrubros, Categorías, Productos, Consultas) muestran el contador en grande arriba del título.
+- Cada tarjeta es un `<Link>` que navega a la sección correspondiente del admin.
+- La configuración de las tarjetas está en el array `TARJETAS` fuera del componente, lo que facilita agregar o quitar tarjetas sin tocar el JSX.
+
+---
+
+### Importar y exportar productos en CSV
+
+#### ¿Qué se agregó?
+
+Desde la tabla de admin `/admin/productos` el administrador puede importar productos en lote subiendo un CSV, exportar los productos actuales a CSV y descargar una plantilla de ejemplo.
+
+#### Backend — nuevas rutas y métodos
+
+Las rutas se declaran **antes** del `apiResource` en `routes/api.php` para que Laravel no confunda los segmentos `importar` y `exportar` con un ID de producto en la ruta `/{producto}`.
+
+| Método | URL | Descripción |
+|---|---|---|
+| `POST` | `/api/productos/importar` | Recibe archivo CSV, crea productos fila por fila |
+| `GET` | `/api/productos/exportar` | Descarga un CSV con los productos (acepta los mismos filtros que `index`) |
+
+**`exportar()`** — reutiliza `queryFiltrada()` (mismo método privado que usa `index()`), por lo que exporta exactamente los mismos productos que se verían con esos filtros. Escribe el CSV directamente al stream de salida con `fputcsv()` y agrega BOM UTF-8 para compatibilidad con Excel.
+
+Columnas del CSV exportado: `id, nombreProducto, descripcion, precio, rubro_id, rubro, subrubro_id, subrubro, categorias_ids, categorias_nombres`. Las categorías se separan con `|` para no romper el formato CSV.
+
+**`importar()`** — lee el archivo con `fgetcsv()` fila por fila. Formato esperado:
+
+```
+nombreProducto,descripcion,precio,rubro_id,subrubro_id,categorias
+"Producto","Descripcion",1500.00,1,2,3|4
+```
+
+- La primera fila (cabecera) se ignora.
+- Los IDs de categorías son opcionales y van separados por `|`.
+- Los IDs de rubro y subrubro se validan contra la BD (pre-cargados en memoria para evitar N+1 queries).
+- Si una fila falla se registra el error y se continúa con la siguiente sin abortar el proceso.
+- Respuesta: `{ mensaje, creados: N, errores: [{ fila: N, motivo: "..." }] }`
+
+Se extrajo la lógica de filtros de `index()` al método privado `queryFiltrada()` para que tanto `index()` como `exportar()` usen exactamente el mismo código.
+
+#### Frontend — `Productos.jsx`
+
+Se agregaron tres botones en el header de la tabla:
+
+| Botón | Acción |
+|---|---|
+| **Plantilla CSV** | Genera y descarga un CSV de ejemplo en el navegador (sin llamar al servidor) |
+| **Importar CSV** | Abre el selector de archivos; al elegir un `.csv` lo sube y muestra el resultado |
+| **Exportar CSV** | Llama a `GET /api/productos/exportar` con Axios (`responseType: blob`) y dispara la descarga |
+
+El resultado de la importación se muestra en un panel debajo del header (en verde si todo fue bien, en rojo si hubo errores) con la lista de errores por número de fila. El panel tiene un `×` para cerrarlo.

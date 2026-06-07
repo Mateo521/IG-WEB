@@ -1,0 +1,260 @@
+.page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+.volver {
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    color: var(--primary);
+    font-weight: 600;
+    font-size: 0.92rem;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.volver:hover {
+    color: var(--primary-hover);
+    text-decoration: underline;
+}
+
+.layout {
+    display: flex;
+    gap: 2.5rem;
+    align-items: flex-start;
+}
+
+.imgCol {
+    flex: 0 0 400px;
+    max-width: 400px;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-neu);
+}
+
+.img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    display: block;
+}
+
+.noImg {
+    width: 100%;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg);
+    color: var(--text-faint);
+    font-size: 1rem;
+}
+
+.infoCol {
+    flex: 1;
+    min-width: 0;
+}
+
+.nombre {
+    font-family: 'Nunito', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+}
+
+.precio {
+    font-family: 'Nunito', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 1rem;
+}
+
+.meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.5rem;
+    margin-bottom: 1.25rem;
+}
+
+.metaItem {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+}
+
+.metaItem strong {
+    color: var(--text);
+}
+
+.desc {
+    font-size: 0.95rem;
+    color: var(--text);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+    white-space: pre-wrap;
+}
+
+.divisor {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 1.5rem 0;
+}
+
+.formTitle {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 1rem;
+}
+
+.exito {
+    background: #f0fff4;
+    border: 1px solid var(--success);
+    color: var(--success);
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.error {
+    background: #fff5f5;
+    border: 1px solid var(--danger);
+    color: var(--danger);
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+.input,
+.textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: var(--bg);
+    box-shadow: var(--shadow-inset-sm);
+    font-family: inherit;
+    font-size: 0.92rem;
+    color: var(--text);
+    resize: vertical;
+    transition: var(--transition);
+}
+
+.input:focus,
+.textarea:focus {
+    outline: none;
+    box-shadow: var(--shadow-inset);
+}
+
+.btnEnviar {
+    align-self: flex-start;
+    padding: 0.7rem 1.8rem;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius-full);
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 4px 4px 8px rgba(var(--primary-rgb), 0.35), -4px -4px 8px #ffffff;
+    transition: var(--transition);
+}
+
+.btnEnviar:hover:not(:disabled) {
+    background: var(--primary-hover);
+    box-shadow: 2px 2px 5px rgba(var(--primary-rgb), 0.3), -2px -2px 5px #ffffff;
+}
+
+.btnEnviar:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.notFound {
+    text-align: center;
+    color: var(--text-muted);
+    padding: 3rem;
+    font-size: 1.1rem;
+}
+
+/* Skeleton */
+.skeleton {
+    display: flex;
+    gap: 2.5rem;
+}
+
+.skelImg {
+    flex: 0 0 400px;
+    height: 400px;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(90deg, var(--bg-dark) 25%, var(--bg) 50%, var(--bg-dark) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+.skelBody {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-top: 0.5rem;
+}
+
+.skelLine {
+    height: 1.2rem;
+    border-radius: var(--radius-sm);
+    background: linear-gradient(90deg, var(--bg-dark) 25%, var(--bg) 50%, var(--bg-dark) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+@media (max-width: 768px) {
+    .layout {
+        flex-direction: column;
+    }
+
+    .imgCol {
+        flex: none;
+        max-width: 100%;
+    }
+
+    .img,
+    .noImg,
+    .skelImg {
+        height: 280px;
+    }
+
+    .skeleton {
+        flex-direction: column;
+    }
+
+    .skelImg {
+        flex: none;
+        max-width: 100%;
+    }
+
+    .nombre {
+        font-size: 1.5rem;
+    }
+
+    .precio {
+        font-size: 1.5rem;
+    }
+}

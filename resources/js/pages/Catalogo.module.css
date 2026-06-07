@@ -4,8 +4,62 @@
 
 .page {
     padding: 1.5rem 0;
-    max-width: 1200px;
+    max-width: 1280px;
     margin: 0 auto;
+}
+
+/* Barra superior: título/contador a la izquierda, controles a la derecha */
+.topBar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.25rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+/* Agrupa el toggle de vista y el botón PDF */
+.controles {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-shrink: 0;
+}
+
+/* Contenedor del par de botones grilla/lista */
+.toggleVista {
+    display: flex;
+    background: var(--bg);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-inset-sm);
+    padding: 3px;
+    gap: 2px;
+}
+
+/* Cada botón del toggle */
+.btnVista {
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: calc(var(--radius-sm) - 2px);
+    background: transparent;
+    color: var(--text-faint);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.btnVista:hover {
+    color: var(--text-muted);
+}
+
+/* Botón activo: efecto elevado encima del fondo hundido */
+.btnVistaActivo {
+    background: var(--bg-card);
+    box-shadow: var(--shadow-neu-sm);
+    color: var(--primary);
 }
 
 .title {
@@ -18,17 +72,148 @@
 
 .sub {
     color: var(--text-muted);
-    margin-bottom: 2.5rem;
+    margin-bottom: 1rem;
     font-size: 0.95rem;
+    min-height: 1.4em;
 }
+
+/* Botón "Descargar Catálogo PDF" — visible para todos los visitantes */
+.btnPdf {
+    flex-shrink: 0;
+    padding: 0.55rem 1.25rem;
+    background: var(--bg);
+    border: none;
+    border-radius: var(--radius-full);
+    box-shadow: var(--shadow-neu-sm);
+    color: var(--primary);
+    font-size: 0.88rem;
+    font-weight: 700;
+    font-family: 'Nunito Sans', sans-serif;
+    cursor: pointer;
+    transition: var(--transition);
+    white-space: nowrap;
+}
+
+.btnPdf:hover:not(:disabled) {
+    box-shadow: var(--shadow-neu);
+    color: var(--primary-hover);
+}
+
+.btnPdf:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.title {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    color: var(--text);
+}
+
+.sub {
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    min-height: 1.4em;       /* evita saltos de layout al cambiar de "Buscando..." a "N productos" */
+}
+
+/* ------ Chips de filtros activos ------ */
+
+/* Fila de chips que muestra qué filtros están aplicados */
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+}
+
+/* Cada chip individual */
+.chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: var(--bg);
+    box-shadow: var(--shadow-neu-sm);
+    border-radius: var(--radius-full);
+    padding: 0.3rem 0.75rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text);
+}
+
+/* Botón "×" dentro del chip para quitarlo */
+.chipQuitar {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1;
+    color: var(--text-muted);
+    padding: 0;
+    display: flex;
+    align-items: center;
+    transition: var(--transition);
+}
+
+.chipQuitar:hover {
+    color: var(--danger);
+}
+
+/* Botón "Limpiar todo" al final de la fila de chips */
+.chipLimpiarTodo {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--primary);
+    font-family: inherit;
+    padding: 0.25rem 0.5rem;
+}
+
+.chipLimpiarTodo:hover {
+    color: var(--primary-hover);
+    text-decoration: underline;
+}
+
+/* ------ Layout principal: sidebar + contenido ------ */
+
+.layout {
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+}
+
+/* Columna derecha: contiene la grilla y la paginación */
+.contenido {
+    flex: 1;
+    min-width: 0;             /* permite que se achique sin desbordarse */
+}
+
+/* ------ Grilla de productos ------ */
 
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: 1.75rem;
 }
 
+/* Vista lista: una sola columna de filas horizontales */
+.gridLista {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+/* ------ Tarjeta de producto ------ */
+
 .card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
     background: var(--bg-card);
     border-radius: var(--radius-lg);
     overflow: hidden;
@@ -41,12 +226,32 @@
     transform: translateY(-4px);
 }
 
+/* Variante lista: imagen a la izquierda, contenido a la derecha */
+.cardLista {
+    display: flex;
+    flex-direction: row;
+    transform: none !important;
+}
+
+.cardLista:hover {
+    box-shadow: var(--shadow-neu-lg);
+    transform: none;
+}
+
 .imgWrap {
     width: 100%;
     height: 190px;
     overflow: hidden;
     background: var(--bg);
     box-shadow: var(--shadow-inset-sm);
+    flex-shrink: 0;        /* en lista no se achica la imagen */
+}
+
+/* En modo lista la imagen ocupa un ancho fijo a la izquierda */
+.cardLista .imgWrap {
+    width: 160px;
+    height: auto;          /* la altura la define el contenido del lado derecho */
+    min-height: 130px;
 }
 
 .img {
@@ -58,6 +263,11 @@
 
 .card:hover .img {
     transform: scale(1.04);
+}
+
+/* En lista no hacemos zoom a la imagen para que no se corte raro */
+.cardLista:hover .img {
+    transform: none;
 }
 
 .noImg {
@@ -72,6 +282,15 @@
 
 .body {
     padding: 1.25rem;
+}
+
+/* En lista el cuerpo ocupa el espacio restante y centra el contenido verticalmente */
+.cardLista .body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1rem 1.25rem;
 }
 
 .nombre {
@@ -93,6 +312,11 @@
     line-height: 1.5;
 }
 
+/* En lista mostramos la descripción completa (hasta 3 líneas) */
+.cardLista .desc {
+    -webkit-line-clamp: 3;
+}
+
 .precio {
     font-family: 'Nunito', sans-serif;
     font-size: 1.3rem;
@@ -110,6 +334,8 @@
     font-weight: 600;
 }
 
+/* ------ Estado vacío ------ */
+
 .empty {
     grid-column: 1 / -1;
     text-align: center;
@@ -117,4 +343,29 @@
     padding: 3rem;
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-inset);
+}
+
+/* ------ Responsive: en mobile el sidebar va arriba ------ */
+
+@media (max-width: 768px) {
+    .layout {
+        flex-direction: column;
+    }
+
+    /* El sidebar ocupa todo el ancho en mobile */
+    .layout > :first-child {
+        width: 100% !important;
+        position: static;        /* quitamos el sticky en mobile */
+    }
+
+    /* En mobile la vista lista usa imagen más chica */
+    .cardLista .imgWrap {
+        width: 110px;
+        min-height: 100px;
+    }
+
+    /* Ocultamos el toggle de vista en pantallas muy chicas */
+    .toggleVista {
+        display: none;
+    }
 }

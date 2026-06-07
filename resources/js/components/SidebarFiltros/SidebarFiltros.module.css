@@ -1,0 +1,118 @@
+/* =============================================
+   SIDEBAR DE FILTROS — Neumorphism
+   ============================================= */
+
+.sidebar {
+    width: 260px;
+    flex-shrink: 0;           /* no se achica aunque falte espacio */
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-neu);
+    padding: 1.5rem;
+    align-self: flex-start;   /* no se estira en altura */
+    position: sticky;
+    top: 1.5rem;              /* queda fijo cuando el usuario hace scroll */
+}
+
+/* Fila superior con el título y el botón de limpiar */
+.encabezado {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.titulo {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--text);
+}
+
+.btnLimpiar {
+    font-size: 0.78rem;
+    color: var(--primary);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    padding: 0;
+    font-family: inherit;
+}
+
+.btnLimpiar:hover {
+    color: var(--primary-hover);
+    text-decoration: underline;
+}
+
+/* Cada sección de filtro (label + control) */
+.grupo {
+    margin-bottom: 1.25rem;
+}
+
+.label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.45rem;
+}
+
+/* Estilos compartidos para input de texto y select */
+.input,
+.select {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: var(--bg);
+    box-shadow: var(--shadow-inset-sm);
+    color: var(--text);
+    font-size: 0.9rem;
+    font-family: inherit;
+    outline: none;
+    transition: var(--transition);
+    appearance: none;         /* quitamos el estilo nativo del select */
+    -webkit-appearance: none;
+}
+
+.input:focus,
+.select:focus {
+    box-shadow: var(--shadow-inset), 0 0 0 2px rgba(var(--primary-rgb), 0.2);
+}
+
+/* Fila de precio mínimo / máximo */
+.filaPrecio {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Input de precio: ocupa la mitad disponible */
+.inputPrecio {
+    flex: 1;
+    min-width: 0;             /* permite que se achique en pantallas pequeñas */
+    padding: 0.5rem 0.5rem;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: var(--bg);
+    box-shadow: var(--shadow-inset-sm);
+    color: var(--text);
+    font-size: 0.88rem;
+    font-family: inherit;
+    outline: none;
+    transition: var(--transition);
+}
+
+.inputPrecio:focus {
+    box-shadow: var(--shadow-inset), 0 0 0 2px rgba(var(--primary-rgb), 0.2);
+}
+
+.separadorPrecio {
+    color: var(--text-faint);
+    font-size: 0.85rem;
+    flex-shrink: 0;
+    user-select: none;
+}

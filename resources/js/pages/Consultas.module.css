@@ -1,0 +1,96 @@
+.page {
+    padding: 1.5rem 0;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.75rem;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.title {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-neu);
+    overflow: hidden;
+}
+
+.table th,
+.table td {
+    text-align: left;
+    padding: 0.85rem 1.1rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.table th {
+    background: var(--bg);
+    font-weight: 700;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--text-muted);
+    box-shadow: 0 3px 6px rgba(184, 190, 201, 0.5);
+}
+
+.table tbody tr {
+    transition: var(--transition);
+}
+
+.table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.45);
+}
+
+.table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.mensaje {
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.btnDelete {
+    padding: 0.3rem 0.85rem;
+    background: var(--bg);
+    border: none;
+    color: var(--danger);
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 700;
+    font-family: 'Nunito Sans', sans-serif;
+    box-shadow: var(--shadow-neu-sm);
+    transition: var(--transition);
+}
+
+.btnDelete:hover {
+    box-shadow: var(--shadow-inset-sm);
+    color: var(--danger-hover);
+}
+
+.empty {
+    text-align: center;
+    color: var(--text-muted);
+    padding: 2.5rem !important;
+}

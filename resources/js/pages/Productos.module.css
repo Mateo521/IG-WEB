@@ -15,6 +15,14 @@
     gap: 0.75rem;
 }
 
+/* Grupo que contiene todos los botones de acción del header */
+.acciones {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+}
+
 .title {
     font-family: 'Nunito', sans-serif;
     font-size: 1.6rem;
@@ -41,6 +49,133 @@
 .btnNuevo:hover {
     box-shadow: 2px 2px 5px rgba(56, 161, 105, 0.3), -2px -2px 5px #ffffff;
     opacity: 0.95;
+}
+
+/* Botón para descargar la plantilla CSV vacía */
+.btnPlantilla {
+    padding: 0.5rem 1rem;
+    background: var(--bg);
+    color: var(--text-muted);
+    border: none;
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    font-size: 0.83rem;
+    font-weight: 600;
+    font-family: 'Nunito Sans', sans-serif;
+    box-shadow: var(--shadow-neu-sm);
+    transition: var(--transition);
+}
+
+.btnPlantilla:hover {
+    box-shadow: var(--shadow-inset-sm);
+    color: var(--text);
+}
+
+/* Botón para importar un CSV */
+.btnImportar {
+    padding: 0.5rem 1.1rem;
+    background: var(--bg);
+    color: var(--info);
+    border: none;
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    font-size: 0.88rem;
+    font-weight: 700;
+    font-family: 'Nunito Sans', sans-serif;
+    box-shadow: var(--shadow-neu-sm);
+    transition: var(--transition);
+}
+
+.btnImportar:hover:not(:disabled) {
+    box-shadow: var(--shadow-inset-sm);
+}
+
+.btnImportar:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* Botón para exportar a CSV */
+.btnExportar {
+    padding: 0.5rem 1.1rem;
+    background: var(--bg);
+    color: var(--warning);
+    border: none;
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    font-size: 0.88rem;
+    font-weight: 700;
+    font-family: 'Nunito Sans', sans-serif;
+    box-shadow: var(--shadow-neu-sm);
+    transition: var(--transition);
+}
+
+.btnExportar:hover:not(:disabled) {
+    box-shadow: var(--shadow-inset-sm);
+}
+
+.btnExportar:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* Panel de resultado de importación — aparece debajo del header */
+.resultadoImport {
+    margin-bottom: 1.25rem;
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius);
+    font-size: 0.88rem;
+}
+
+.resultadoOk {
+    background: rgba(56, 161, 105, 0.1);
+    box-shadow: inset 0 0 0 1.5px rgba(56, 161, 105, 0.35);
+    color: var(--success);
+}
+
+.resultadoError {
+    background: rgba(229, 62, 62, 0.08);
+    box-shadow: inset 0 0 0 1.5px rgba(229, 62, 62, 0.3);
+    color: var(--danger);
+}
+
+/* Fila del mensaje con botón para cerrar el panel */
+.resultadoHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+}
+
+.btnCerrarResultado {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    line-height: 1;
+    color: inherit;
+    opacity: 0.7;
+    padding: 0 0.25rem;
+}
+
+.btnCerrarResultado:hover {
+    opacity: 1;
+}
+
+/* Lista de errores por fila */
+.listaErrores {
+    margin-top: 0.6rem;
+    padding-left: 1.25rem;
+    list-style: disc;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    font-weight: 400;
+    color: var(--danger);
+    max-height: 200px;
+    overflow-y: auto;
 }
 
 .table {
