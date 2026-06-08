@@ -1,7 +1,3 @@
-/* =============================================
-   PRODUCTOS (tabla admin) — Neumorphism
-   ============================================= */
-
 .page {
     padding: 1.5rem 0;
 }
@@ -15,7 +11,6 @@
     gap: 0.75rem;
 }
 
-/* Grupo que contiene todos los botones de acción del header */
 .acciones {
     display: flex;
     align-items: center;
@@ -24,10 +19,11 @@
 }
 
 .title {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Anton', sans-serif;
     font-size: 1.6rem;
-    font-weight: 700;
+    font-weight: 400;
     color: var(--text);
+    letter-spacing: -0.01em;
 }
 
 .btnNuevo {
@@ -35,93 +31,82 @@
     background: var(--success);
     color: white;
     border: none;
-    border-radius: var(--radius-full);
+    border-radius: var(--radius);
     cursor: pointer;
     font-size: 0.88rem;
-    font-weight: 700;
-    font-family: 'Nunito Sans', sans-serif;
+    font-weight: 600;
+    font-family: 'Hind', sans-serif;
     text-decoration: none;
     display: inline-block;
-    box-shadow: 4px 4px 8px rgba(56, 161, 105, 0.3), -4px -4px 8px #ffffff;
     transition: var(--transition);
 }
 
 .btnNuevo:hover {
-    box-shadow: 2px 2px 5px rgba(56, 161, 105, 0.3), -2px -2px 5px #ffffff;
-    opacity: 0.95;
+    opacity: 0.9;
 }
 
-/* Botón para descargar la plantilla CSV vacía */
 .btnPlantilla {
     padding: 0.5rem 1rem;
-    background: var(--bg);
+    background: transparent;
     color: var(--text-muted);
-    border: none;
-    border-radius: var(--radius-full);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
     cursor: pointer;
     font-size: 0.83rem;
-    font-weight: 600;
-    font-family: 'Nunito Sans', sans-serif;
-    box-shadow: var(--shadow-neu-sm);
+    font-weight: 500;
+    font-family: 'Hind', sans-serif;
     transition: var(--transition);
 }
 
 .btnPlantilla:hover {
-    box-shadow: var(--shadow-inset-sm);
+    border-color: var(--text-faint);
     color: var(--text);
 }
 
-/* Botón para importar un CSV */
 .btnImportar {
     padding: 0.5rem 1.1rem;
-    background: var(--bg);
+    background: transparent;
     color: var(--info);
-    border: none;
-    border-radius: var(--radius-full);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
     cursor: pointer;
     font-size: 0.88rem;
-    font-weight: 700;
-    font-family: 'Nunito Sans', sans-serif;
-    box-shadow: var(--shadow-neu-sm);
+    font-weight: 600;
+    font-family: 'Hind', sans-serif;
     transition: var(--transition);
 }
 
 .btnImportar:hover:not(:disabled) {
-    box-shadow: var(--shadow-inset-sm);
+    border-color: var(--info);
 }
 
 .btnImportar:disabled {
-    opacity: 0.55;
+    opacity: 0.4;
     cursor: not-allowed;
-    box-shadow: none;
 }
 
-/* Botón para exportar a CSV */
 .btnExportar {
     padding: 0.5rem 1.1rem;
-    background: var(--bg);
+    background: transparent;
     color: var(--warning);
-    border: none;
-    border-radius: var(--radius-full);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
     cursor: pointer;
     font-size: 0.88rem;
-    font-weight: 700;
-    font-family: 'Nunito Sans', sans-serif;
-    box-shadow: var(--shadow-neu-sm);
+    font-weight: 600;
+    font-family: 'Hind', sans-serif;
     transition: var(--transition);
 }
 
 .btnExportar:hover:not(:disabled) {
-    box-shadow: var(--shadow-inset-sm);
+    border-color: var(--warning);
 }
 
 .btnExportar:disabled {
-    opacity: 0.55;
+    opacity: 0.4;
     cursor: not-allowed;
-    box-shadow: none;
 }
 
-/* Panel de resultado de importación — aparece debajo del header */
 .resultadoImport {
     margin-bottom: 1.25rem;
     padding: 1rem 1.25rem;
@@ -130,18 +115,17 @@
 }
 
 .resultadoOk {
-    background: rgba(56, 161, 105, 0.1);
-    box-shadow: inset 0 0 0 1.5px rgba(56, 161, 105, 0.35);
-    color: var(--success);
+    background: var(--success-bg);
+    border: 1px solid var(--success);
+    color: #166534;
 }
 
 .resultadoError {
-    background: rgba(229, 62, 62, 0.08);
-    box-shadow: inset 0 0 0 1.5px rgba(229, 62, 62, 0.3);
+    background: var(--danger-bg);
+    border: 1px solid var(--danger);
     color: var(--danger);
 }
 
-/* Fila del mensaje con botón para cerrar el panel */
 .resultadoHeader {
     display: flex;
     justify-content: space-between;
@@ -164,7 +148,6 @@
     opacity: 1;
 }
 
-/* Lista de errores por fila */
 .listaErrores {
     margin-top: 0.6rem;
     padding-left: 1.25rem;
@@ -184,7 +167,7 @@
     border-spacing: 0;
     background: var(--bg-card);
     border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-neu);
+    border: 1px solid var(--border);
     overflow: hidden;
 }
 
@@ -196,13 +179,12 @@
 }
 
 .table th {
-    background: var(--bg);
-    font-weight: 700;
+    background: var(--bg-dark);
+    font-weight: 600;
     font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.07em;
     color: var(--text-muted);
-    box-shadow: 0 3px 6px rgba(184, 190, 201, 0.5);
 }
 
 .table tbody tr {
@@ -210,7 +192,7 @@
 }
 
 .table tbody tr:hover {
-    background: rgba(255, 255, 255, 0.45);
+    background: var(--bg-dark);
 }
 
 .table tbody tr:last-child td {
@@ -222,7 +204,7 @@
     height: 48px;
     object-fit: cover;
     border-radius: var(--radius-sm);
-    box-shadow: var(--shadow-neu-sm);
+    border: 1px solid var(--border);
 }
 
 .noImg {
@@ -238,42 +220,38 @@
 
 .btnEdit {
     padding: 0.3rem 0.85rem;
-    background: var(--bg);
-    border: none;
+    background: transparent;
+    border: 1px solid var(--primary);
     color: var(--primary);
-    border-radius: var(--radius-full);
+    border-radius: var(--radius-sm);
     cursor: pointer;
     font-size: 0.78rem;
-    font-weight: 700;
-    font-family: 'Nunito Sans', sans-serif;
+    font-weight: 600;
+    font-family: 'Hind', sans-serif;
     text-decoration: none;
     display: inline-block;
-    box-shadow: var(--shadow-neu-sm);
     transition: var(--transition);
 }
 
 .btnEdit:hover {
-    box-shadow: var(--shadow-inset-sm);
-    color: var(--primary-hover);
+    background: var(--primary-light);
 }
 
 .btnDelete {
     padding: 0.3rem 0.85rem;
-    background: var(--bg);
-    border: none;
+    background: transparent;
+    border: 1px solid var(--danger);
     color: var(--danger);
-    border-radius: var(--radius-full);
+    border-radius: var(--radius-sm);
     cursor: pointer;
     font-size: 0.78rem;
-    font-weight: 700;
-    font-family: 'Nunito Sans', sans-serif;
-    box-shadow: var(--shadow-neu-sm);
+    font-weight: 600;
+    font-family: 'Hind', sans-serif;
     transition: var(--transition);
 }
 
 .btnDelete:hover {
-    box-shadow: var(--shadow-inset-sm);
-    color: var(--danger-hover);
+    background: var(--danger-bg);
 }
 
 .empty {

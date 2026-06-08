@@ -12,10 +12,11 @@
 }
 
 .title {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Anton', sans-serif;
     font-size: 1.6rem;
-    font-weight: 700;
+    font-weight: 400;
     color: var(--text);
+    letter-spacing: -0.01em;
 }
 
 .table {
@@ -24,7 +25,7 @@
     border-spacing: 0;
     background: var(--bg-card);
     border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-neu);
+    border: 1px solid var(--border);
     overflow: hidden;
 }
 
@@ -36,13 +37,12 @@
 }
 
 .table th {
-    background: var(--bg);
-    font-weight: 700;
+    background: var(--bg-dark);
+    font-weight: 600;
     font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.07em;
     color: var(--text-muted);
-    box-shadow: 0 3px 6px rgba(184, 190, 201, 0.5);
 }
 
 .table tbody tr {
@@ -50,7 +50,7 @@
 }
 
 .table tbody tr:hover {
-    background: rgba(255, 255, 255, 0.45);
+    background: var(--bg-dark);
 }
 
 .table tbody tr:last-child td {
@@ -72,21 +72,19 @@
 
 .btnDelete {
     padding: 0.3rem 0.85rem;
-    background: var(--bg);
-    border: none;
+    background: transparent;
+    border: 1px solid var(--danger);
     color: var(--danger);
-    border-radius: var(--radius-full);
+    border-radius: var(--radius-sm);
     cursor: pointer;
     font-size: 0.78rem;
-    font-weight: 700;
-    font-family: 'Nunito Sans', sans-serif;
-    box-shadow: var(--shadow-neu-sm);
+    font-weight: 600;
+    font-family: 'Hind', sans-serif;
     transition: var(--transition);
 }
 
 .btnDelete:hover {
-    box-shadow: var(--shadow-inset-sm);
-    color: var(--danger-hover);
+    background: var(--danger-bg);
 }
 
 .empty {

@@ -1,24 +1,256 @@
-/* =============================================
-   CATÁLOGO PÚBLICO — Neumorphism
-   ============================================= */
-
 .page {
-    padding: 1.5rem 0;
-    max-width: 1280px;
-    margin: 0 auto;
+    padding: 0;
 }
 
-/* Barra superior: título/contador a la izquierda, controles a la derecha */
+/* ───── HERO 100vh ───── */
+
+.heroBg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    height: 100vh;
+    min-height: 600px;
+    overflow: hidden;
+    pointer-events: none;
+    background:
+        radial-gradient(ellipse 80% 60% at 20% 50%, rgba(234,88,12,0.05) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 40% at 80% 30%, rgba(234,88,12,0.03) 0%, transparent 60%),
+        linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
+}
+
+.hero {
+    position: relative;
+    height: 100vh;
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+}
+
+/* Floating login button */
+.loginBtn {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    z-index: 10;
+    padding: 0.5rem 1.25rem;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius);
+    font-size: 0.88rem;
+    font-weight: 600;
+    font-family: 'Hind', sans-serif;
+    text-decoration: none;
+    cursor: pointer;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.loginBtn:hover {
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+}
+
+.loginBtn svg {
+    width: 14px;
+    height: 14px;
+}
+
+.heroContent {
+    position: relative;
+    z-index: 2;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    width: 100%;
+}
+
+.heroLabel {
+    font-family: 'Hind', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+    opacity: 0;
+    animation: fadeSlideUp 0.8s ease 0.2s forwards;
+}
+
+/* ───── Typing animation ───── */
+
+.heroTitle {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(4rem, 12vw, 12rem);
+    font-weight: 400;
+    color: var(--text);
+    letter-spacing: -0.02em;
+    line-height: 0.92;
+    margin-bottom: 0.3em;
+    text-transform: uppercase;
+    min-height: 1.2em;
+}
+
+.heroTyping {
+    display: inline;
+}
+
+.heroAccent {
+    color: var(--primary);
+}
+
+.cursor {
+    display: inline-block;
+    width: 0.08em;
+    height: 0.85em;
+    background: var(--primary);
+    margin-left: 0.05em;
+    vertical-align: baseline;
+    animation: blink 0.8s step-end infinite;
+}
+
+.cursorDone {
+    animation: blink 1.5s step-end infinite;
+    opacity: 0;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+.heroSub {
+    font-family: 'Hind', sans-serif;
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    color: var(--text-muted);
+    max-width: 520px;
+    font-weight: 300;
+    line-height: 1.6;
+    opacity: 0;
+    animation: fadeSlideUp 0.8s ease 0.8s forwards;
+}
+
+/* ───── Arrow scroll indicator ───── */
+
+.scrollIndicator {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    opacity: 0;
+    animation: fadeSlideUp 0.8s ease 1.2s forwards;
+}
+
+.scrollArrow {
+    width: 24px;
+    height: 24px;
+    color: var(--text-faint);
+    animation: arrowBounce 2s ease-in-out infinite;
+}
+
+.scrollArrow:nth-child(2) {
+    margin-top: -10px;
+    animation-delay: 0.25s;
+    opacity: 0.6;
+}
+
+.scrollArrow:nth-child(3) {
+    margin-top: -10px;
+    animation-delay: 0.5s;
+    opacity: 0.3;
+}
+
+@keyframes arrowBounce {
+    0%, 100% { transform: translateY(0); opacity: 0.3; }
+    50% { transform: translateY(6px); opacity: 1; }
+}
+
+/* ───── Decorative orbs ───── */
+
+.heroOrb {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.heroOrb1 {
+    width: 600px;
+    height: 600px;
+    right: -200px;
+    top: -100px;
+    background: radial-gradient(circle, rgba(234,88,12,0.06) 0%, transparent 70%);
+    animation: orbFloat 20s ease-in-out infinite;
+}
+
+.heroOrb2 {
+    width: 400px;
+    height: 400px;
+    left: -100px;
+    bottom: -100px;
+    background: radial-gradient(circle, rgba(234,88,12,0.04) 0%, transparent 70%);
+    animation: orbFloat 25s ease-in-out infinite reverse;
+}
+
+@keyframes orbFloat {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(30px, -30px) scale(1.05); }
+    66% { transform: translate(-20px, 20px) scale(0.95); }
+}
+
+/* ───── Floating video background ───── */
+
+.floatingVideoWrapper {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.floatingVideoInner {
+    width: 100%;
+    height: 100%;
+    will-change: transform;
+}
+
+/* ───── Content section ───── */
+
+.contentSection {
+    position: relative;
+    z-index: 2;
+    background: transparent;
+    padding-top: 1rem;
+    min-height: 100vh;
+}
+
 .topBar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0.75rem 1.5rem;
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 0.25rem;
     gap: 1rem;
     flex-wrap: wrap;
+    background: transparent;
 }
 
-/* Agrupa el toggle de vista y el botón PDF */
 .controles {
     display: flex;
     align-items: center;
@@ -26,22 +258,20 @@
     flex-shrink: 0;
 }
 
-/* Contenedor del par de botones grilla/lista */
 .toggleVista {
     display: flex;
-    background: var(--bg);
-    border-radius: var(--radius-sm);
-    box-shadow: var(--shadow-inset-sm);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
     padding: 3px;
     gap: 2px;
 }
 
-/* Cada botón del toggle */
 .btnVista {
     width: 32px;
     height: 32px;
     border: none;
-    border-radius: calc(var(--radius-sm) - 2px);
+    border-radius: calc(var(--radius) - 2px);
     background: transparent;
     color: var(--text-faint);
     cursor: pointer;
@@ -55,19 +285,18 @@
     color: var(--text-muted);
 }
 
-/* Botón activo: efecto elevado encima del fondo hundido */
 .btnVistaActivo {
-    background: var(--bg-card);
-    box-shadow: var(--shadow-neu-sm);
-    color: var(--primary);
+    background: var(--primary);
+    color: white;
 }
 
 .title {
-    font-family: 'Nunito', sans-serif;
-    font-size: 1.8rem;
-    font-weight: 700;
+    font-family: 'Anton', sans-serif;
+    font-size: 2rem;
+    font-weight: 400;
     margin-bottom: 0.25rem;
     color: var(--text);
+    letter-spacing: -0.01em;
 }
 
 .sub {
@@ -77,75 +306,81 @@
     min-height: 1.4em;
 }
 
-/* Botón "Descargar Catálogo PDF" — visible para todos los visitantes */
 .btnPdf {
     flex-shrink: 0;
     padding: 0.55rem 1.25rem;
-    background: var(--bg);
-    border: none;
-    border-radius: var(--radius-full);
-    box-shadow: var(--shadow-neu-sm);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
     color: var(--primary);
     font-size: 0.88rem;
-    font-weight: 700;
-    font-family: 'Nunito Sans', sans-serif;
+    font-weight: 500;
+    font-family: 'Hind', sans-serif;
     cursor: pointer;
     transition: var(--transition);
     white-space: nowrap;
 }
 
 .btnPdf:hover:not(:disabled) {
-    box-shadow: var(--shadow-neu);
-    color: var(--primary-hover);
+    border-color: var(--primary);
+    background: var(--primary-light);
 }
 
 .btnPdf:disabled {
-    opacity: 0.45;
+    opacity: 0.35;
     cursor: not-allowed;
-    box-shadow: none;
 }
 
-.title {
-    font-family: 'Nunito', sans-serif;
-    font-size: 1.8rem;
-    font-weight: 700;
-    margin-bottom: 0.25rem;
-    color: var(--text);
-}
-
-.sub {
-    color: var(--text-muted);
-    margin-bottom: 1rem;
-    font-size: 0.95rem;
-    min-height: 1.4em;       /* evita saltos de layout al cambiar de "Buscando..." a "N productos" */
-}
-
-/* ------ Chips de filtros activos ------ */
-
-/* Fila de chips que muestra qué filtros están aplicados */
 .chips {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    width: 100%;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: 0.5rem;
-    margin-bottom: 1.25rem;
+    margin-top: 0.75rem;
+    margin-bottom: 0.5rem;
 }
 
-/* Cada chip individual */
+.layout {
+    display: flex;
+    gap: 2rem;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0.75rem 1.5rem 1.5rem;
+    align-items: flex-start;
+}
+
+.contenido {
+    flex: 1;
+    min-width: 0;
+    max-height: calc(100vh - 110px);
+    overflow-y: auto;
+}
+
+.sidebarSticky {
+    position: sticky;
+    top: 100px;
+    align-self: flex-start;
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+}
+
 .chip {
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
-    background: var(--bg);
-    box-shadow: var(--shadow-neu-sm);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
     border-radius: var(--radius-full);
     padding: 0.3rem 0.75rem;
     font-size: 0.82rem;
-    font-weight: 600;
+    font-weight: 500;
     color: var(--text);
 }
 
-/* Botón "×" dentro del chip para quitarlo */
 .chipQuitar {
     background: none;
     border: none;
@@ -163,7 +398,6 @@
     color: var(--danger);
 }
 
-/* Botón "Limpiar todo" al final de la fila de chips */
 .chipLimpiarTodo {
     background: none;
     border: none;
@@ -180,35 +414,34 @@
     text-decoration: underline;
 }
 
-/* ------ Layout principal: sidebar + contenido ------ */
-
 .layout {
+    flex: 1;
+    min-height: 0;
     display: flex;
-    align-items: flex-start;
     gap: 2rem;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0.75rem 1.5rem 1.5rem;
+    width: 100%;
 }
 
-/* Columna derecha: contiene la grilla y la paginación */
 .contenido {
     flex: 1;
-    min-width: 0;             /* permite que se achique sin desbordarse */
+    min-width: 0;
+    min-height: 0;
+    overflow-y: auto;
 }
-
-/* ------ Grilla de productos ------ */
 
 .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 1.75rem;
+    gap: 1.5rem;
 }
 
-/* Vista lista: una sola columna de filas horizontales */
 .gridLista {
     grid-template-columns: 1fr;
     gap: 1rem;
 }
-
-/* ------ Tarjeta de producto ------ */
 
 .card {
     display: block;
@@ -217,16 +450,16 @@
     background: var(--bg-card);
     border-radius: var(--radius-lg);
     overflow: hidden;
-    box-shadow: var(--shadow-neu);
+    border: 1px solid var(--border);
     transition: var(--transition);
 }
 
 .card:hover {
-    box-shadow: var(--shadow-neu-lg);
-    transform: translateY(-4px);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 1px var(--primary), 0 8px 24px rgba(234, 88, 12, 0.1);
+    transform: translateY(-3px);
 }
 
-/* Variante lista: imagen a la izquierda, contenido a la derecha */
 .cardLista {
     display: flex;
     flex-direction: row;
@@ -234,7 +467,6 @@
 }
 
 .cardLista:hover {
-    box-shadow: var(--shadow-neu-lg);
     transform: none;
 }
 
@@ -242,15 +474,13 @@
     width: 100%;
     height: 190px;
     overflow: hidden;
-    background: var(--bg);
-    box-shadow: var(--shadow-inset-sm);
-    flex-shrink: 0;        /* en lista no se achica la imagen */
+    background: var(--bg-dark);
+    flex-shrink: 0;
 }
 
-/* En modo lista la imagen ocupa un ancho fijo a la izquierda */
 .cardLista .imgWrap {
     width: 160px;
-    height: auto;          /* la altura la define el contenido del lado derecho */
+    height: auto;
     min-height: 130px;
 }
 
@@ -258,14 +488,13 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.35s ease;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .card:hover .img {
-    transform: scale(1.04);
+    transform: scale(1.06);
 }
 
-/* En lista no hacemos zoom a la imagen para que no se corte raro */
 .cardLista:hover .img {
     transform: none;
 }
@@ -284,7 +513,6 @@
     padding: 1.25rem;
 }
 
-/* En lista el cuerpo ocupa el espacio restante y centra el contenido verticalmente */
 .cardLista .body {
     flex: 1;
     display: flex;
@@ -294,9 +522,9 @@
 }
 
 .nombre {
-    font-family: 'Nunito', sans-serif;
+    font-family: 'Hind', sans-serif;
     font-size: 1.05rem;
-    font-weight: 700;
+    font-weight: 600;
     margin-bottom: 0.5rem;
     color: var(--text);
 }
@@ -312,29 +540,27 @@
     line-height: 1.5;
 }
 
-/* En lista mostramos la descripción completa (hasta 3 líneas) */
 .cardLista .desc {
     -webkit-line-clamp: 3;
 }
 
 .precio {
-    font-family: 'Nunito', sans-serif;
-    font-size: 1.3rem;
-    font-weight: 700;
+    font-family: 'Anton', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 400;
     color: var(--primary);
     display: block;
     margin-bottom: 0.3rem;
+    letter-spacing: -0.02em;
 }
 
 .categoria {
-    font-size: 0.78rem;
+    font-size: 0.75rem;
     color: var(--text-faint);
     text-transform: uppercase;
-    letter-spacing: 0.06em;
-    font-weight: 600;
+    letter-spacing: 0.08em;
+    font-weight: 500;
 }
-
-/* ------ Estado vacío ------ */
 
 .empty {
     grid-column: 1 / -1;
@@ -342,30 +568,60 @@
     color: var(--text-muted);
     padding: 3rem;
     border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-inset);
+    border: 1px dashed var(--border);
 }
 
-/* ------ Responsive: en mobile el sidebar va arriba ------ */
+@keyframes fadeSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
 @media (max-width: 768px) {
+    .heroTitle {
+        font-size: clamp(3rem, 15vw, 5rem);
+    }
+
+    .heroOrb1 {
+        width: 300px;
+        height: 300px;
+        right: -100px;
+    }
+
+    .heroOrb2 {
+        width: 200px;
+        height: 200px;
+    }
+
     .layout {
         flex-direction: column;
     }
 
-    /* El sidebar ocupa todo el ancho en mobile */
     .layout > :first-child {
         width: 100% !important;
-        position: static;        /* quitamos el sticky en mobile */
+        position: static;
     }
 
-    /* En mobile la vista lista usa imagen más chica */
     .cardLista .imgWrap {
         width: 110px;
         min-height: 100px;
     }
 
-    /* Ocultamos el toggle de vista en pantallas muy chicas */
     .toggleVista {
         display: none;
+    }
+
+    .scrollIndicator {
+        bottom: 1.5rem;
+    }
+
+    .loginBtn {
+        top: 1rem;
+        right: 1rem;
     }
 }

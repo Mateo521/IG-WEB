@@ -1,30 +1,24 @@
-/* =============================================
-   PAGINACIÓN — Neumorphism
-   ============================================= */
-
 .nav {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 0.4rem;
+    gap: 0.35rem;
     margin-top: 2.5rem;
     padding-bottom: 2rem;
-    flex-wrap: wrap;          /* por si hay muchas páginas en pantallas pequeñas */
+    flex-wrap: wrap;
 }
 
-/* Botón base (previo, siguiente y numerados) */
 .btn {
     min-width: 38px;
     height: 38px;
     padding: 0 0.55rem;
-    border: none;
-    border-radius: var(--radius-sm);
-    background: var(--bg);
-    box-shadow: var(--shadow-neu-sm);
-    color: var(--text);
-    font-size: 1rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-card);
+    color: var(--text-muted);
+    font-size: 0.9rem;
     font-family: inherit;
-    font-weight: 600;
+    font-weight: 500;
     cursor: pointer;
     transition: var(--transition);
     display: flex;
@@ -33,26 +27,24 @@
 }
 
 .btn:hover:not(:disabled) {
-    box-shadow: var(--shadow-neu);
+    border-color: var(--primary);
     color: var(--primary);
 }
 
 .btn:disabled {
     opacity: 0.35;
     cursor: not-allowed;
-    box-shadow: none;
 }
 
-/* Página activa: efecto hundido para indicar que ya estás ahí */
 .activo {
-    box-shadow: var(--shadow-inset-sm);
-    color: var(--primary);
-    font-weight: 700;
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+    font-weight: 600;
     cursor: default;
     pointer-events: none;
 }
 
-/* Separador "…" entre rangos de páginas */
 .sep {
     color: var(--text-faint);
     font-size: 0.9rem;
