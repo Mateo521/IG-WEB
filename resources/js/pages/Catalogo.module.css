@@ -1,41 +1,41 @@
 .page {
-    padding: 0;
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
 }
 
 /* ───── HERO 100vh ───── */
 
 .heroBg {
-    position: fixed;
+    position: absolute;
     inset: 0;
     z-index: 0;
     height: 100vh;
-    min-height: 600px;
     overflow: hidden;
     pointer-events: none;
-    background:
-        radial-gradient(ellipse 80% 60% at 20% 50%, rgba(234,88,12,0.05) 0%, transparent 70%),
-        radial-gradient(ellipse 60% 40% at 80% 30%, rgba(234,88,12,0.03) 0%, transparent 60%),
-        linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
+    background: #000000;
 }
 
 .hero {
-    position: relative;
+    position: absolute;
+    inset: 0;
+    z-index: 1;
     height: 100vh;
-    min-height: 600px;
     display: flex;
     align-items: center;
+    overflow: hidden;
 }
 
-/* Floating login button */
 .loginBtn {
-    position: absolute;
+    position: fixed;
     top: 1.5rem;
     right: 1.5rem;
-    z-index: 10;
+    z-index: 100;
     padding: 0.5rem 1.25rem;
-    background: var(--primary);
-    color: white;
-    border: none;
+    background: var(--bg-card);
+    color: var(--text);
+    border: 1px solid var(--border);
     border-radius: var(--radius);
     font-size: 0.88rem;
     font-weight: 600;
@@ -49,8 +49,8 @@
 }
 
 .loginBtn:hover {
-    background: var(--primary-hover);
-    transform: translateY(-1px);
+    border-color: var(--text);
+    background: var(--primary-light);
 }
 
 .loginBtn svg {
@@ -58,181 +58,63 @@
     height: 14px;
 }
 
-.heroContent {
-    position: relative;
-    z-index: 2;
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 0 1.5rem;
-    width: 100%;
-}
+/* ───── Scroll to catalog button ───── */
 
-.heroLabel {
-    font-family: 'Hind', sans-serif;
-    font-size: 1rem;
-    font-weight: 500;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 1rem;
-    opacity: 0;
-    animation: fadeSlideUp 0.8s ease 0.2s forwards;
-}
-
-/* ───── Typing animation ───── */
-
-.heroTitle {
-    font-family: 'Anton', sans-serif;
-    font-size: clamp(4rem, 12vw, 12rem);
-    font-weight: 400;
-    color: var(--text);
-    letter-spacing: -0.02em;
-    line-height: 0.92;
-    margin-bottom: 0.3em;
-    text-transform: uppercase;
-    min-height: 1.2em;
-}
-
-.heroTyping {
-    display: inline;
-}
-
-.heroAccent {
-    color: var(--primary);
-}
-
-.cursor {
-    display: inline-block;
-    width: 0.08em;
-    height: 0.85em;
-    background: var(--primary);
-    margin-left: 0.05em;
-    vertical-align: baseline;
-    animation: blink 0.8s step-end infinite;
-}
-
-.cursorDone {
-    animation: blink 1.5s step-end infinite;
-    opacity: 0;
-}
-
-@keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
-}
-
-.heroSub {
-    font-family: 'Hind', sans-serif;
-    font-size: clamp(1rem, 2vw, 1.3rem);
-    color: var(--text-muted);
-    max-width: 520px;
-    font-weight: 300;
-    line-height: 1.6;
-    opacity: 0;
-    animation: fadeSlideUp 0.8s ease 0.8s forwards;
-}
-
-/* ───── Arrow scroll indicator ───── */
-
-.scrollIndicator {
+.scrollBtn {
     position: absolute;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 2;
-    display: flex;
-    flex-direction: column;
+    bottom: 5.5rem;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: fit-content;
+    z-index: 10;
+    display: inline-flex;
     align-items: center;
-    gap: 0.35rem;
-    background: none;
-    border: none;
+    gap: 0.5rem;
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-full);
+    padding: 0.65rem 1.5rem;
+    font-family: 'Hind', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
     cursor: pointer;
-    padding: 0.5rem;
+    transition: var(--transition);
     opacity: 0;
     animation: fadeSlideUp 0.8s ease 1.2s forwards;
 }
 
-.scrollArrow {
-    width: 24px;
-    height: 24px;
-    color: var(--text-faint);
-    animation: arrowBounce 2s ease-in-out infinite;
+.scrollBtn:hover {
+    background: var(--bg-card);
+    border-color: var(--text);
 }
 
-.scrollArrow:nth-child(2) {
-    margin-top: -10px;
-    animation-delay: 0.25s;
-    opacity: 0.6;
+.scrollBtn svg {
+    transition: transform 0.2s ease;
 }
 
-.scrollArrow:nth-child(3) {
-    margin-top: -10px;
-    animation-delay: 0.5s;
-    opacity: 0.3;
+.scrollBtn:hover svg {
+    transform: translateY(2px);
 }
 
-@keyframes arrowBounce {
-    0%, 100% { transform: translateY(0); opacity: 0.3; }
-    50% { transform: translateY(6px); opacity: 1; }
-}
-
-/* ───── Decorative orbs ───── */
-
-.heroOrb {
-    position: absolute;
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 0;
-}
-
-.heroOrb1 {
-    width: 600px;
-    height: 600px;
-    right: -200px;
-    top: -100px;
-    background: radial-gradient(circle, rgba(234,88,12,0.06) 0%, transparent 70%);
-    animation: orbFloat 20s ease-in-out infinite;
-}
-
-.heroOrb2 {
-    width: 400px;
-    height: 400px;
-    left: -100px;
-    bottom: -100px;
-    background: radial-gradient(circle, rgba(234,88,12,0.04) 0%, transparent 70%);
-    animation: orbFloat 25s ease-in-out infinite reverse;
-}
-
-@keyframes orbFloat {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    33% { transform: translate(30px, -30px) scale(1.05); }
-    66% { transform: translate(-20px, 20px) scale(0.95); }
-}
-
-/* ───── Floating video background ───── */
-
-.floatingVideoWrapper {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-    pointer-events: none;
-    z-index: 1;
-}
-
-.floatingVideoInner {
-    width: 100%;
-    height: 100%;
-    will-change: transform;
-}
-
-/* ───── Content section ───── */
+/* ───── Content section (slides up over hero) ───── */
 
 .contentSection {
-    position: relative;
+    position: absolute;
+    inset: 0;
     z-index: 2;
-    background: transparent;
-    padding-top: 1rem;
-    min-height: 100vh;
+    background: var(--bg);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(100%);
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.contentSectionVisible {
+    transform: translateY(0);
 }
 
 .topBar {
@@ -249,6 +131,7 @@
     gap: 1rem;
     flex-wrap: wrap;
     background: transparent;
+    flex-shrink: 0;
 }
 
 .controles {
@@ -286,8 +169,8 @@
 }
 
 .btnVistaActivo {
-    background: var(--primary);
-    color: white;
+    background: var(--text);
+    color: var(--bg);
 }
 
 .title {
@@ -312,7 +195,7 @@
     background: var(--bg-card);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    color: var(--primary);
+    color: var(--text);
     font-size: 0.88rem;
     font-weight: 500;
     font-family: 'Hind', sans-serif;
@@ -322,7 +205,7 @@
 }
 
 .btnPdf:hover:not(:disabled) {
-    border-color: var(--primary);
+    border-color: var(--text);
     background: var(--primary-light);
 }
 
@@ -342,22 +225,45 @@
     gap: 0.5rem;
     margin-top: 0.75rem;
     margin-bottom: 0.5rem;
+    flex-shrink: 0;
 }
 
 .layout {
+    flex: 1;
+    min-height: 0;
     display: flex;
     gap: 2rem;
     max-width: 1280px;
     margin: 0 auto;
-    padding: 0.75rem 1.5rem 1.5rem;
-    align-items: flex-start;
+    padding: 0.75rem 1.5rem 0;
+    width: 100%;
 }
 
 .contenido {
     flex: 1;
     min-width: 0;
-    max-height: calc(100vh - 110px);
+    min-height: 0;
+    max-height: 100%;
     overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #FAFAFA #18181B;
+}
+
+.contenido::-webkit-scrollbar {
+    width: 6px;
+}
+
+.contenido::-webkit-scrollbar-track {
+    background: #18181B;
+}
+
+.contenido::-webkit-scrollbar-thumb {
+    background: #52525B;
+    border-radius: 3px;
+}
+
+.contenido::-webkit-scrollbar-thumb:hover {
+    background: #FAFAFA;
 }
 
 .sidebarSticky {
@@ -367,6 +273,8 @@
     max-height: calc(100vh - 120px);
     overflow-y: auto;
 }
+
+/* ───── Chips ───── */
 
 .chip {
     display: inline-flex;
@@ -404,32 +312,21 @@
     cursor: pointer;
     font-size: 0.8rem;
     font-weight: 600;
-    color: var(--primary);
+    color: var(--text-muted);
     font-family: inherit;
     padding: 0.25rem 0.5rem;
+    transition: var(--transition);
 }
 
 .chipLimpiarTodo:hover {
-    color: var(--primary-hover);
+    color: var(--text);
     text-decoration: underline;
 }
 
-.layout {
-    flex: 1;
-    min-height: 0;
-    display: flex;
-    gap: 2rem;
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 0.75rem 1.5rem 1.5rem;
-    width: 100%;
-}
+/* ───── Product grid ───── */
 
-.contenido {
-    flex: 1;
-    min-width: 0;
-    min-height: 0;
-    overflow-y: auto;
+.gridWrapper {
+    position: relative;
 }
 
 .grid {
@@ -443,6 +340,21 @@
     gap: 1rem;
 }
 
+.gridSkeleton {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.5rem;
+    background: var(--bg);
+    min-height: 400px;
+}
+
+.gridListaSkeleton {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
 .card {
     display: block;
     text-decoration: none;
@@ -452,11 +364,12 @@
     overflow: hidden;
     border: 1px solid var(--border);
     transition: var(--transition);
+    cursor: pointer;
 }
 
 .card:hover {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 1px var(--primary), 0 8px 24px rgba(234, 88, 12, 0.1);
+    border-color: var(--text);
+    box-shadow: 0 0 0 1px var(--text), 0 8px 24px rgba(0, 0, 0, 0.4);
     transform: translateY(-3px);
 }
 
@@ -548,7 +461,7 @@
     font-family: 'Anton', sans-serif;
     font-size: 1.4rem;
     font-weight: 400;
-    color: var(--primary);
+    color: var(--text);
     display: block;
     margin-bottom: 0.3rem;
     letter-spacing: -0.02em;
@@ -583,21 +496,6 @@
 }
 
 @media (max-width: 768px) {
-    .heroTitle {
-        font-size: clamp(3rem, 15vw, 5rem);
-    }
-
-    .heroOrb1 {
-        width: 300px;
-        height: 300px;
-        right: -100px;
-    }
-
-    .heroOrb2 {
-        width: 200px;
-        height: 200px;
-    }
-
     .layout {
         flex-direction: column;
     }
@@ -614,10 +512,6 @@
 
     .toggleVista {
         display: none;
-    }
-
-    .scrollIndicator {
-        bottom: 1.5rem;
     }
 
     .loginBtn {

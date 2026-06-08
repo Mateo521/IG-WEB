@@ -6,7 +6,7 @@ import api from '../services/api';
 import SidebarFiltros from '../components/SidebarFiltros/SidebarFiltros';
 import Paginacion from '../components/Paginacion/Paginacion';
 import ProductoCardSkeleton from '../components/ProductoCardSkeleton/ProductoCardSkeleton';
-import { FloatingCubes } from '../remotion/FloatingCubes';
+import ASCIIText from '../components/ASCIIText/ASCIIText';
 import styles from './Catalogo.module.css';
 
 const FILTROS_VACIOS = {
@@ -19,31 +19,6 @@ const FILTROS_VACIOS = {
     sort:         'reciente',
 };
 
-function useTyping(text, speed = 80, startDelay = 400) {
-    const [displayed, setDisplayed] = useState('');
-    const [done, setDone] = useState(false);
-
-    useEffect(() => {
-        setDisplayed('');
-        setDone(false);
-        let i = 0;
-        const timeout = setTimeout(() => {
-            const interval = setInterval(() => {
-                i++;
-                setDisplayed(text.slice(0, i));
-                if (i >= text.length) {
-                    clearInterval(interval);
-                    setDone(true);
-                }
-            }, speed);
-            return () => clearInterval(interval);
-        }, startDelay);
-        return () => clearTimeout(timeout);
-    }, [text, speed, startDelay]);
-
-    return [displayed, done];
-}
-
 function Catalogo() {
     const [filtros, setFiltros]   = useState(FILTROS_VACIOS);
     const [pagina,  setPagina]    = useState(1);
@@ -54,44 +29,10 @@ function Catalogo() {
     const [vista, setVista] = useState(
         () => localStorage.getItem('catalogo_vista') || 'grilla'
     );
+    const [catalogoVisible, setCatalogoVisible] = useState(false);
 
     const heroRef = useRef(null);
-    const floatingRef = useRef(null);
-    const heroContentRef = useRef(null);
     const contenidoRef = useRef(null);
-
-    useEffect(() => {
-        const el = floatingRef.current;
-        if (!el) return;
-        const onScroll = () => {
-            const rect = el.getBoundingClientRect();
-            const viewportMid = window.innerHeight / 2;
-            const elMid = rect.top + rect.height / 2;
-            const offset = (elMid - viewportMid) * 0.08;
-            el.style.transform = `translateY(${offset}px)`;
-        };
-        window.addEventListener('scroll', onScroll, { passive: true });
-        onScroll();
-        return () => window.removeEventListener('scroll', onScroll);
-    }, []);
-
-    useEffect(() => {
-        const hero = heroRef.current;
-        const content = heroContentRef.current;
-        if (!hero || !content) return;
-        const onScroll = () => {
-            const heroRect = hero.getBoundingClientRect();
-            const progress = Math.max(0, Math.min(1, -heroRect.top / heroRect.height));
-            const translateY = progress * 80;
-            content.style.transform = `translateY(${-translateY}px)`;
-            content.style.opacity = Math.max(0.7, 1 - progress * 0.3);
-        };
-        window.addEventListener('scroll', onScroll, { passive: true });
-        onScroll();
-        return () => window.removeEventListener('scroll', onScroll);
-    }, []);
-
-    const [typedText, typingDone] = useTyping('POLI-RUBROS', 100, 500);
 
     const handleCambioVista = (nuevaVista) => {
         setVista(nuevaVista);
@@ -103,6 +44,7 @@ function Catalogo() {
     const [categorias, setCategorias] = useState([]);
 
     const timerDebounce = useRef(null);
+    const tiempoCargaRef = useRef(null);
 
     useEffect(() => {
         api.get('/rubros').then(r    => setRubros(r.data));
@@ -112,6 +54,7 @@ function Catalogo() {
 
     const fetchProductos = useCallback(async (f, p) => {
         setCargando(true);
+        if (!tiempoCargaRef.current) tiempoCargaRef.current = Date.now();
         try {
             const params = { page: p, por_pagina: 18 };
             if (f.search)       params.search       = f.search;
@@ -132,7 +75,10 @@ function Catalogo() {
         } catch (error) {
             console.error('Error al cargar productos:', error);
         } finally {
-            setCargando(false);
+            const elapsed = Date.now() - tiempoCargaRef.current;
+            const restante = Math.max(0, 500 - elapsed);
+            tiempoCargaRef.current = null;
+            setTimeout(() => setCargando(false), restante);
         }
     }, []);
 
@@ -156,13 +102,9 @@ function Catalogo() {
 
     const handleCambioPagina = (nuevaPagina) => {
         setPagina(nuevaPagina);
-        const el = document.getElementById('catalogo-content');
-        if (el) {
-            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            setTimeout(() => {
-                if (contenidoRef.current) contenidoRef.current.scrollTo({ top: 0, behavior: 'smooth' });
-            }, 120);
-        }
+        setCargando(true);
+        tiempoCargaRef.current = Date.now();
+        if (contenidoRef.current) contenidoRef.current.scrollTop = 0;
     };
 
     const handleDescargarPdf = async () => {
@@ -187,18 +129,19 @@ function Catalogo() {
 
             doc.setFont('helvetica', 'bold');
             doc.setFontSize(20);
-            doc.setTextColor(234, 88, 12);
-            doc.text('POLI-RUBROS', 14, 18);
+            doc.setTextColor(250, 250, 250);
+            doc.text('VITRIO', 14, 18);
 
             doc.setFont('helvetica', 'normal');
             doc.setFontSize(11);
-            doc.setTextColor(100, 116, 139);
+            doc.setTextColor(161, 161, 170);
             doc.text('Catálogo de Productos', 14, 25);
 
             doc.setFontSize(9);
+            doc.setTextColor(82, 82, 91);
             doc.text(fechaHoy, anchoPagina - 14, 18, { align: 'right' });
 
-            doc.setDrawColor(234, 88, 12);
+            doc.setDrawColor(250, 250, 250);
             doc.setLineWidth(0.5);
             doc.line(14, 29, anchoPagina - 14, 29);
 
@@ -212,7 +155,7 @@ function Catalogo() {
 
             if (filtrosTexto.length > 0) {
                 doc.setFontSize(8);
-                doc.setTextColor(148, 163, 184);
+                doc.setTextColor(161, 161, 170);
                 doc.text('Filtros aplicados: ' + filtrosTexto.join('  ·  '), 14, posY);
                 posY += 6;
             }
@@ -231,26 +174,26 @@ function Catalogo() {
                     2: { cellWidth: 28, halign: 'right' },
                 },
                 headStyles: {
-                    fillColor:  [234, 88, 12],
-                    textColor:  [255, 255, 255],
+                    fillColor:  [250, 250, 250],
+                    textColor:  [0, 0, 0],
                     fontStyle:  'bold',
                     fontSize:   9,
                 },
                 bodyStyles: {
                     fontSize:   8,
-                    textColor:  [15, 23, 42],
-                    lineColor:  [226, 232, 240],
+                    textColor:  [250, 250, 250],
+                    lineColor:  [39, 39, 42],
                     lineWidth:  0.1,
                 },
                 alternateRowStyles: {
-                    fillColor: [248, 250, 252],
+                    fillColor: [24, 24, 27],
                 },
                 margin: { left: 14, right: 14 },
                 didDrawPage: (data) => {
                     const totalPaginas = doc.internal.getNumberOfPages();
                     const paginaActual = doc.internal.getCurrentPageInfo().pageNumber;
                     doc.setFontSize(8);
-                    doc.setTextColor(148, 163, 184);
+                    doc.setTextColor(82, 82, 91);
                     doc.text(
                         `Pág. ${paginaActual} de ${totalPaginas}`,
                         anchoPagina - 14,
@@ -268,7 +211,7 @@ function Catalogo() {
             });
 
             const fechaArchivo = new Date().toISOString().split('T')[0];
-            doc.save(`catalogo-poli-rubros-${fechaArchivo}.pdf`);
+            doc.save(`catalogo-vitrio-${fechaArchivo}.pdf`);
         } catch (error) {
             console.error('Error al generar el PDF:', error);
             alert('No se pudo generar el catálogo PDF.');
@@ -292,63 +235,46 @@ function Catalogo() {
         chips.push({ key: 'precio_max',   label: `Hasta $${filtros.precio_max}` });
 
     const scrollToContent = () => {
-        const el = document.getElementById('catalogo-content');
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
+        setCatalogoVisible(true);
     };
 
     return (
         <div className={styles.page}>
+            <Link to="/login" className={styles.loginBtn}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+                    <polyline points="10 17 15 12 10 7"/>
+                    <line x1="15" y1="12" x2="3" y2="12"/>
+                </svg>
+                Iniciar Sesión
+            </Link>
+
             <section ref={heroRef} className={styles.hero}>
                 <div className={styles.heroBg}>
-                    <div className={styles.heroOrb1} />
-                    <div className={styles.heroOrb2} />
-                    <div className={styles.floatingVideoWrapper}>
-                        <div ref={floatingRef} className={styles.floatingVideoInner}>
-                            <FloatingCubes />
-                        </div>
-                    </div>
-                </div>
-
-                <Link to="/login" className={styles.loginBtn}>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
-                        <polyline points="10 17 15 12 10 7"/>
-                        <line x1="15" y1="12" x2="3" y2="12"/>
-                    </svg>
-                    Iniciar Sesión
-                </Link>
-
-                <div ref={heroContentRef} className={styles.heroContent}>
-                    <p className={styles.heroLabel}>Catálogo</p>
-                    <h1 className={styles.heroTitle}>
-                        <span className={styles.heroTyping}>
-                            {typedText}
-                            <span className={`${styles.cursor} ${typingDone ? styles.cursorDone : ''}`} />
-                        </span>
-                    </h1>
-                    <p className={styles.heroSub}>
-                        Marroquinería, vitrofusión, textil, carpintería y mucho más.
-                    </p>
+                    <ASCIIText
+                        text="VITRIO"
+                        paused={catalogoVisible}
+                        enableWaves={false}
+                        asciiFontSize={8}
+                        textFontSize={200}
+                        textColor="#ffffff"
+                        planeBaseHeight={8}
+                    />
                 </div>
 
                 <button
-                    className={styles.scrollIndicator}
+                    className={styles.scrollBtn}
                     onClick={scrollToContent}
-                    aria-label="Desplazarse al contenido"
+                    aria-label="Ver catálogo"
                 >
-                    <svg className={styles.scrollArrow} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <polyline points="6 9 12 15 18 9"/>
-                    </svg>
-                    <svg className={styles.scrollArrow} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <polyline points="6 9 12 15 18 9"/>
-                    </svg>
-                    <svg className={styles.scrollArrow} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    VER CATÁLOGO
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <polyline points="6 9 12 15 18 9"/>
                     </svg>
                 </button>
             </section>
 
-            <div className={styles.contentSection} id="catalogo-content">
+            <div className={`${styles.contentSection} ${catalogoVisible ? styles.contentSectionVisible : ''}`}>
                 <div className={styles.topBar}>
                     <div>
                         <h1 className={styles.title}>Catálogo de Productos</h1>
@@ -431,45 +357,51 @@ function Catalogo() {
                     </div>
 
                     <div ref={contenidoRef} className={styles.contenido}>
-                        <div className={`${styles.grid} ${vista === 'lista' ? styles.gridLista : ''}`}>
-                            {cargando && <ProductoCardSkeleton cantidad={12} />}
+                        <div className={styles.gridWrapper}>
+                            <div className={`${styles.grid} ${vista === 'lista' ? styles.gridLista : ''}`}>
+                                {productos.map((p) => (
+                                    <Link
+                                        key={p.id}
+                                        to={`/producto/${p.id}`}
+                                        className={`${styles.card} ${vista === 'lista' ? styles.cardLista : ''}`}
+                                    >
+                                        <div className={styles.imgWrap}>
+                                            {p.rutaImg ? (
+                                                <img
+                                                    src={`/storage/${p.rutaImg}`}
+                                                    alt={p.nombreProducto}
+                                                    className={styles.img}
+                                                />
+                                            ) : (
+                                                <div className={styles.noImg}>Sin imagen</div>
+                                            )}
+                                        </div>
+                                        <div className={styles.body}>
+                                            <h2 className={styles.nombre}>{p.nombreProducto}</h2>
+                                            <p className={styles.desc}>{p.descripcion}</p>
+                                            <span className={styles.precio}>
+                                                ${Number(p.precio).toFixed(2)}
+                                            </span>
+                                            <span className={styles.categoria}>
+                                                {p.categorias?.map(c => c.nombreCategoria).join(', ')
+                                                    || p.rubro?.nombreRubro
+                                                    || ''}
+                                            </span>
+                                        </div>
+                                    </Link>
+                                ))}
 
-                            {!cargando && productos.map((p) => (
-                                <Link
-                                    key={p.id}
-                                    to={`/producto/${p.id}`}
-                                    className={`${styles.card} ${vista === 'lista' ? styles.cardLista : ''}`}
-                                >
-                                    <div className={styles.imgWrap}>
-                                        {p.rutaImg ? (
-                                            <img
-                                                src={`/storage/${p.rutaImg}`}
-                                                alt={p.nombreProducto}
-                                                className={styles.img}
-                                            />
-                                        ) : (
-                                            <div className={styles.noImg}>Sin imagen</div>
-                                        )}
-                                    </div>
-                                    <div className={styles.body}>
-                                        <h2 className={styles.nombre}>{p.nombreProducto}</h2>
-                                        <p className={styles.desc}>{p.descripcion}</p>
-                                        <span className={styles.precio}>
-                                            ${Number(p.precio).toFixed(2)}
-                                        </span>
-                                        <span className={styles.categoria}>
-                                            {p.categorias?.map(c => c.nombreCategoria).join(', ')
-                                                || p.rubro?.nombreRubro
-                                                || ''}
-                                        </span>
-                                    </div>
-                                </Link>
-                            ))}
+                                {!cargando && productos.length === 0 && (
+                                    <p className={styles.empty}>
+                                        No se encontraron productos con los filtros aplicados.
+                                    </p>
+                                )}
+                            </div>
 
-                            {!cargando && productos.length === 0 && (
-                                <p className={styles.empty}>
-                                    No se encontraron productos con los filtros aplicados.
-                                </p>
+                            {cargando && (
+                                <div className={`${styles.gridSkeleton} ${vista === 'lista' ? styles.gridListaSkeleton : ''}`}>
+                                    <ProductoCardSkeleton cantidad={12} />
+                                </div>
                             )}
                         </div>
 

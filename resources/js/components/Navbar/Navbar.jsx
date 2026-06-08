@@ -7,6 +7,7 @@ function Navbar() {
     const navigate = useNavigate();
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     const [abierto, setAbierto] = useState(false);
+    const [consultasNuevas, setConsultasNuevas] = useState(0);
     const refMenu = useRef(null);
 
     useEffect(() => {
@@ -19,6 +20,21 @@ function Navbar() {
         return () => document.removeEventListener('mousedown', cerrar);
     }, []);
 
+    useEffect(() => {
+        const fetchNuevas = () => {
+            api.get('/stats')
+                .then(r => setConsultasNuevas(r.data.consultas_nuevas ?? 0))
+                .catch(() => {});
+        };
+        fetchNuevas();
+        const intervalo = setInterval(fetchNuevas, 30000);
+        window.addEventListener('consultas-actualizadas', fetchNuevas);
+        return () => {
+            clearInterval(intervalo);
+            window.removeEventListener('consultas-actualizadas', fetchNuevas);
+        };
+    }, []);
+
     const handleLogout = async () => {
         try { await api.post('/logout'); } catch { /* ignore */ }
         localStorage.removeItem('token');
@@ -29,12 +45,15 @@ function Navbar() {
     return (
         <nav className={styles.nav}>
             <div className={styles.inner}>
-                <Link to="/admin/dashboard" className={styles.brand}>POLI-RUBRO</Link>
+                <Link to="/admin/dashboard" className={styles.brand}>VITRIO</Link>
                 <div className={styles.links}>
                     <Link to="/admin/rubros" className={styles.link}>Rubros</Link>
                     <Link to="/admin/subrubros" className={styles.link}>Subrubros</Link>
                     <Link to="/admin/categorias" className={styles.link}>Categorías</Link>
-                    <Link to="/admin/consultas" className={styles.link}>Consultas</Link>
+                    <Link to="/admin/consultas" className={styles.link}>
+                        Consultas
+                        {consultasNuevas > 0 && <span className={styles.notifDot} />}
+                    </Link>
                     <Link to="/admin/productos" className={styles.link}>Productos</Link>
                 </div>
                 <div className={styles.right} ref={refMenu}>

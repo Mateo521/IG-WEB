@@ -12,11 +12,18 @@
 }
 
 .title {
-    font-family: 'Anton', sans-serif;
-    font-size: 1.6rem;
-    font-weight: 400;
+    font-family: var(--font-sans);
+    font-size: 1.5rem;
+    font-weight: 600;
     color: var(--text);
-    letter-spacing: -0.01em;
+    letter-spacing: -0.02em;
+}
+
+.tableContainer {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: auto;
+    max-height: 65vh;
 }
 
 .table {
@@ -24,9 +31,6 @@
     border-collapse: separate;
     border-spacing: 0;
     background: var(--bg-card);
-    border-radius: var(--radius-lg);
-    border: 1px solid var(--border);
-    overflow: hidden;
 }
 
 .table th,
@@ -37,20 +41,24 @@
 }
 
 .table th {
-    background: var(--bg-dark);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: #fff;
     font-weight: 600;
     font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.07em;
-    color: var(--text-muted);
+    color: #111;
 }
 
 .table tbody tr {
     transition: var(--transition);
 }
 
-.table tbody tr:hover {
+.table tbody tr:hover td {
     background: var(--bg-dark);
+    box-shadow: inset 0 0 0 1px var(--primary);
 }
 
 .table tbody tr:last-child td {
@@ -58,7 +66,7 @@
 }
 
 .mensaje {
-    max-width: 300px;
+    max-width: 260px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -70,8 +78,29 @@
     align-items: center;
 }
 
+.btnVer {
+    padding: 0.3rem 0.65rem;
+    background: transparent;
+    border: 1px solid var(--text-faint);
+    color: var(--text-muted);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 600;
+    font-family: var(--font-sans);
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+}
+
+.btnVer:hover {
+    border-color: var(--text);
+    color: var(--text);
+    background: var(--bg-dark);
+}
+
 .btnDelete {
-    padding: 0.3rem 0.85rem;
+    padding: 0.3rem 0.65rem;
     background: transparent;
     border: 1px solid var(--danger);
     color: var(--danger);
@@ -79,16 +108,107 @@
     cursor: pointer;
     font-size: 0.78rem;
     font-weight: 600;
-    font-family: 'Hind', sans-serif;
+    font-family: var(--font-sans);
     transition: var(--transition);
+    display: flex;
+    align-items: center;
 }
 
 .btnDelete:hover {
     background: var(--danger-bg);
 }
 
+.modalContent {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.modalMeta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.modalField {
+    display: flex;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--text);
+}
+
+.modalLabel {
+    font-weight: 600;
+    color: var(--text-muted);
+    min-width: 70px;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.modalMensaje {
+    font-size: 0.9rem;
+    color: var(--text);
+    line-height: 1.7;
+    white-space: pre-wrap;
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 0.75rem;
+    background: var(--bg-dark);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+}
+
+.btnResponder {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.4rem;
+    background: var(--primary);
+    color: var(--bg);
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 0.88rem;
+    font-weight: 600;
+    font-family: var(--font-sans);
+    text-decoration: none;
+    transition: var(--transition);
+    align-self: center;
+}
+
+.mensajeSection {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.mensajeLabel {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+}
+
+.btnResponder:hover {
+    background: var(--primary-hover);
+}
+
 .empty {
     text-align: center;
     color: var(--text-muted);
     padding: 2.5rem !important;
+}
+
+.noLeida {
+    background: rgba(255, 255, 255, 0.07) !important;
+    border-left: 3px solid var(--primary);
+}
+
+.noLeidaText {
+    font-weight: 700;
+    color: #fff;
 }

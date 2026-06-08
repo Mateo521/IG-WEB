@@ -1,29 +1,29 @@
-@import url('https://fonts.googleapis.com/css2?family=Anton&family=Hind:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
 
 :root {
-    --bg:             #fafafa;
-    --bg-card:        #ffffff;
-    --bg-dark:        #f1f5f9;
+    --bg:             #0A0A0B;
+    --bg-card:        #2A2A30;
+    --bg-dark:        #09090B;
 
-    --text:           #0f172a;
-    --text-muted:     #64748b;
-    --text-faint:     #94a3b8;
+    --text:           #FAFAFA;
+    --text-muted:     #A1A1AA;
+    --text-faint:     #52525B;
 
-    --primary:        #ea580c;
-    --primary-hover:  #c2410c;
-    --primary-light:  #fff7ed;
-    --primary-rgb:    234, 88, 12;
+    --primary:        #FAFAFA;
+    --primary-hover:  #D4D4D8;
+    --primary-light:  #27272A;
+    --primary-rgb:    250, 250, 250;
 
-    --danger:         #ef4444;
-    --danger-hover:   #dc2626;
-    --danger-bg:      #fef2f2;
-    --success:        #22c55e;
-    --success-bg:     #f0fdf4;
-    --warning:        #f59e0b;
-    --info:           #3b82f6;
+    --danger:         #EF4444;
+    --danger-hover:   #DC2626;
+    --danger-bg:      #450A0A;
+    --success:        #22C55E;
+    --success-bg:     #052E16;
+    --warning:        #F59E0B;
+    --info:           #3B82F6;
 
-    --border:         #e2e8f0;
-    --border-light:   #f1f5f9;
+    --border:         #27272A;
+    --border-light:   #18181B;
 
     --radius:         8px;
     --radius-sm:      4px;
@@ -32,13 +32,19 @@
     --radius-2xl:     24px;
     --radius-full:    9999px;
 
-    --shadow-sm:      0 1px 2px rgba(0,0,0,0.05);
-    --shadow:         0 1px 3px rgba(0,0,0,0.08);
-    --shadow-md:      0 4px 6px -1px rgba(0,0,0,0.07);
-    --shadow-lg:      0 10px 15px -3px rgba(0,0,0,0.08);
-    --shadow-xl:      0 20px 25px -5px rgba(0,0,0,0.1);
+    --shadow-sm:      0 1px 2px rgba(0,0,0,0.3);
+    --shadow:         0 1px 3px rgba(0,0,0,0.4);
+    --shadow-md:      0 4px 6px -1px rgba(0,0,0,0.5);
+    --shadow-lg:      0 10px 15px -3px rgba(0,0,0,0.5);
+    --shadow-xl:      0 20px 25px -5px rgba(0,0,0,0.6);
 
     --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+    --font-sans:     'IBM Plex Sans', sans-serif;
+    --font-display:  'Anton', sans-serif;
+    --font-mono:     'IBM Plex Mono', monospace;
+
+    --grain-opacity: 0.025;
 }
 
 *, *::before, *::after {
@@ -48,8 +54,8 @@
 }
 
 body {
-    font-family: 'Hind', sans-serif;
-    background: var(--bg);
+    font-family: var(--font-sans);
+    background: radial-gradient(ellipse at 50% 30%, #1A1A1E 0%, #0E0E10 60%, #08080A 100%);
     color: var(--text);
     line-height: 1.6;
     min-height: 100vh;
@@ -57,7 +63,51 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
+body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 10000;
+    opacity: var(--grain-opacity);
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 256px 256px;
+}
+
 ::selection {
-    background: var(--primary);
-    color: white;
+    background: var(--text);
+    color: var(--bg);
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.35);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.6);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
 }

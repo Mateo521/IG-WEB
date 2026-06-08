@@ -28,8 +28,8 @@
 
 .loginBtn {
     padding: 0.45rem 1.25rem;
-    background: var(--primary);
-    color: white;
+    background: var(--text);
+    color: var(--bg);
     border: none;
     border-radius: var(--radius);
     font-size: 0.88rem;

@@ -1,10 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
 import api from '../services/api';
-import FloatingIcons from '../components/FloatingIcons/FloatingIcons';
+import ConfirmModal from '../components/ConfirmModal/ConfirmModal';
+import ProductoFormModal from '../components/ProductoFormModal/ProductoFormModal';
 import styles from './Productos.module.css';
-
-const SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z"/></svg>';
 
 function Productos() {
     const [productos,        setProductos]        = useState([]);
@@ -14,6 +12,9 @@ function Productos() {
 
     // Referencia al input de archivo oculto — lo activamos desde el botón "Importar"
     const refInputArchivo = useRef(null);
+    const [confirmDelete, setConfirmDelete] = useState({ isOpen: false, id: null });
+    const [showProductoModal, setShowProductoModal] = useState(false);
+    const [editProductoId, setEditProductoId] = useState(null);
 
     useEffect(() => { fetchProductos(); }, []);
 
@@ -22,9 +23,33 @@ function Productos() {
         setProductos((await api.get('/productos', { params: { paginate: 'false' } })).data);
     };
 
-    const handleDelete = async (id) => {
-        if (!confirm('¿Eliminar este producto?')) return;
-        await api.delete(`/productos/${id}`);
+    const handleDelete = (id) => setConfirmDelete({ isOpen: true, id });
+
+    const handleConfirmDelete = async () => {
+        await api.delete(`/productos/${confirmDelete.id}`);
+        setConfirmDelete({ isOpen: false, id: null });
+        fetchProductos();
+    };
+
+    const handleCancelDelete = () => setConfirmDelete({ isOpen: false, id: null });
+
+    const openCreateModal = () => {
+        setEditProductoId(null);
+        setShowProductoModal(true);
+    };
+
+    const openEditModal = (id) => {
+        setEditProductoId(id);
+        setShowProductoModal(true);
+    };
+
+    const closeProductoModal = () => {
+        setShowProductoModal(false);
+        setEditProductoId(null);
+    };
+
+    const onProductoSuccess = () => {
+        closeProductoModal();
         fetchProductos();
     };
 
@@ -118,7 +143,6 @@ function Productos() {
 
     return (
         <div className={styles.page}>
-            <FloatingIcons svg={SVG} />
             <div className={styles.header}>
                 <h1 className={styles.title}>Productos</h1>
 
@@ -157,9 +181,9 @@ function Productos() {
                         {exportando ? 'Generando...' : 'Exportar CSV'}
                     </button>
 
-                    <Link to="/admin/productos/nuevo" className={styles.btnNuevo}>
+                    <button onClick={openCreateModal} className={styles.btnNuevo}>
                         + Nuevo Producto
-                    </Link>
+                    </button>
                 </div>
             </div>
 
@@ -187,7 +211,7 @@ function Productos() {
                 </div>
             )}
 
-            <table className={styles.table}>
+            <div className={styles.tableContainer}><table className={styles.table}>
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -217,12 +241,8 @@ function Productos() {
                             <td>{p.categorias?.map(c => c.nombreCategoria).join(', ') || '-'}</td>
                             <td>
                                 <div className={styles.actions}>
-                                    <Link to={`/admin/productos/${p.id}/editar`} className={styles.btnEdit}>
-                                        Editar
-                                    </Link>
-                                    <button onClick={() => handleDelete(p.id)} className={styles.btnDelete}>
-                                        Eliminar
-                                    </button>
+                                    <button onClick={() => openEditModal(p.id)} className={styles.btnEdit}><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" width="18" height="18"><path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" /></svg></button>
+                                    <button onClick={() => handleDelete(p.id)} className={styles.btnDelete}><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" width="18" height="18"><path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" /></svg></button>
                                 </div>
                             </td>
                         </tr>
@@ -233,7 +253,21 @@ function Productos() {
                         </tr>
                     )}
                 </tbody>
-            </table>
+            </table>            </div>
+
+            <ProductoFormModal
+                isOpen={showProductoModal}
+                productId={editProductoId}
+                onClose={closeProductoModal}
+                onSuccess={onProductoSuccess}
+            />
+
+            <ConfirmModal
+                isOpen={confirmDelete.isOpen}
+                message="¿Eliminar este producto?"
+                onConfirm={handleConfirmDelete}
+                onCancel={handleCancelDelete}
+            />
         </div>
     );
 }

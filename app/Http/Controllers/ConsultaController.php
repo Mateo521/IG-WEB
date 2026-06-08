@@ -67,4 +67,12 @@ class ConsultaController extends Controller
 
         return response()->json(['mensaje' => 'Consulta eliminada']);
     }
+
+    public function marcarLeida($id)
+    {
+        $consulta = Consulta::findOrFail($id);
+        $consulta->update(['visto' => true]);
+
+        return response()->json(['mensaje' => 'Consulta marcada como leída']);
+    }
 }

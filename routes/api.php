@@ -32,6 +32,7 @@ Route::get('/productos/exportar',  [ProductoController::class, 'exportar']);
 Route::apiResource('productos', ProductoController::class);
 
 Route::apiResource('consultas', ConsultaController::class);
+Route::patch('/consultas/{consulta}/leer', [ConsultaController::class, 'marcarLeida']);
 
 // Estadísticas para el dashboard admin: devuelve contadores de cada entidad
 Route::get('/stats', [DashboardController::class, 'stats']);

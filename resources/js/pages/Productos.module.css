@@ -19,11 +19,11 @@
 }
 
 .title {
-    font-family: 'Anton', sans-serif;
-    font-size: 1.6rem;
-    font-weight: 400;
+    font-family: var(--font-sans);
+    font-size: 1.5rem;
+    font-weight: 600;
     color: var(--text);
-    letter-spacing: -0.01em;
+    letter-spacing: -0.02em;
 }
 
 .btnNuevo {
@@ -35,7 +35,7 @@
     cursor: pointer;
     font-size: 0.88rem;
     font-weight: 600;
-    font-family: 'Hind', sans-serif;
+    font-family: var(--font-sans);
     text-decoration: none;
     display: inline-block;
     transition: var(--transition);
@@ -54,7 +54,7 @@
     cursor: pointer;
     font-size: 0.83rem;
     font-weight: 500;
-    font-family: 'Hind', sans-serif;
+    font-family: var(--font-sans);
     transition: var(--transition);
 }
 
@@ -72,7 +72,7 @@
     cursor: pointer;
     font-size: 0.88rem;
     font-weight: 600;
-    font-family: 'Hind', sans-serif;
+    font-family: var(--font-sans);
     transition: var(--transition);
 }
 
@@ -94,7 +94,7 @@
     cursor: pointer;
     font-size: 0.88rem;
     font-weight: 600;
-    font-family: 'Hind', sans-serif;
+    font-family: var(--font-sans);
     transition: var(--transition);
 }
 
@@ -117,7 +117,7 @@
 .resultadoOk {
     background: var(--success-bg);
     border: 1px solid var(--success);
-    color: #166534;
+    color: var(--success);
 }
 
 .resultadoError {
@@ -161,14 +161,18 @@
     overflow-y: auto;
 }
 
+.tableContainer {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: auto;
+    max-height: 65vh;
+}
+
 .table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
     background: var(--bg-card);
-    border-radius: var(--radius-lg);
-    border: 1px solid var(--border);
-    overflow: hidden;
 }
 
 .table th,
@@ -179,20 +183,24 @@
 }
 
 .table th {
-    background: var(--bg-dark);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: #fff;
     font-weight: 600;
     font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.07em;
-    color: var(--text-muted);
+    color: #111;
 }
 
 .table tbody tr {
     transition: var(--transition);
 }
 
-.table tbody tr:hover {
+.table tbody tr:hover td {
     background: var(--bg-dark);
+    box-shadow: inset 0 0 0 1px var(--primary);
 }
 
 .table tbody tr:last-child td {
@@ -227,7 +235,7 @@
     cursor: pointer;
     font-size: 0.78rem;
     font-weight: 600;
-    font-family: 'Hind', sans-serif;
+    font-family: var(--font-sans);
     text-decoration: none;
     display: inline-block;
     transition: var(--transition);
@@ -246,7 +254,7 @@
     cursor: pointer;
     font-size: 0.78rem;
     font-weight: 600;
-    font-family: 'Hind', sans-serif;
+    font-family: var(--font-sans);
     transition: var(--transition);
 }
 

@@ -6,7 +6,6 @@ import Rubros from './pages/Rubros';
 import Subrubros from './pages/Subrubros';
 import Categorias from './pages/Categorias';
 import Productos from './pages/Productos';
-import ProductoForm from './pages/ProductoForm';
 import Consultas from './pages/Consultas';
 import Catalogo from './pages/Catalogo';
 import ProductoDetalle from './pages/ProductoDetalle';
@@ -31,8 +30,6 @@ function App() {
                     <Route path="subrubros" element={<Subrubros />} />
                     <Route path="categorias" element={<Categorias />} />
                     <Route path="productos" element={<Productos />} />
-                    <Route path="productos/nuevo" element={<ProductoForm />} />
-                    <Route path="productos/:id/editar" element={<ProductoForm />} />
                     <Route path="consultas" element={<Consultas />} />
                 </Route>
             </Routes>

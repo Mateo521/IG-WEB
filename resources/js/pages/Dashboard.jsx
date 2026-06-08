@@ -56,8 +56,13 @@ function Dashboard() {
     return (
         <div className={styles.page}>
             <div className={styles.grid}>
-                {TARJETAS.map(t => (
-                    <Link key={t.stat} to={t.link} className={`${styles.card} ${styles[`card--${t.stat}`]}`}>
+                {TARJETAS.map((t, i) => (
+                    <Link
+                        key={t.stat}
+                        to={t.link}
+                        className={`${styles.card} ${styles[`card--${t.stat}`]}`}
+                        style={{ '--i': i }}
+                    >
                         <div
                             className={styles.iconBg}
                             dangerouslySetInnerHTML={{ __html: t.svg }}
@@ -76,6 +81,8 @@ function Dashboard() {
                     </Link>
                 ))}
             </div>
+
+
         </div>
     );
 }
