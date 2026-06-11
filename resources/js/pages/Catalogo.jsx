@@ -9,6 +9,7 @@ import ProductoCardSkeleton from '../components/ProductoCardSkeleton/ProductoCar
 import ASCIIText from '../components/ASCIIText/ASCIIText';
 import styles from './Catalogo.module.css';
 
+// Estado inicial de los filtros, todos vacios
 const FILTROS_VACIOS = {
     search:       '',
     rubro_id:     '',
@@ -23,17 +24,21 @@ function Catalogo() {
     const [filtros, setFiltros]   = useState(FILTROS_VACIOS);
     const [pagina,  setPagina]    = useState(1);
     const [productos,  setProductos]  = useState([]);
+    // meta: informacion de paginacion (pagina actual, total de paginas, total de resultados)
     const [meta,       setMeta]       = useState({ current_page: 1, last_page: 1, total: 0 });
     const [cargando,   setCargando]   = useState(false);
     const [generandoPdf, setGenerandoPdf] = useState(false);
+    // vista: 'grilla' o 'lista', se persiste en localStorage
     const [vista, setVista] = useState(
         () => localStorage.getItem('catalogo_vista') || 'grilla'
     );
+    // catalogoVisible: controla si el hero de ASCII ya se oculto para mostrar el contenido
     const [catalogoVisible, setCatalogoVisible] = useState(false);
 
     const heroRef = useRef(null);
     const contenidoRef = useRef(null);
 
+    // Cambia entre vista grilla/lista y lo guarda en localStorage para la proxima visita
     const handleCambioVista = (nuevaVista) => {
         setVista(nuevaVista);
         localStorage.setItem('catalogo_vista', nuevaVista);
@@ -43,15 +48,18 @@ function Catalogo() {
     const [subrubros,  setSubrubros]  = useState([]);
     const [categorias, setCategorias] = useState([]);
 
+    // Referencias para el debounce del buscador y para medir tiempo de carga
     const timerDebounce = useRef(null);
     const tiempoCargaRef = useRef(null);
 
+    // Cargamos los datos para los filtros al montar el componente
     useEffect(() => {
         api.get('/rubros').then(r    => setRubros(r.data));
         api.get('/subrubros').then(r => setSubrubros(r.data));
         api.get('/categorias').then(r => setCategorias(r.data));
     }, []);
 
+    // Funcion que trae los productos del backend con los filtros y pagina actuales
     const fetchProductos = useCallback(async (f, p) => {
         setCargando(true);
         if (!tiempoCargaRef.current) tiempoCargaRef.current = Date.now();
@@ -75,6 +83,7 @@ function Catalogo() {
         } catch (error) {
             console.error('Error al cargar productos:', error);
         } finally {
+            // Forzamos un minimo de 500ms de carga para que el skeleton se vea fluido
             const elapsed = Date.now() - tiempoCargaRef.current;
             const restante = Math.max(0, 500 - elapsed);
             tiempoCargaRef.current = null;
@@ -82,6 +91,7 @@ function Catalogo() {
         }
     }, []);
 
+    // Debounce de 350ms para no disparar requests en cada tecleo del buscador
     useEffect(() => {
         clearTimeout(timerDebounce.current);
         timerDebounce.current = setTimeout(() => {
@@ -92,6 +102,7 @@ function Catalogo() {
 
     const handleCambioFiltro = (campo, valor) => {
         setFiltros(prev => ({ ...prev, [campo]: valor }));
+        // Al cambiar un filtro volvemos a la pagina 1
         setPagina(1);
     };
 
@@ -107,6 +118,7 @@ function Catalogo() {
         if (contenidoRef.current) contenidoRef.current.scrollTop = 0;
     };
 
+    // Genera un PDF con jsPDF con la tabla de productos filtrados
     const handleDescargarPdf = async () => {
         setGenerandoPdf(true);
         try {
@@ -220,6 +232,7 @@ function Catalogo() {
         }
     };
 
+    // Chips de filtros activos que se muestran arriba de la grilla
     const chips = [];
     if (filtros.search)
         chips.push({ key: 'search',       label: `"${filtros.search}"` });
@@ -234,6 +247,7 @@ function Catalogo() {
 
     return (
         <div className={styles.page}>
+            {/* Hero con ASCII Text animado de Three.js */}
             <section ref={heroRef} className={styles.hero}>
                 <div className={styles.heroBg}>
                     <ASCIIText
@@ -307,11 +321,7 @@ function Catalogo() {
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" width="18" height="18">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
                             </svg>
-                            {generandoPdf ? (
-                                'Generando...'
-                            ) : (
-                                <span className={styles.btnPdfText}>Descargar PDF</span>
-                            )}
+                            {generandoPdf ? 'Generando...' : <span className={styles.btnPdfText}>Descargar PDF</span>}
                         </button>
                         <Link to="/login" className={styles.loginBtn}>
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

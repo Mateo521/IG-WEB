@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import api from '../services/api';
 import styles from './Dashboard.module.css';
 
+// Configuracion de las tarjetas del dashboard: cada una tiene una clave stat que
+// coincide con el campo que devuelve la API, y un SVG inline para el icono
 const TARJETAS = [
     {
         stat:  'rubros',
@@ -42,10 +44,12 @@ const TARJETAS = [
 ];
 
 function Dashboard() {
+    // stats: objeto con los contadores que devuelve GET /api/stats
     const [stats,          setStats]          = useState(null);
     const [cargando,       setCargando]       = useState(true);
     const [error,          setError]          = useState(false);
 
+    // Al montar el componente, pedimos las estadisticas al backend
     useEffect(() => {
         api.get('/stats')
             .then(r => setStats(r.data))

@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    // Migra la tabla productos del esquema antiguo (categoria_id directa) al nuevo:
+    // elimina categoria_id y agrega rubro_id y subrubro_id como FK.
+    // Las categorias ahora se vinculan via la tabla pivot categoria_producto
     public function up(): void
     {
         Schema::table('productos', function (Blueprint $table) {
@@ -17,6 +20,7 @@ return new class extends Migration
         });
     }
 
+    // Revierte: vuelve al esquema antiguo con categoria_id y elimina rubro_id/subrubro_id
     public function down(): void
     {
         Schema::table('productos', function (Blueprint $table) {

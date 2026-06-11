@@ -6,13 +6,19 @@ import styles from './Login.module.css';
 
 function Login() {
     const navigate = useNavigate();
+    // Estado del formulario: email y password
     const [form, setForm] = useState({ email: '', password: '' });
+    // Mensaje de error a mostrar si falla el login
     const [error, setError] = useState('');
+    // Spinner de carga mientras se procesa la solicitud
     const [loading, setLoading] = useState(false);
+    // Alternar visibilidad de la contrasena
     const [showPassword, setShowPassword] = useState(false);
 
+    // Actualiza el campo correspondiente en el estado cuando el usuario escribe
     const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
+    // Envia las credenciales al backend, guarda el token en localStorage y redirige al dashboard
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');

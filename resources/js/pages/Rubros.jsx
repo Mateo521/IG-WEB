@@ -5,8 +5,11 @@ import ConfirmModal from '../components/ConfirmModal/ConfirmModal';
 import styles from './Rubros.module.css';
 
 function Rubros() {
+    // rubros: lista completa de rubros obtenida del backend
     const [rubros, setRubros] = useState([]);
+    // form: datos del formulario del modal (crear/editar)
     const [form, setForm] = useState({ nombreRubro: '' });
+    // editingId: si es null estamos creando, si tiene un valor estamos editando ese rubro
     const [editingId, setEditingId] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const [confirmDelete, setConfirmDelete] = useState({ isOpen: false, id: null });
@@ -15,18 +18,21 @@ function Rubros() {
 
     const fetchRubros = async () => { setRubros((await api.get('/rubros')).data); };
 
+    // Abre el modal en modo creacion: formulario vacio, editingId en null
     const openCreateModal = () => {
         setForm({ nombreRubro: '' });
         setEditingId(null);
         setShowModal(true);
     };
 
+    // Abre el modal en modo edicion: precarga los datos del rubro seleccionado
     const handleEdit = (r) => {
         setForm({ nombreRubro: r.nombreRubro });
         setEditingId(r.id);
         setShowModal(true);
     };
 
+    // Guarda (crea o actualiza) dependiendo de si editingId tiene valor
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (editingId) await api.put(`/rubros/${editingId}`, form);

@@ -6,10 +6,13 @@ import styles from './Navbar.module.css';
 function Navbar() {
     const navigate = useNavigate();
     const user = JSON.parse(localStorage.getItem('user') || '{}');
+    // abierto: controla si el dropdown del usuario esta visible
     const [abierto, setAbierto] = useState(false);
+    // consultasNuevas: contador de consultas sin leer, se actualiza cada 30s
     const [consultasNuevas, setConsultasNuevas] = useState(0);
     const refMenu = useRef(null);
 
+    // Cierra el dropdown si se hace click fuera de el
     useEffect(() => {
         const cerrar = (e) => {
             if (refMenu.current && !refMenu.current.contains(e.target)) {
@@ -20,6 +23,7 @@ function Navbar() {
         return () => document.removeEventListener('mousedown', cerrar);
     }, []);
 
+    // Polling cada 30s para actualizar el badge de consultas nuevas
     useEffect(() => {
         const fetchNuevas = () => {
             api.get('/stats')
@@ -28,6 +32,7 @@ function Navbar() {
         };
         fetchNuevas();
         const intervalo = setInterval(fetchNuevas, 30000);
+        // Tambien escuchamos el evento personalizado que se dispara desde Consultas.jsx
         window.addEventListener('consultas-actualizadas', fetchNuevas);
         return () => {
             clearInterval(intervalo);
@@ -35,6 +40,7 @@ function Navbar() {
         };
     }, []);
 
+    // Cierra sesion: llama al endpoint de logout y limpia localStorage
     const handleLogout = async () => {
         try { await api.post('/logout'); } catch { /* ignore */ }
         localStorage.removeItem('token');

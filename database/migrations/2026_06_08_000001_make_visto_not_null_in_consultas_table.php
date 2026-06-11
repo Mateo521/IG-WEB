@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    // Primero backfillea los registros existentes que tengan visto = null, luego
+    // hace la columna NOT NULL para que no pueda quedar sin valor
     public function up(): void
     {
         DB::table('consultas')->whereNull('visto')->update(['visto' => false]);
@@ -16,6 +18,7 @@ return new class extends Migration
         });
     }
 
+    // Revierte: vuelve a permitir valores nulos en la columna visto
     public function down(): void
     {
         Schema::table('consultas', function (Blueprint $table) {

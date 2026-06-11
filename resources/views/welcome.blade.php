@@ -11,6 +11,7 @@
         @vite(['resources/js/main.jsx'])
     </head>
     <body>
+        <!-- Aca React levanta toda la aplicacion -->
         <div id="app"></div>
     </body>
 </html>

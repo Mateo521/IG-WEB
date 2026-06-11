@@ -6,6 +6,7 @@ import styles from './Register.module.css';
 
 function Register() {
     const navigate = useNavigate();
+    // Estado del formulario con nombre, email, password y confirmacion
     const [form, setForm] = useState({ name: '', email: '', password: '', password_confirmation: '' });
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
@@ -13,6 +14,7 @@ function Register() {
 
     const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
+    // Envia los datos de registro, guarda el token y redirige al dashboard
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
@@ -23,6 +25,7 @@ function Register() {
             localStorage.setItem('user', JSON.stringify(res.data.user));
             navigate('/admin/dashboard');
         } catch (err) {
+            // Tomamos el primer error de validacion que devuelva el backend
             const messages = err.response?.data?.errors;
             const first = messages ? Object.values(messages)[0]?.[0] : '';
             setError(first || err.response?.data?.message || 'Error al registrarse');

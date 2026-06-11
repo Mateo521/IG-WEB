@@ -7,6 +7,7 @@ use Illuminate\Database\Seeder;
 
 class RubroSeeder extends Seeder
 {
+    // Crea 3 rubros de prueba para poblar la base de datos inicial
     public function run(): void
     {
         Rubro::create(['nombreRubro' => 'Rubro 1']);

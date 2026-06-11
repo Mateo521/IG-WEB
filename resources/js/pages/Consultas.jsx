@@ -6,6 +6,7 @@ import styles from './Consultas.module.css';
 
 function Consultas() {
     const [consultas, setConsultas] = useState([]);
+    // consultaActual: la consulta que se esta viendo en el modal
     const [consultaActual, setConsultaActual] = useState(null);
     const [confirmDelete, setConfirmDelete] = useState({ isOpen: false, id: null });
 
@@ -35,6 +36,7 @@ function Consultas() {
         });
     };
 
+    // Al abrir una consulta, la marca como leida si no lo estaba ya
     const abrirMensaje = async (c) => {
         setConsultaActual(c);
         if (!c.visto) {
@@ -42,7 +44,7 @@ function Consultas() {
                 await api.patch(`/consultas/${c.id}/leer`);
                 setConsultas(prev => prev.map(cc => cc.id === c.id ? { ...cc, visto: true } : cc));
                 window.dispatchEvent(new CustomEvent('consultas-actualizadas'));
-            } catch { /* ignore */ }
+            } catch { /* ignora errores de red */ }
         }
     };
     const cerrarMensaje = () => setConsultaActual(null);
@@ -78,6 +80,7 @@ function Consultas() {
                             <span className={styles.mensajeLabel}>Consulta</span>
                             <div className={styles.modalMensaje}>{consultaActual.mensaje}</div>
                         </div>
+                        {/* Boton que abre el cliente de correo con un mail prearmado para responder */}
                         <a
                             href={`mailto:${consultaActual.email}?subject=${encodeURIComponent('Respuesta a su consulta en VITRYO')}&body=${encodeURIComponent(
                                 `${consultaActual.nombreConsulta}, me comunico con usted para responderle la consulta hecha en VITRYO sobre "${consultaActual.producto?.nombreProducto || 'el producto'}" que realizó el día ${formatearFecha(consultaActual.created_at)}.\n\n\nSaludos,\nVITRYO TEAM`
@@ -107,6 +110,7 @@ function Consultas() {
                 </thead>
                 <tbody>
                     {consultas.map(c => (
+                        // Las filas no leidas tienen un estilo visual diferente
                         <tr key={c.id} className={!c.visto ? styles.noLeida : ''}>
                             <td>{c.id}</td>
                             <td className={!c.visto ? styles.noLeidaText : ''}>{c.nombreConsulta}</td>

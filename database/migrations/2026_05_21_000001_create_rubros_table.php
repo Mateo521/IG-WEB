@@ -6,9 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+    // Crea la tabla rubros con su nombre y timestamps de creacion/actualizacion
     public function up(): void
 {
     Schema::create('rubros', function (Blueprint $table) {
@@ -18,9 +16,7 @@ return new class extends Migration
     });
 }
 
-    /**
-     * Reverse the migrations.
-     */
+    // Si la migracion se revierte, elimina la tabla rubros
     public function down(): void
     {
         Schema::dropIfExists('rubros');

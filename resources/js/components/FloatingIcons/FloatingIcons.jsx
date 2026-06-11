@@ -1,3 +1,10 @@
+/* 
+ * FloatingIcons — decoración visual de fondo con círculos flotantes.
+ *
+ * Renderiza cuatro divs con formas circulares posicionadas en las
+ * esquinas del contenedor. Es puramente estético, por eso lleva
+ * aria-hidden="true" para que los lectores de pantalla lo ignoren.
+ */
 import styles from './FloatingIcons.module.css';
 
 function FloatingIcons() {

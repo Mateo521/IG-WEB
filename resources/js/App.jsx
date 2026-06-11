@@ -13,16 +13,21 @@ import Layout from './components/Layout/Layout';
 import LayoutPublico from './components/LayoutPublico/LayoutPublico';
 import ProtectedRoute from './components/ProtectedRoute';
 
+// Aca se define toda la estructura de rutas de la aplicacion
+// Las rutas publicas van con LayoutPublico, las de admin con ProtectedRoute + Layout
 function App() {
     return (
         <BrowserRouter>
             <Routes>
+                {/* Rutas publicas: catalogo y detalle de producto */}
                 <Route path="/" element={<LayoutPublico />}>
                     <Route index element={<Catalogo />} />
                     <Route path="producto/:id" element={<ProductoDetalle />} />
                 </Route>
+                {/* Rutas de autenticacion */}
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
+                {/* Rutas del admin: requieren token de autenticacion */}
                 <Route path="/admin" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
                     <Route index element={<Navigate to="/admin/dashboard" replace />} />
                     <Route path="dashboard" element={<Dashboard />} />

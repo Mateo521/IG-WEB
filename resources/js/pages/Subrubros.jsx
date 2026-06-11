@@ -6,12 +6,14 @@ import styles from './Subrubros.module.css';
 
 function Subrubros() {
     const [subrubros, setSubrubros] = useState([]);
+    // rubros: lo cargamos para llenar el select de rubro padre en el modal
     const [rubros, setRubros] = useState([]);
     const [form, setForm] = useState({ nombreSubrubro: '', rubro_id: '' });
     const [editingId, setEditingId] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const [confirmDelete, setConfirmDelete] = useState({ isOpen: false, id: null });
 
+    // Al montar, cargamos subrubros y rubros para los selects
     useEffect(() => { fetchSubrubros(); api.get('/rubros').then(r => setRubros(r.data)); }, []);
 
     const fetchSubrubros = async () => { setSubrubros((await api.get('/subrubros')).data); };

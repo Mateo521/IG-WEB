@@ -6,7 +6,9 @@ import styles from './Categorias.module.css';
 
 function Categorias() {
     const [categorias, setCategorias] = useState([]);
+    // subrubros: necesarios para mostrar los checkboxes en el modal
     const [subrubros, setSubrubros] = useState([]);
+    // form.subrubros: array con los IDs de subrubros seleccionados (relacion N:M)
     const [form, setForm] = useState({ nombreCategoria: '', subrubros: [] });
     const [editingId, setEditingId] = useState(null);
     const [showModal, setShowModal] = useState(false);
@@ -18,6 +20,7 @@ function Categorias() {
 
     const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
+    // Agrega o saca un subrubro del array de seleccionados (toggle)
     const handleSubrubroToggle = (id) => {
         setForm(prev => ({
             ...prev,

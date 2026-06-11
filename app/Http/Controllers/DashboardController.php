@@ -10,13 +10,8 @@ use App\Models\Consulta;
 
 class DashboardController extends Controller
 {
-    /*
-     * stats — devuelve los contadores de cada entidad para el panel admin.
-     *
-     * Solo hace un COUNT por tabla, nada de joins ni relaciones.
-     * El frontend lo usa para mostrar números reales en las tarjetas
-     * del dashboard en lugar del texto "PRÓXIMAMENTE CONSULTAS".
-     */
+    // Devuelve los contadores de cada entidad para mostrarlos en las tarjetas del panel de administracion
+    // Tambien incluye las 5 consultas mas recientes para que el admin las vea de un vistazo
     public function stats()
     {
         return response()->json([

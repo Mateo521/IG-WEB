@@ -8,6 +8,7 @@ function ProductoDetalle() {
     const [producto, setProducto] = useState(null);
     const [cargando, setCargando] = useState(true);
 
+    // Estado del formulario de consulta sobre este producto
     const [nombreConsulta, setNombreConsulta] = useState('');
     const [email, setEmail] = useState('');
     const [mensaje, setMensaje] = useState('');
@@ -30,6 +31,7 @@ function ProductoDetalle() {
         fetchProducto();
     }, [id]);
 
+    // Envia la consulta del cliente al backend asociada a este producto
     const handleSubmitConsulta = async (e) => {
         e.preventDefault();
         setEnviando(true);

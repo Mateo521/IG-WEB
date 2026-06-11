@@ -7,20 +7,22 @@ import styles from './Productos.module.css';
 
 function Productos() {
     const [productos,        setProductos]        = useState([]);
-    const [importando,       setImportando]        = useState(false);  // true mientras se procesa la subida
-    const [exportando,       setExportando]        = useState(false);  // true mientras descarga el CSV
-    const [resultadoImport,  setResultadoImport]   = useState(null);   // objeto con { ok, mensaje, creados, errores[] }
+    const [importando,       setImportando]        = useState(false);
+    const [exportando,       setExportando]        = useState(false);
+    // resultadoImport: guarda lo que devuelve el backend despues de importar (creados, errores, etc.)
+    const [resultadoImport,  setResultadoImport]   = useState(null);
 
-    // Referencia al input de archivo oculto — lo activamos desde el botón "Importar"
+    // Referencia al input de archivo oculto para importar CSV
     const refInputArchivo = useRef(null);
     const [confirmDelete, setConfirmDelete] = useState({ isOpen: false, id: null });
     const [showProductoModal, setShowProductoModal] = useState(false);
     const [editProductoId, setEditProductoId] = useState(null);
+    // previewImage: ruta de la imagen que se muestra en el modal de vista previa
     const [previewImage, setPreviewImage] = useState(null);
 
     useEffect(() => { fetchProductos(); }, []);
 
-    // Pedimos todos los productos sin paginar (admin no necesita paginación)
+    // Traemos todos los productos sin paginar para mostrar en la tabla del admin
     const fetchProductos = async () => {
         setProductos((await api.get('/productos', { params: { paginate: 'false' } })).data);
     };
@@ -55,13 +57,7 @@ function Productos() {
         fetchProductos();
     };
 
-    /*
-     * handleImportar — recibe el archivo CSV elegido por el usuario y lo
-     * manda al servidor con POST /api/productos/importar.
-     *
-     * El servidor procesa fila por fila y devuelve cuántos se crearon
-     * y qué errores hubo. Mostramos ese resultado en pantalla.
-     */
+    // Toma el archivo CSV seleccionado y lo envia al backend para procesarlo fila por fila
     const handleImportar = async (e) => {
         const archivo = e.target.files[0];
         if (!archivo) return;
@@ -69,41 +65,33 @@ function Productos() {
         setImportando(true);
         setResultadoImport(null);
 
-        // El endpoint espera multipart/form-data con el campo "archivo"
         const formData = new FormData();
         formData.append('archivo', archivo);
 
         try {
             const r = await api.post('/productos/importar', formData);
             setResultadoImport({ ok: true, ...r.data });
-            fetchProductos(); // recargamos la tabla para ver los nuevos productos
+            fetchProductos();
         } catch (error) {
             const mensaje = error.response?.data?.message || 'Error al procesar el archivo CSV';
             setResultadoImport({ ok: false, mensaje });
         } finally {
             setImportando(false);
-            // Limpiamos el input para poder volver a subir el mismo archivo si es necesario
+            // Limpiamos el input para poder subir el mismo archivo de nuevo
             e.target.value = '';
         }
     };
 
-    /*
-     * handleExportar — descarga los productos actuales como CSV.
-     *
-     * Usamos Axios con responseType 'blob' (porque necesitamos enviar el
-     * Bearer token en el header). Luego creamos un enlace temporal y
-     * lo "hacemos clic" para disparar la descarga del navegador.
-     */
+    // Descarga los productos actuales como CSV usando el endpoint de exportacion
     const handleExportar = async () => {
         setExportando(true);
         try {
             const respuesta = await api.get('/productos/exportar', { responseType: 'blob' });
 
-            // Creamos una URL temporal que apunta al blob del archivo
             const urlBlob  = URL.createObjectURL(new Blob([respuesta.data], { type: 'text/csv' }));
-            const fechaHoy = new Date().toISOString().split('T')[0]; // "2026-06-07"
+            const fechaHoy = new Date().toISOString().split('T')[0];
 
-            // Creamos un <a> invisible, lo "hacemos clic" y lo eliminamos
+            // Creamos un <a> invisible para forzar la descarga del navegador
             const enlace      = document.createElement('a');
             enlace.href       = urlBlob;
             enlace.download   = `productos-${fechaHoy}.csv`;
@@ -111,7 +99,6 @@ function Productos() {
             enlace.click();
             document.body.removeChild(enlace);
 
-            // Liberamos la URL temporal de memoria
             URL.revokeObjectURL(urlBlob);
         } catch (error) {
             console.error('Error al exportar:', error);
@@ -121,12 +108,8 @@ function Productos() {
         }
     };
 
-    /*
-     * handleDescargarPlantilla — genera un CSV de ejemplo en el navegador
-     * (sin llamar al servidor) para que el usuario sepa qué formato usar.
-     */
+    // Genera un CSV de ejemplo en el cliente para que el usuario sepa el formato esperado
     const handleDescargarPlantilla = () => {
-        // sep=, le dice a Excel qué separador usar (evita la columna única en español)
         const contenido =
             'sep=,\n' +
             'nombreProducto,descripcion,precio,rubro_id,subrubro_id,categorias\n' +
@@ -148,9 +131,7 @@ function Productos() {
             <div className={styles.header}>
                 <h1 className={styles.title}>Productos</h1>
 
-                {/* Grupo de acciones: Nuevo + CSV */}
                 <div className={styles.acciones}>
-                    {/* Input de archivo oculto — solo se activa desde el botón de abajo */}
                     <input
                         type="file"
                         accept=".csv,text/csv"
@@ -189,20 +170,12 @@ function Productos() {
                 </div>
             </div>
 
-            {/* Resultado de la última importación */}
             {resultadoImport && (
                 <div className={`${styles.resultadoImport} ${resultadoImport.ok ? styles.resultadoOk : styles.resultadoError}`}>
                     <div className={styles.resultadoHeader}>
                         <span>{resultadoImport.mensaje}</span>
-                        <button
-                            className={styles.btnCerrarResultado}
-                            onClick={() => setResultadoImport(null)}
-                        >
-                            ×
-                        </button>
+                        <button className={styles.btnCerrarResultado} onClick={() => setResultadoImport(null)}>×</button>
                     </div>
-
-                    {/* Si hubo errores por fila los listamos */}
                     {resultadoImport.errores?.length > 0 && (
                         <ul className={styles.listaErrores}>
                             {resultadoImport.errores.map((e, i) => (

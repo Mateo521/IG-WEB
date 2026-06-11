@@ -5,9 +5,8 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
-    /**
-     * Run the migrations.
-     */
+    // Crea la tabla subrubros con clave foranea a rubros
+    // Si se elimina un rubro, sus subrubros se borran en cascada
     public function up(): void
 {
     Schema::create('subrubros', function (Blueprint $table) {
@@ -23,9 +22,7 @@ return new class extends Migration {
     });
 }
 
-    /**
-     * Reverse the migrations.
-     */
+    // Revierte la migracion: elimina la tabla subrubros
     public function down(): void
     {
         Schema::dropIfExists('subrubros');

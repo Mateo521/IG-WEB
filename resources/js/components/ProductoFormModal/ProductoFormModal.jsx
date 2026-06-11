@@ -1,15 +1,32 @@
+/* 
+ * ProductoFormModal — formulario completo de producto dentro de un Modal.
+ *
+ * Sirve tanto para crear como para editar productos (se deduce por la
+ * presencia de productId). Carga en cascada rubros, subrubros y categorías
+ * para los selects, maneja la selección múltiple de categorías (M:N) y
+ * la subida de imagen con preview en vivo.
+ *
+ * Props:
+ *   isOpen     → controla la visibilidad del modal
+ *   productId  → si existe, estamos editando; si es null, estamos creando
+ *   onClose    → función para cerrar el modal sin guardar
+ *   onSuccess  → se llama después de guardar exitosamente
+ */
 import { useState, useEffect, useRef } from 'react';
 import api from '../../services/api';
 import Modal from '../Modal/Modal';
 import styles from './ProductoFormModal.module.css';
 
 function ProductoFormModal({ isOpen, productId, onClose, onSuccess }) {
+    // Si tenemos productId significa que estamos editando un producto existente
     const isEditing = Boolean(productId);
 
+    // Datos para los selects en cascada
     const [rubros, setRubros] = useState([]);
     const [subrubros, setSubrubros] = useState([]);
     const [categorias, setCategorias] = useState([]);
 
+    // Estado del formulario
     const [form, setForm] = useState({
         nombreProducto: '', descripcion: '', precio: '',
         rubro_id: '', subrubro_id: '', categorias: []
@@ -18,8 +35,11 @@ function ProductoFormModal({ isOpen, productId, onClose, onSuccess }) {
     const [preview, setPreview] = useState(null);
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState({});
+    // Ref para revocar el object URL del preview cuando ya no se necesite
     const previewRef = useRef(null);
 
+    // Al abrir el modal cargamos los catálogos (rubros, subrubros, categorías)
+    // y si es edición precargamos los datos del producto
     useEffect(() => {
         if (!isOpen) return;
         api.get('/rubros').then(r => setRubros(r.data));
@@ -40,23 +60,29 @@ function ProductoFormModal({ isOpen, productId, onClose, onSuccess }) {
                 if (p.rutaImg) setPreview(`/storage/${p.rutaImg}`);
             });
         } else {
+            // Si es nuevo, reseteamos el formulario a valores vacíos
             setForm({ nombreProducto: '', descripcion: '', precio: '', rubro_id: '', subrubro_id: '', categorias: [] });
             setImagen(null);
             setPreview(null);
         }
         setErrors({});
+        // Al desmontar liberamos el object URL del preview para evitar memory leaks
         return () => {
             if (previewRef.current) URL.revokeObjectURL(previewRef.current);
         };
     }, [isOpen, productId, isEditing]);
 
+    // Filtramos subrubros que pertenecen al rubro seleccionado
     const subrubrosFiltrados = subrubros.filter(s => String(s.rubro_id) === String(form.rubro_id));
+    // Filtramos categorías vinculadas al subrubro seleccionado (relación M:N)
     const categoriasFiltradas = form.subrubro_id
         ? categorias.filter(c => c.subrubros?.some(s => String(s.id) === String(form.subrubro_id)))
         : [];
 
+    // Actualiza un campo del formulario por su name
     const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
+    // Agrega o quita una categoría del arreglo de seleccionadas
     const handleCategoriaToggle = (catId) => {
         setForm(prev => ({
             ...prev,
@@ -66,6 +92,7 @@ function ProductoFormModal({ isOpen, productId, onClose, onSuccess }) {
         }));
     };
 
+    // Maneja la selección de archivo de imagen generando un preview en vivo
     const handleImage = (e) => {
         const file = e.target.files[0];
         if (previewRef.current) URL.revokeObjectURL(previewRef.current);
@@ -80,6 +107,7 @@ function ProductoFormModal({ isOpen, productId, onClose, onSuccess }) {
         }
     };
 
+    // Envía el formulario como multipart/form-data (necesario para la imagen)
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
@@ -92,11 +120,13 @@ function ProductoFormModal({ isOpen, productId, onClose, onSuccess }) {
         form.categorias.forEach(c => data.append('categorias[]', c));
         if (imagen) data.append('imagen', imagen);
         try {
+            // Laravel no soporta PUT con multipart, así que usamos POST con _method=PUT
             if (isEditing) { data.append('_method', 'PUT'); await api.post(`/productos/${productId}`, data); }
             else { await api.post('/productos', data); }
             setErrors({});
             onSuccess();
         } catch (err) {
+            // Si Laravel devuelve 422 (ValidationException) mostramos los errores por campo
             if (err.response?.status === 422 && err.response?.data?.errors) {
                 setErrors(err.response.data.errors);
             } else {

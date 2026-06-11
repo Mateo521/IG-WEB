@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    // Agrega la columna booleana 'visto' a la tabla consultas para que el admin
+    // pueda marcar cuales consultas ya fueron revisadas. Por defecto es false.
     public function up(): void
     {
         Schema::table('consultas', function (Blueprint $table) {
@@ -13,6 +15,7 @@ return new class extends Migration
         });
     }
 
+    // Revierte: elimina la columna visto
     public function down(): void
     {
         Schema::table('consultas', function (Blueprint $table) {

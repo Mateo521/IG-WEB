@@ -9,6 +9,8 @@ use Illuminate\Support\Str;
 
 class ProductoSeeder extends Seeder
 {
+    // Crea 24 productos de prueba (2 por cada categoria), copia las imagenes de
+    // la carpeta assets y las comprime para que ocupen menos espacio
     public function run(): void
     {
         $sourceDir = database_path('seeders/assets/productos');
@@ -64,6 +66,7 @@ class ProductoSeeder extends Seeder
         }
     }
 
+    // Comprime la imagen a 800px de ancho con calidad 75 para ahorrar espacio en disco
     private function comprimirImagen(string $fullPath): void
     {
         try {

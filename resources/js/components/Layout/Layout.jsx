@@ -3,6 +3,7 @@ import Navbar from '../Navbar/Navbar';
 import FloatingIcons from '../FloatingIcons/FloatingIcons';
 import styles from './Layout.module.css';
 
+// Mapa para convertir segmentos de la URL en nombres legibles para el breadcrumb
 const MAPA_RUTAS = {
     'dashboard': 'Dashboard',
     'rubros': 'Rubros',
@@ -16,6 +17,7 @@ const MAPA_RUTAS = {
 
 function Layout() {
     const location = useLocation();
+    // Partimos la URL en segmentos para armar la miga de pan
     const segments = location.pathname.split('/').filter(Boolean);
 
     const breadcrumbs = segments.map((seg, i) => ({
@@ -44,6 +46,7 @@ function Layout() {
             )}
             <main className={styles.main}>
                 <div className={styles.container}>
+                    {/* Outlet renderiza la pagina hija segun la ruta activa */}
                     <Outlet />
                 </div>
             </main>

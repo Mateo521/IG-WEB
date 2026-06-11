@@ -6,6 +6,8 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
+    // Ejecuta todos los seeders en el orden correcto respetando las dependencias
+    // entre tablas (primero rubros, despues subrubros, etc.)
     public function run(): void
     {
         $this->call([

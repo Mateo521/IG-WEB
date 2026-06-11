@@ -1,6 +1,26 @@
+/* 
+ * ASCIIText — renderiza texto 3D con estilo ASCII art en tiempo real.
+ *
+ * Usa Three.js para crear un plano 3D con un shader personalizado que
+ * aplica ondas al texto, y luego un filtro ASCII (AsciiFilter) que
+ * convierte el render en caracteres. Soporte para:
+ *   - Ondas deformantes (enableWaves)
+ *   - Rotación que sigue el mouse/touch
+ *   - Cambio de tono (hue) según la posición del mouse
+ *
+ * Props:
+ *   text            → el texto a mostrar
+ *   asciiFontSize   → tamaño de la fuente del filtro ASCII
+ *   textFontSize    → tamaño del texto original en el canvas 2D
+ *   textColor       → color del texto
+ *   planeBaseHeight → altura base del plano 3D (el ancho se calcula con el aspect ratio)
+ *   enableWaves     → activa/desactiva la deformación de ondas
+ *   paused          → pausa/reanuda la animación
+ */
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
+// Vertex shader: deforma el plano con ondas senoidales
 const vertexShader = `
 varying vec2 vUv;
 uniform float uTime;
@@ -23,6 +43,7 @@ void main() {
 }
 `;
 
+// Fragment shader: samplea la textura con desplazamiento cromático
 const fragmentShader = `
 varying vec2 vUv;
 uniform float mouse;
@@ -42,12 +63,18 @@ void main() {
 }
 `;
 
+// Polyfill de Math.map para mapear valores de un rango a otro
 Math.map = function (n, start, stop, start2, stop2) {
   return ((n - start) / (stop - start)) * (stop2 - start2) + start2;
 };
 
 const PX_RATIO = typeof window !== 'undefined' ? window.devicePixelRatio : 1;
 
+/*
+ * AsciiFilter — filtro de post-procesamiento que convierte el render
+ * de Three.js en caracteres ASCII. Usa un canvas 2D oculto para leer
+ * los píxeles y mapearlos a un charset ordenado por luminosidad.
+ */
 class AsciiFilter {
   constructor(renderer, { fontSize, fontFamily, charset, invert } = {}) {
     this.renderer = renderer;
@@ -58,9 +85,11 @@ class AsciiFilter {
     this.domElement.style.width = '100%';
     this.domElement.style.height = '100%';
 
+    // Elemento <pre> donde se escribe el ASCII resultante
     this.pre = document.createElement('pre');
     this.domElement.appendChild(this.pre);
 
+    // Canvas intermedio para capturar los píxeles del render
     this.canvas = document.createElement('canvas');
     this.context = this.canvas.getContext('2d');
     this.domElement.appendChild(this.canvas);
@@ -69,8 +98,10 @@ class AsciiFilter {
     this.invert = invert ?? true;
     this.fontSize = fontSize ?? 12;
     this.fontFamily = fontFamily ?? "'Courier New', monospace";
+    // Charset ordenado de menor a mayor cobertura de píxel
     this.charset = charset ?? ' .\'`^",:;Il!i~+_-?][}{1)(|/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$';
 
+    // Desactivamos el suavizado para mantener el look pixelado
     this.context.webkitImageSmoothingEnabled = false;
     this.context.mozImageSmoothingEnabled = false;
     this.context.msImageSmoothingEnabled = false;
@@ -90,6 +121,7 @@ class AsciiFilter {
     this.mouse = { x: this.center.x, y: this.center.y };
   }
 
+  // Recalcula la cuadrícula de caracteres según el tamaño de fuente
   reset() {
     this.context.font = `${this.fontSize}px ${this.fontFamily}`;
     const charWidth = this.context.measureText('A').width;
@@ -119,6 +151,7 @@ class AsciiFilter {
     const h = this.canvas.height;
     this.context.clearRect(0, 0, w, h);
     if (this.context && w && h) {
+      // Copiamos el render de Three.js al canvas 2D
       this.context.drawImage(this.renderer.domElement, 0, 0, w, h);
     }
 
@@ -138,12 +171,14 @@ class AsciiFilter {
     return this.mouse.y - this.center.y;
   }
 
+  // Cambia el tono (hue-rotate) según el ángulo del mouse respecto al centro
   hue() {
     const deg = (Math.atan2(this.dy, this.dx) * 180) / Math.PI;
     this.deg += (deg - this.deg) * 0.075;
     this.domElement.style.filter = `hue-rotate(${this.deg.toFixed(1)}deg)`;
   }
 
+  // Convierte cada píxel del canvas a un carácter según su luminosidad
   asciify(ctx, w, h) {
     if (w && h) {
       const imgData = ctx.getImageData(0, 0, w, h).data;
@@ -158,6 +193,7 @@ class AsciiFilter {
             continue;
           }
 
+          // Fórmula de luminosidad ponderada (ojo humano)
           let gray = (0.3 * r + 0.6 * g + 0.1 * b) / 255;
           let idx = Math.floor((1 - gray) * (this.charset.length - 1));
           if (this.invert) idx = this.charset.length - idx - 1;
@@ -174,6 +210,11 @@ class AsciiFilter {
   }
 }
 
+/*
+ * CanvasTxt — renderiza texto en un canvas 2D para usarlo como textura
+ * en Three.js. Separamos el texto del canvas porque necesitamos medir
+ * las dimensiones exactas del texto antes de crear la textura.
+ */
 class CanvasTxt {
   constructor(txt, { fontSize = 200, fontFamily = 'Arial', color = '#ffffff' } = {}) {
     this.canvas = document.createElement('canvas');
@@ -186,6 +227,7 @@ class CanvasTxt {
     this.font = `600 ${this.fontSize}px ${this.fontFamily}`;
   }
 
+  // Ajusta el tamaño del canvas al texto exacto
   resize() {
     this.context.font = this.font;
     const metrics = this.context.measureText(this.txt);
@@ -221,6 +263,10 @@ class CanvasTxt {
   }
 }
 
+/*
+ * CanvAscii — orquestador principal: crea la escena Three.js, el mesh
+ * con shaders, el filtro ASCII y maneja el loop de animación.
+ */
 class CanvAscii {
   constructor(
     { text, asciiFontSize, textFontSize, textColor, planeBaseHeight, enableWaves },
@@ -258,6 +304,7 @@ class CanvAscii {
     cancelAnimationFrame(this.animationFrameId);
   }
 
+  // Inicializa todo: espera a que cargue la fuente, luego crea el mesh y el renderer
   async init() {
     try {
       await document.fonts.load('600 200px "IBM Plex Mono"');
@@ -270,6 +317,7 @@ class CanvAscii {
     this.setRenderer();
   }
 
+  // Crea el plano 3D con el shader personalizado
   setMesh() {
     this.textCanvas = new CanvasTxt(this.textString, {
       fontSize: this.textFontSize,
@@ -279,9 +327,11 @@ class CanvAscii {
     this.textCanvas.resize();
     this.textCanvas.render();
 
+    // Convertimos el canvas 2D en textura de Three.js
     this.texture = new THREE.CanvasTexture(this.textCanvas.texture);
     this.texture.minFilter = THREE.NearestFilter;
 
+    // Calculamos dimensiones del plano manteniendo el aspect ratio del texto
     const textAspect = this.textCanvas.width / this.textCanvas.height;
     const baseH = this.planeBaseHeight;
     const planeW = baseH * textAspect;
@@ -304,6 +354,7 @@ class CanvAscii {
     this.scene.add(this.mesh);
   }
 
+  // Configura el renderer WebGL y el filtro ASCII
   setRenderer() {
     this.renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true });
     this.renderer.setPixelRatio(1);
@@ -338,6 +389,7 @@ class CanvAscii {
     this.animate();
   }
 
+  // Calcula la posición del mouse relativa al contenedor
   onMouseMove(evt) {
     const e = evt.touches ? evt.touches[0] : evt;
     const bounds = this.container.getBoundingClientRect();
@@ -346,6 +398,7 @@ class CanvAscii {
     this.mouse = { x, y };
   }
 
+  // Loop de animación con requestAnimationFrame
   animate() {
     if (this.paused) return;
     const animateFrame = () => {
@@ -356,6 +409,7 @@ class CanvAscii {
     animateFrame();
   }
 
+  // Actualiza textura, uniformes y renderiza
   render() {
     const time = new Date().getTime() * 0.001;
 
@@ -368,6 +422,7 @@ class CanvAscii {
     this.filter.render(this.scene, this.camera);
   }
 
+  // Rota el mesh suavemente siguiendo el mouse
   updateRotation() {
     const x = Math.map(this.mouse.y, 0, this.height, 0.5, -0.5);
     const y = Math.map(this.mouse.x, 0, this.width, -0.5, 0.5);
@@ -376,6 +431,7 @@ class CanvAscii {
     this.mesh.rotation.y += (y - this.mesh.rotation.y) * 0.05;
   }
 
+  // Limpia recursos de Three.js (materiales, geometrías)
   clear() {
     this.scene.traverse(obj => {
       if (obj.isMesh && typeof obj.material === 'object' && obj.material !== null) {
@@ -392,6 +448,7 @@ class CanvAscii {
     this.scene.clear();
   }
 
+  // Limpieza completa: cancela animación, remueve listeners, libera WebGL
   dispose() {
     cancelAnimationFrame(this.animationFrameId);
     if (this.filter) {
@@ -410,6 +467,13 @@ class CanvAscii {
   }
 }
 
+/* 
+ * ASCIIText — componente React que envuelve CanvAscii.
+ *
+ * Se encarga del ciclo de vida del canvas 3D: lo crea cuando el componente
+ * se monta (y es visible), lo redimensiona con ResizeObserver, y lo limpia
+ * al desmontarse. También expone la prop paused para pausar/reanudar.
+ */
 export default function ASCIIText({
   text = 'David!',
   asciiFontSize = 8,
@@ -429,6 +493,7 @@ export default function ASCIIText({
     let observer = null;
     let ro = null;
 
+    // Crea e inicializa una instancia de CanvAscii
     const createAndInit = async (container, w, h) => {
       const instance = new CanvAscii(
         { text, asciiFontSize, textFontSize, textColor, planeBaseHeight, enableWaves },
@@ -443,6 +508,8 @@ export default function ASCIIText({
     const setup = async () => {
       const { width, height } = containerRef.current.getBoundingClientRect();
 
+      // Si el contenedor tiene tamaño 0 (oculto), usamos IntersectionObserver
+      // para esperar a que sea visible antes de inicializar
       if (width === 0 || height === 0) {
         observer = new IntersectionObserver(
           async ([entry]) => {
@@ -470,6 +537,7 @@ export default function ASCIIText({
       if (!cancelled && asciiRef.current) {
         asciiRef.current.load();
 
+        // ResizeObserver para actualizar el tamaño del canvas cuando cambie el contenedor
         ro = new ResizeObserver(entries => {
           if (!entries[0] || !asciiRef.current) return;
           const { width: w, height: h } = entries[0].contentRect;
@@ -483,6 +551,7 @@ export default function ASCIIText({
 
     setup();
 
+    // Limpieza al desmontar el componente
     return () => {
       cancelled = true;
       if (observer) observer.disconnect();
@@ -494,6 +563,7 @@ export default function ASCIIText({
     };
   }, [text, asciiFontSize, textFontSize, textColor, planeBaseHeight, enableWaves]);
 
+  // Control externo de pausa/reanudación
   useEffect(() => {
     if (!asciiRef.current) return;
     if (paused) {

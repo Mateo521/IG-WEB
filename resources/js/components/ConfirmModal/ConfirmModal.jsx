@@ -1,15 +1,31 @@
+/* 
+ * ConfirmModal — modal de confirmación para acciones destructivas.
+ *
+ * Se usa principalmente para confirmar eliminaciones. Muestra un mensaje
+ * y dos botones (Cancelar / Confirmar), con un estado de carga mientras
+ * se ejecuta la acción para evitar dobles envíos.
+ *
+ * Props:
+ *   isOpen    → controla visibilidad
+ *   message   → texto descriptivo de lo que se va a confirmar
+ *   onConfirm → función asíncrona que se ejecuta al confirmar
+ *   onCancel  → función que se llama al cancelar o presionar Escape
+ */
 import { useState, useEffect, useCallback } from 'react';
 import styles from './ConfirmModal.module.css';
 
 function ConfirmModal({ isOpen, message, onConfirm, onCancel }) {
+    // Estado de carga mientras se ejecuta onConfirm
     const [loading, setLoading] = useState(false);
 
+    // Cerramos con Escape igual que en el Modal normal
     const handleKeyDown = useCallback(e => {
         if (e.key === 'Escape') onCancel();
     }, [onCancel]);
 
     useEffect(() => {
         if (isOpen) {
+            // Cada vez que se abre reseteamos el estado de carga
             setLoading(false);
             document.addEventListener('keydown', handleKeyDown);
             document.body.style.overflow = 'hidden';
@@ -20,6 +36,7 @@ function ConfirmModal({ isOpen, message, onConfirm, onCancel }) {
         };
     }, [isOpen, handleKeyDown]);
 
+    // Marcamos como cargando antes de ejecutar la acción
     const handleConfirm = async () => {
         setLoading(true);
         await onConfirm();

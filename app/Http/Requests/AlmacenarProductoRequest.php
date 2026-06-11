@@ -6,11 +6,13 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class AlmacenarProductoRequest extends FormRequest
 {
+    // Determinamos si el usuario esta autorizado a hacer esta peticion
     public function authorize(): bool
     {
-        return true; 
+        return true;
     }
 
+    // Reglas de validacion que se aplican al crear o actualizar un producto
     public function rules(): array
     {
         return [
