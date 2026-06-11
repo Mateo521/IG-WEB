@@ -13,7 +13,6 @@
     z-index: 0;
     height: 100vh;
     overflow: hidden;
-    pointer-events: none;
     background: #000000;
 }
 
@@ -28,24 +27,22 @@
 }
 
 .loginBtn {
-    position: fixed;
-    top: 1.5rem;
-    right: 1.5rem;
-    z-index: 100;
-    padding: 0.5rem 1.25rem;
+    flex-shrink: 0;
+    padding: 0.55rem 1.25rem;
     background: var(--bg-card);
     color: var(--text);
     border: 1px solid var(--border);
     border-radius: var(--radius);
     font-size: 0.88rem;
-    font-weight: 600;
-    font-family: 'Hind', sans-serif;
+    font-weight: 500;
+    font-family: var(--font-sans);
     text-decoration: none;
     cursor: pointer;
     transition: var(--transition);
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
+    white-space: nowrap;
 }
 
 .loginBtn:hover {
@@ -76,7 +73,7 @@
     border: 1px solid var(--border);
     border-radius: var(--radius-full);
     padding: 0.65rem 1.5rem;
-    font-family: 'Hind', sans-serif;
+    font-family: var(--font-sans);
     font-size: 0.82rem;
     font-weight: 600;
     letter-spacing: 0.08em;
@@ -190,28 +187,50 @@
 }
 
 .btnPdf {
-    flex-shrink: 0;
-    padding: 0.55rem 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    padding: 0.6rem;
+    border-radius: 999px;
     background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
     color: var(--text);
+    border: 1px solid var(--border);
+    cursor: pointer;
     font-size: 0.88rem;
     font-weight: 500;
-    font-family: 'Hind', sans-serif;
-    cursor: pointer;
-    transition: var(--transition);
-    white-space: nowrap;
+    font-family: var(--font-sans);
+    line-height: 1;
+    transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), background 0.2s cubic-bezier(0.4, 0, 0.2, 1), gap 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), padding 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .btnPdf:hover:not(:disabled) {
     border-color: var(--text);
     background: var(--primary-light);
+    gap: 0.55rem;
+    padding: 0.6rem 1rem 0.6rem 0.85rem;
 }
 
 .btnPdf:disabled {
     opacity: 0.35;
     cursor: not-allowed;
+}
+
+.btnPdf svg {
+    flex-shrink: 0;
+}
+
+.btnPdfText {
+    max-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    opacity: 0;
+    transition: max-width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+}
+
+.btnPdf:hover:not(:disabled) .btnPdfText {
+    max-width: 120px;
+    opacity: 1;
 }
 
 .chips {
@@ -235,7 +254,7 @@
     gap: 2rem;
     max-width: 1280px;
     margin: 0 auto;
-    padding: 0.75rem 1.5rem 0;
+    padding: 0.75rem 1.5rem 1.5rem;
     width: 100%;
 }
 
@@ -244,9 +263,10 @@
     min-width: 0;
     min-height: 0;
     max-height: 100%;
-    overflow-y: auto;
+    overflow-y: scroll;
     scrollbar-width: thin;
     scrollbar-color: #FAFAFA #18181B;
+    padding: 1rem 0.75rem 2rem 0;
 }
 
 .contenido::-webkit-scrollbar {
@@ -268,10 +288,8 @@
 
 .sidebarSticky {
     position: sticky;
-    top: 100px;
+    top: 80px;
     align-self: flex-start;
-    max-height: calc(100vh - 120px);
-    overflow-y: auto;
 }
 
 /* ───── Chips ───── */
@@ -304,23 +322,6 @@
 
 .chipQuitar:hover {
     color: var(--danger);
-}
-
-.chipLimpiarTodo {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--text-muted);
-    font-family: inherit;
-    padding: 0.25rem 0.5rem;
-    transition: var(--transition);
-}
-
-.chipLimpiarTodo:hover {
-    color: var(--text);
-    text-decoration: underline;
 }
 
 /* ───── Product grid ───── */
@@ -435,7 +436,7 @@
 }
 
 .nombre {
-    font-family: 'Hind', sans-serif;
+    font-family: var(--font-sans);
     font-size: 1.05rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
@@ -469,7 +470,7 @@
 
 .categoria {
     font-size: 0.75rem;
-    color: var(--text-faint);
+    color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 0.08em;
     font-weight: 500;
@@ -512,10 +513,5 @@
 
     .toggleVista {
         display: none;
-    }
-
-    .loginBtn {
-        top: 1rem;
-        right: 1rem;
     }
 }

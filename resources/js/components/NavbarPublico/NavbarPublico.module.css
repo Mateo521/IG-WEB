@@ -34,7 +34,7 @@
     border-radius: var(--radius);
     font-size: 0.88rem;
     font-weight: 500;
-    font-family: 'Hind', sans-serif;
+    font-family: var(--font-sans);
     text-decoration: none;
     transition: var(--transition);
     display: inline-block;

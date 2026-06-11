@@ -45,7 +45,7 @@ function Navbar() {
     return (
         <nav className={styles.nav}>
             <div className={styles.inner}>
-                <Link to="/admin/dashboard" className={styles.brand}>VITRIO</Link>
+                <Link to="/admin/dashboard" className={styles.brand}>VITRYO</Link>
                 <div className={styles.links}>
                     <Link to="/admin/rubros" className={styles.link}>Rubros</Link>
                     <Link to="/admin/subrubros" className={styles.link}>Subrubros</Link>

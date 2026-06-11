@@ -212,3 +212,18 @@
     font-weight: 700;
     color: #fff;
 }
+
+@media (max-height: 800px) {
+    .page { padding: 1rem 0; }
+    .header { margin-bottom: 1.25rem; }
+    .title { font-size: 1.25rem; }
+}
+
+@media (max-height: 700px) {
+    .page { padding: 0.75rem 0; }
+    .header { margin-bottom: 1rem; }
+    .title { font-size: 1.1rem; }
+    .tableContainer { max-height: 55vh; }
+    .table th,
+    .table td { padding: 0.55rem 0.85rem; }
+}

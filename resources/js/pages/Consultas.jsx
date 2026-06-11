@@ -79,8 +79,8 @@ function Consultas() {
                             <div className={styles.modalMensaje}>{consultaActual.mensaje}</div>
                         </div>
                         <a
-                            href={`mailto:${consultaActual.email}?subject=${encodeURIComponent('Respuesta a su consulta en VITRIO')}&body=${encodeURIComponent(
-                                `${consultaActual.nombreConsulta}, me comunico con usted para responderle la consulta hecha en VITRIO sobre "${consultaActual.producto?.nombreProducto || 'el producto'}" que realizó el día ${formatearFecha(consultaActual.created_at)}.\n\n\nSaludos,\nVITRIO TEAM`
+                            href={`mailto:${consultaActual.email}?subject=${encodeURIComponent('Respuesta a su consulta en VITRYO')}&body=${encodeURIComponent(
+                                `${consultaActual.nombreConsulta}, me comunico con usted para responderle la consulta hecha en VITRYO sobre "${consultaActual.producto?.nombreProducto || 'el producto'}" que realizó el día ${formatearFecha(consultaActual.created_at)}.\n\n\nSaludos,\nVITRYO TEAM`
                             )}`}
                             target="_blank"
                             rel="noopener noreferrer"

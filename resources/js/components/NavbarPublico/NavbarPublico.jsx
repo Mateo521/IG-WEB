@@ -5,7 +5,7 @@ function NavbarPublico() {
     return (
         <nav className={styles.nav}>
             <div className={styles.inner}>
-                <Link to="/" className={styles.brand}>VITRIO</Link>
+                <Link to="/" className={styles.brand}>VITRYO</Link>
                 <Link to="/login" className={styles.loginBtn}>Iniciar Sesión</Link>
             </div>
         </nav>

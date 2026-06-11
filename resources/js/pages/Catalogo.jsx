@@ -130,7 +130,7 @@ function Catalogo() {
             doc.setFont('helvetica', 'bold');
             doc.setFontSize(20);
             doc.setTextColor(250, 250, 250);
-            doc.text('VITRIO', 14, 18);
+            doc.text('VITRYO', 14, 18);
 
             doc.setFont('helvetica', 'normal');
             doc.setFontSize(11);
@@ -223,12 +223,6 @@ function Catalogo() {
     const chips = [];
     if (filtros.search)
         chips.push({ key: 'search',       label: `"${filtros.search}"` });
-    if (filtros.rubro_id)
-        chips.push({ key: 'rubro_id',     label: rubros.find(r => String(r.id) === String(filtros.rubro_id))?.nombreRubro });
-    if (filtros.subrubro_id)
-        chips.push({ key: 'subrubro_id',  label: subrubros.find(s => String(s.id) === String(filtros.subrubro_id))?.nombreSubrubro });
-    if (filtros.categoria_id)
-        chips.push({ key: 'categoria_id', label: categorias.find(c => String(c.id) === String(filtros.categoria_id))?.nombreCategoria });
     if (filtros.precio_min)
         chips.push({ key: 'precio_min',   label: `Desde $${filtros.precio_min}` });
     if (filtros.precio_max)
@@ -240,19 +234,10 @@ function Catalogo() {
 
     return (
         <div className={styles.page}>
-            <Link to="/login" className={styles.loginBtn}>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
-                    <polyline points="10 17 15 12 10 7"/>
-                    <line x1="15" y1="12" x2="3" y2="12"/>
-                </svg>
-                Iniciar Sesión
-            </Link>
-
             <section ref={heroRef} className={styles.hero}>
                 <div className={styles.heroBg}>
                     <ASCIIText
-                        text="VITRIO"
+                        text="VITRYO"
                         paused={catalogoVisible}
                         enableWaves={false}
                         asciiFontSize={8}
@@ -319,8 +304,23 @@ function Catalogo() {
                             disabled={generandoPdf || meta.total === 0}
                             title="Descarga el catálogo completo en PDF"
                         >
-                            {generandoPdf ? 'Generando...' : 'Descargar Catálogo PDF'}
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" width="18" height="18">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                            </svg>
+                            {generandoPdf ? (
+                                'Generando...'
+                            ) : (
+                                <span className={styles.btnPdfText}>Descargar PDF</span>
+                            )}
                         </button>
+                        <Link to="/login" className={styles.loginBtn}>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+                                <polyline points="10 17 15 12 10 7"/>
+                                <line x1="15" y1="12" x2="3" y2="12"/>
+                            </svg>
+                            Iniciar Sesión
+                        </Link>
                     </div>
                 </div>
 
@@ -338,9 +338,6 @@ function Catalogo() {
                                 </button>
                             </span>
                         ))}
-                        <button className={styles.chipLimpiarTodo} onClick={handleLimpiarFiltros}>
-                            Limpiar todo
-                        </button>
                     </div>
                 )}
 
@@ -370,6 +367,7 @@ function Catalogo() {
                                                 <img
                                                     src={`/storage/${p.rutaImg}`}
                                                     alt={p.nombreProducto}
+                                                    loading="lazy"
                                                     className={styles.img}
                                                 />
                                             ) : (
