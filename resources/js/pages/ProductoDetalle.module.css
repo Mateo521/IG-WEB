@@ -169,7 +169,7 @@
     align-self: flex-start;
     padding: 0.7rem 1.8rem;
     background: var(--primary);
-    color: white;
+    color: black;
     border: none;
     border-radius: var(--radius);
     font-family: 'Hind', sans-serif;

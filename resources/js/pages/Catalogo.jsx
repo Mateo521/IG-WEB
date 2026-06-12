@@ -11,22 +11,22 @@ import styles from './Catalogo.module.css';
 
 // Estado inicial de los filtros, todos vacios
 const FILTROS_VACIOS = {
-    search:       '',
-    rubro_id:     '',
-    subrubro_id:  '',
+    search: '',
+    rubro_id: '',
+    subrubro_id: '',
     categoria_id: '',
-    precio_min:   '',
-    precio_max:   '',
-    sort:         'reciente',
+    precio_min: '',
+    precio_max: '',
+    sort: 'reciente',
 };
 
 function Catalogo() {
-    const [filtros, setFiltros]   = useState(FILTROS_VACIOS);
-    const [pagina,  setPagina]    = useState(1);
-    const [productos,  setProductos]  = useState([]);
+    const [filtros, setFiltros] = useState(FILTROS_VACIOS);
+    const [pagina, setPagina] = useState(1);
+    const [productos, setProductos] = useState([]);
     // meta: informacion de paginacion (pagina actual, total de paginas, total de resultados)
-    const [meta,       setMeta]       = useState({ current_page: 1, last_page: 1, total: 0 });
-    const [cargando,   setCargando]   = useState(false);
+    const [meta, setMeta] = useState({ current_page: 1, last_page: 1, total: 0 });
+    const [cargando, setCargando] = useState(false);
     const [generandoPdf, setGenerandoPdf] = useState(false);
     // vista: 'grilla' o 'lista', se persiste en localStorage
     const [vista, setVista] = useState(
@@ -44,8 +44,8 @@ function Catalogo() {
         localStorage.setItem('catalogo_vista', nuevaVista);
     };
 
-    const [rubros,     setRubros]     = useState([]);
-    const [subrubros,  setSubrubros]  = useState([]);
+    const [rubros, setRubros] = useState([]);
+    const [subrubros, setSubrubros] = useState([]);
     const [categorias, setCategorias] = useState([]);
 
     // Referencias para el debounce del buscador y para medir tiempo de carga
@@ -54,7 +54,7 @@ function Catalogo() {
 
     // Cargamos los datos para los filtros al montar el componente
     useEffect(() => {
-        api.get('/rubros').then(r    => setRubros(r.data));
+        api.get('/rubros').then(r => setRubros(r.data));
         api.get('/subrubros').then(r => setSubrubros(r.data));
         api.get('/categorias').then(r => setCategorias(r.data));
     }, []);
@@ -65,20 +65,20 @@ function Catalogo() {
         if (!tiempoCargaRef.current) tiempoCargaRef.current = Date.now();
         try {
             const params = { page: p, por_pagina: 18 };
-            if (f.search)       params.search       = f.search;
-            if (f.rubro_id)     params.rubro_id     = f.rubro_id;
-            if (f.subrubro_id)  params.subrubro_id  = f.subrubro_id;
+            if (f.search) params.search = f.search;
+            if (f.rubro_id) params.rubro_id = f.rubro_id;
+            if (f.subrubro_id) params.subrubro_id = f.subrubro_id;
             if (f.categoria_id) params.categoria_id = f.categoria_id;
-            if (f.precio_min)   params.precio_min   = f.precio_min;
-            if (f.precio_max)   params.precio_max   = f.precio_max;
-            if (f.sort !== 'reciente') params.sort  = f.sort;
+            if (f.precio_min) params.precio_min = f.precio_min;
+            if (f.precio_max) params.precio_max = f.precio_max;
+            if (f.sort !== 'reciente') params.sort = f.sort;
 
             const respuesta = await api.get('/productos', { params });
             setProductos(respuesta.data.data);
             setMeta({
                 current_page: respuesta.data.current_page,
-                last_page:    respuesta.data.last_page,
-                total:        respuesta.data.total,
+                last_page: respuesta.data.last_page,
+                total: respuesta.data.total,
             });
         } catch (error) {
             console.error('Error al cargar productos:', error);
@@ -123,34 +123,34 @@ function Catalogo() {
         setGenerandoPdf(true);
         try {
             const params = { paginate: 'false' };
-            if (filtros.search)       params.search       = filtros.search;
-            if (filtros.rubro_id)     params.rubro_id     = filtros.rubro_id;
-            if (filtros.subrubro_id)  params.subrubro_id  = filtros.subrubro_id;
+            if (filtros.search) params.search = filtros.search;
+            if (filtros.rubro_id) params.rubro_id = filtros.rubro_id;
+            if (filtros.subrubro_id) params.subrubro_id = filtros.subrubro_id;
             if (filtros.categoria_id) params.categoria_id = filtros.categoria_id;
-            if (filtros.precio_min)   params.precio_min   = filtros.precio_min;
-            if (filtros.precio_max)   params.precio_max   = filtros.precio_max;
-            if (filtros.sort !== 'reciente') params.sort  = filtros.sort;
+            if (filtros.precio_min) params.precio_min = filtros.precio_min;
+            if (filtros.precio_max) params.precio_max = filtros.precio_max;
+            if (filtros.sort !== 'reciente') params.sort = filtros.sort;
 
             const respuesta = await api.get('/productos', { params });
-            const todos     = respuesta.data;
+            const todos = respuesta.data;
             const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
             const anchoPagina = doc.internal.pageSize.getWidth();
-            const fechaHoy    = new Date().toLocaleDateString('es-AR', {
+            const fechaHoy = new Date().toLocaleDateString('es-AR', {
                 day: '2-digit', month: '2-digit', year: 'numeric'
             });
 
             doc.setFont('helvetica', 'bold');
             doc.setFontSize(20);
-            doc.setTextColor(250, 250, 250);
+            doc.setTextColor(0, 0, 0);
             doc.text('VITRYO', 14, 18);
 
             doc.setFont('helvetica', 'normal');
             doc.setFontSize(11);
-            doc.setTextColor(161, 161, 170);
+            doc.setTextColor(0, 0, 0);
             doc.text('Catálogo de Productos', 14, 25);
 
             doc.setFontSize(9);
-            doc.setTextColor(82, 82, 91);
+            doc.setTextColor(0, 0, 0);
             doc.text(fechaHoy, anchoPagina - 14, 18, { align: 'right' });
 
             doc.setDrawColor(250, 250, 250);
@@ -159,11 +159,11 @@ function Catalogo() {
 
             let posY = 36;
             const filtrosTexto = [];
-            if (filtros.search)      filtrosTexto.push(`Búsqueda: "${filtros.search}"`);
-            if (filtros.rubro_id)    filtrosTexto.push(`Rubro: ${rubros.find(r => String(r.id) === String(filtros.rubro_id))?.nombreRubro}`);
+            if (filtros.search) filtrosTexto.push(`Búsqueda: "${filtros.search}"`);
+            if (filtros.rubro_id) filtrosTexto.push(`Rubro: ${rubros.find(r => String(r.id) === String(filtros.rubro_id))?.nombreRubro}`);
             if (filtros.subrubro_id) filtrosTexto.push(`Subrubro: ${subrubros.find(s => String(s.id) === String(filtros.subrubro_id))?.nombreSubrubro}`);
-            if (filtros.precio_min)  filtrosTexto.push(`Desde $${filtros.precio_min}`);
-            if (filtros.precio_max)  filtrosTexto.push(`Hasta $${filtros.precio_max}`);
+            if (filtros.precio_min) filtrosTexto.push(`Desde $${filtros.precio_min}`);
+            if (filtros.precio_max) filtrosTexto.push(`Hasta $${filtros.precio_max}`);
 
             if (filtrosTexto.length > 0) {
                 doc.setFontSize(8);
@@ -186,19 +186,20 @@ function Catalogo() {
                     2: { cellWidth: 28, halign: 'right' },
                 },
                 headStyles: {
-                    fillColor:  [250, 250, 250],
-                    textColor:  [0, 0, 0],
-                    fontStyle:  'bold',
-                    fontSize:   9,
+                    fillColor: [0, 0, 0],
+                    textColor: [250, 250, 250],
+                    fontStyle: 'bold',
+                    fontSize: 9,
                 },
                 bodyStyles: {
-                    fontSize:   8,
-                    textColor:  [250, 250, 250],
-                    lineColor:  [39, 39, 42],
-                    lineWidth:  0.1,
+                    fontSize: 8,
+                    fillColor: [250, 250, 250],
+                    textColor: [0, 0, 0],
+                    lineColor: [39, 39, 42],
+                    lineWidth: 0.1,
                 },
                 alternateRowStyles: {
-                    fillColor: [24, 24, 27],
+                    fillColor: [255, 255, 255],
                 },
                 margin: { left: 14, right: 14 },
                 didDrawPage: (data) => {
@@ -235,11 +236,11 @@ function Catalogo() {
     // Chips de filtros activos que se muestran arriba de la grilla
     const chips = [];
     if (filtros.search)
-        chips.push({ key: 'search',       label: `"${filtros.search}"` });
+        chips.push({ key: 'search', label: `"${filtros.search}"` });
     if (filtros.precio_min)
-        chips.push({ key: 'precio_min',   label: `Desde $${filtros.precio_min}` });
+        chips.push({ key: 'precio_min', label: `Desde $${filtros.precio_min}` });
     if (filtros.precio_max)
-        chips.push({ key: 'precio_max',   label: `Hasta $${filtros.precio_max}` });
+        chips.push({ key: 'precio_max', label: `Hasta $${filtros.precio_max}` });
 
     const scrollToContent = () => {
         setCatalogoVisible(true);
@@ -268,7 +269,7 @@ function Catalogo() {
                 >
                     VER CATÁLOGO
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <polyline points="6 9 12 15 18 9"/>
+                        <polyline points="6 9 12 15 18 9" />
                     </svg>
                 </button>
             </section>
@@ -293,10 +294,10 @@ function Catalogo() {
                                 aria-pressed={vista === 'grilla'}
                             >
                                 <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                                    <rect x="0" y="0" width="6" height="6" rx="1"/>
-                                    <rect x="10" y="0" width="6" height="6" rx="1"/>
-                                    <rect x="0" y="10" width="6" height="6" rx="1"/>
-                                    <rect x="10" y="10" width="6" height="6" rx="1"/>
+                                    <rect x="0" y="0" width="6" height="6" rx="1" />
+                                    <rect x="10" y="0" width="6" height="6" rx="1" />
+                                    <rect x="0" y="10" width="6" height="6" rx="1" />
+                                    <rect x="10" y="10" width="6" height="6" rx="1" />
                                 </svg>
                             </button>
                             <button
@@ -306,9 +307,9 @@ function Catalogo() {
                                 aria-pressed={vista === 'lista'}
                             >
                                 <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                                    <rect x="0" y="1"  width="16" height="3" rx="1"/>
-                                    <rect x="0" y="6.5" width="16" height="3" rx="1"/>
-                                    <rect x="0" y="12" width="16" height="3" rx="1"/>
+                                    <rect x="0" y="1" width="16" height="3" rx="1" />
+                                    <rect x="0" y="6.5" width="16" height="3" rx="1" />
+                                    <rect x="0" y="12" width="16" height="3" rx="1" />
                                 </svg>
                             </button>
                         </div>
@@ -325,9 +326,9 @@ function Catalogo() {
                         </button>
                         <Link to="/login" className={styles.loginBtn}>
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
-                                <polyline points="10 17 15 12 10 7"/>
-                                <line x1="15" y1="12" x2="3" y2="12"/>
+                                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+                                <polyline points="10 17 15 12 10 7" />
+                                <line x1="15" y1="12" x2="3" y2="12" />
                             </svg>
                             Iniciar Sesión
                         </Link>
