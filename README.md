@@ -617,3 +617,116 @@ Se agregaron tres botones en el header de la tabla:
 | **Exportar CSV** | Llama a `GET /api/productos/exportar` con Axios (`responseType: blob`) y dispara la descarga |
 
 El resultado de la importación se muestra en un panel debajo del header (en verde si todo fue bien, en rojo si hubo errores) con la lista de errores por número de fila. El panel tiene un `×` para cerrarlo.
+
+---
+
+### Autenticación por roles y aprobación de usuarios
+
+#### ¿Qué se agregó?
+
+Se implementó un sistema de aprobación de usuarios donde el registro no da acceso inmediato. Un usuario administrador (`admin`) debe aprobar cada cuenta manualmente antes de que pueda iniciar sesión.
+
+#### Flujo de registro y login
+
+1. **Registro público** (`/register`): cualquier persona puede crear una cuenta, pero se crea en estado **pendiente** (`is_approved = false`). No se genera token ni se redirige al panel.
+2. **Login**: si el usuario no está aprobado, se muestra el mensaje *"Tu cuenta está pendiente de aprobación por un administrador"*.
+3. **Aprobación**: el admin ingresa con la cuenta pre-creada y aprueba usuarios desde `/admin/usuarios`.
+
+#### Usuario administrador por defecto
+
+Creado mediante `AdminUserSeeder` con `php artisan db:seed`:
+
+| Campo | Valor |
+|-------|-------|
+| Nombre | `admin123` |
+| Email | `admin@vitryo.com` |
+| Password | `admin123` |
+| `is_admin` | `true` |
+| `is_approved` | `true` |
+
+#### Backend — cambios en la base de datos
+
+Se agregaron dos columnas a la tabla `users`:
+
+| Columna | Tipo | Default | Descripción |
+|---------|------|---------|-------------|
+| `is_admin` | boolean | `false` | Indica si el usuario es administrador |
+| `is_approved` | boolean | `false` | Indica si el usuario fue aprobado para acceder |
+
+**Migración:** `2026_06_13_000001_add_is_admin_and_approved_to_users_table.php`
+
+#### Backend — `AuthController` modificado
+
+- **`register()`**: ya no devuelve token. El usuario se crea con `is_approved = false` y la respuesta solo incluye un mensaje de confirmación.
+- **`login()`**: antes de generar el token, verifica que `is_approved == true`. Si no, lanza error de validación con el mensaje de pendiente.
+
+#### Backend — `UserController` (nuevo)
+
+Controlador protegido con `auth:sanctum` para la gestión de usuarios:
+
+| Método | Ruta | Descripción |
+|--------|------|-------------|
+| `GET` | `/api/usuarios` | Lista todos los usuarios registrados |
+| `GET` | `/api/usuarios/pendientes` | Lista solo los usuarios pendientes (no admin) |
+| `PATCH` | `/api/usuarios/{user}/aprobar` | Aprueba un usuario (`is_approved = true`) |
+| `DELETE` | `/api/usuarios/{user}/rechazar` | Elimina un usuario pendiente |
+
+#### Frontend — `Usuarios.jsx` (nuevo)
+
+Página `/admin/usuarios` visible únicamente para el usuario administrador:
+
+- Tabla con todos los usuarios registrados (nombre, email, fecha de registro, estado)
+- Badge de estado: verde **Aprobado** / amarillo **Pendiente**
+- Botones **Aprobar** y **Rechazar** para cada usuario pendiente
+- Fila destacada para el admin con badge "ADMIN"
+- Mismo estilo que las demás tablas del panel (Rubros, Subrubros, etc.)
+
+#### Frontend — `Register.jsx` modificado
+
+- Ya no guarda token en localStorage
+- Ya no redirige al dashboard
+- Muestra pantalla de éxito con mensaje: *"Tu registro está pendiente de aprobación. Un administrador revisará tu solicitud."*
+- Botón para ir a la página de login
+
+#### Frontend — `Login.jsx` modificado
+
+- Si el usuario no está aprobado, además del error muestra: *"Contactá al administrador para que apruebe tu cuenta."*
+
+#### Frontend — `Dashboard.jsx` modificado
+
+El dashboard adapta su grilla según el rol del usuario:
+
+**Usuario administrador** (6 cards, grilla pareja 2×3):
+```
+| Rubros   | Subrubros  |
+| Productos| Categorías |
+| Consultas| Usuarios   |
+```
+
+**Usuario normal** (5 cards, productos ancho completo):
+```
+| Rubros   | Subrubros  |
+| Productos (ancho completo, más grande) |
+| Categorías | Consultas |
+```
+
+#### Frontend — `Navbar.jsx` modificado
+
+El link a **Usuarios** en la barra de navegación solo es visible si el usuario logueado es administrador (`user.is_admin`).
+
+#### `DashboardController` modificado
+
+Se agregó `'usuarios' => User::count()` a la respuesta de `GET /api/stats`.
+
+#### Cómo probar
+
+```bash
+# 1. Ejecutar migración y seeders
+php artisan migrate:fresh --seed
+
+# 2. Iniciar sesión como admin
+#    Email: admin@vitryo.com
+#    Pass:  admin123
+
+# 3. Ir a /admin/usuarios para ver y aprobar usuarios pendientes
+```
