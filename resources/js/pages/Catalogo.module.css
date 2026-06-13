@@ -26,35 +26,6 @@
     overflow: hidden;
 }
 
-.loginBtn {
-    flex-shrink: 0;
-    padding: 0.55rem 1.25rem;
-    background: var(--bg-card);
-    color: var(--text);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    font-size: 0.88rem;
-    font-weight: 500;
-    font-family: var(--font-sans);
-    text-decoration: none;
-    cursor: pointer;
-    transition: var(--transition);
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    white-space: nowrap;
-}
-
-.loginBtn:hover {
-    border-color: var(--text);
-    background: var(--primary-light);
-}
-
-.loginBtn svg {
-    width: 14px;
-    height: 14px;
-}
-
 /* ───── Scroll to catalog button ───── */
 
 .scrollBtn {
@@ -511,7 +482,4 @@
         min-height: 100px;
     }
 
-    .toggleVista {
-        display: none;
-    }
 }

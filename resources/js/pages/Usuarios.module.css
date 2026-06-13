@@ -1,0 +1,177 @@
+.page {
+    padding: 1.5rem 0;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.75rem;
+}
+
+.title {
+    font-family: var(--font-sans);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: -0.02em;
+    margin: 0;
+}
+
+.total {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.cargando {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    padding: 2rem 0;
+}
+
+.tableContainer {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: auto;
+    max-height: 65vh;
+}
+
+.table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: var(--bg-card);
+}
+
+.table th,
+.table td {
+    text-align: left;
+    padding: 0.85rem 1.1rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.table th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: #fff;
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: #111;
+}
+
+.table tbody tr {
+    transition: var(--transition);
+}
+
+.table tbody tr:hover td {
+    background: var(--bg-dark);
+    box-shadow: inset 0 0 0 1px var(--primary);
+}
+
+.table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.filaAdmin {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.nombre {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.badgeAdmin {
+    font-size: 0.7rem;
+    background: var(--text);
+    color: var(--bg);
+    padding: 0.15rem 0.5rem;
+    border-radius: var(--radius-full);
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+}
+
+.badge {
+    display: inline-block;
+    padding: 0.2rem 0.7rem;
+    border-radius: var(--radius-full);
+    font-size: 0.78rem;
+    font-weight: 500;
+}
+
+.badgeAprobado {
+    background: rgba(34, 197, 94, 0.12);
+    color: #22c55e;
+}
+
+.badgePendiente {
+    background: rgba(234, 179, 8, 0.12);
+    color: #eab308;
+}
+
+.acciones {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btnAprobar,
+.btnRechazar {
+    padding: 0.35rem 0.85rem;
+    border-radius: var(--radius);
+    font-size: 0.8rem;
+    font-weight: 500;
+    font-family: var(--font-sans);
+    cursor: pointer;
+    border: 1px solid var(--border);
+    transition: var(--transition);
+    background: var(--bg-card);
+    color: var(--text);
+}
+
+.btnAprobar:hover {
+    background: rgba(34, 197, 94, 0.12);
+    border-color: #22c55e;
+    color: #22c55e;
+}
+
+.btnRechazar:hover {
+    background: rgba(239, 68, 68, 0.12);
+    border-color: #ef4444;
+    color: #ef4444;
+}
+
+.textoAprobado {
+    color: #22c55e;
+    font-size: 0.82rem;
+}
+
+.textoAdmin {
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+}
+
+.empty {
+    text-align: center;
+    color: var(--text-muted);
+    padding: 2rem !important;
+}
+
+@media (max-height: 800px) {
+    .page { padding: 1rem 0; }
+    .header { margin-bottom: 1.25rem; }
+    .title { font-size: 1.25rem; }
+}
+
+@media (max-height: 700px) {
+    .page { padding: 0.75rem 0; }
+    .header { margin-bottom: 1rem; }
+    .title { font-size: 1.1rem; }
+    .tableContainer { max-height: 55vh; }
+    .table th,
+    .table td { padding: 0.55rem 0.85rem; }
+}

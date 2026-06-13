@@ -42,6 +42,9 @@ function Login() {
                     <h1 className={styles.title}>Iniciar Sesión</h1>
                     <p className={styles.subtitle}>Accedé al panel de administración</p>
                     {error && <p className={styles.error}>{error}</p>}
+                    {error && error.includes('pendiente') && (
+                        <p className={styles.pendiente}>Contactá al administrador para que apruebe tu cuenta.</p>
+                    )}
                     <form className={styles.form} onSubmit={handleSubmit}>
                         <label className={styles.label}>
                             Email

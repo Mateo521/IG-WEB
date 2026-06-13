@@ -61,6 +61,7 @@ function Navbar() {
                         {consultasNuevas > 0 && <span className={styles.notifDot} />}
                     </Link>
                     <Link to="/admin/productos" className={styles.link}>Productos</Link>
+                    {user.is_admin && <Link to="/admin/usuarios" className={styles.link}>Usuarios</Link>}
                 </div>
                 <div className={styles.right} ref={refMenu}>
                     <button

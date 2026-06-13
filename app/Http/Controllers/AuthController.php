@@ -22,14 +22,13 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'is_approved' => false,
+            'is_admin' => false,
         ]);
 
-        // Generamos un token tipo API con Sanctum para que el frontend lo guarde y lo use despues
-        $token = $user->createToken('auth-token')->plainTextToken;
-
         return response()->json([
+            'message' => 'Registro exitoso. Tu cuenta está pendiente de aprobación por un administrador.',
             'user' => $user,
-            'token' => $token,
         ], 201);
     }
 
@@ -47,6 +46,13 @@ class AuthController extends Controller
         if (!$user || !Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
                 'email' => ['Las credenciales proporcionadas son incorrectas.'],
+            ]);
+        }
+
+        // Verificar si el usuario está aprobado por el admin
+        if (!$user->is_approved) {
+            throw ValidationException::withMessages([
+                'email' => ['Tu cuenta está pendiente de aprobación por un administrador.'],
             ]);
         }
 

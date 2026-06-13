@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\RubroController;
 use App\Http\Controllers\SubrubroController;
 use App\Http\Controllers\CategoriaController;
@@ -39,3 +40,11 @@ Route::patch('/consultas/{consulta}/leer', [ConsultaController::class, 'marcarLe
 
 // Estadisticas para el dashboard del admin: devuelve contadores de cada entidad
 Route::get('/stats', [DashboardController::class, 'stats']);
+
+// Gestion de usuarios (solo para admin autenticado)
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/usuarios', [UserController::class, 'index']);
+    Route::get('/usuarios/pendientes', [UserController::class, 'pendientes']);
+    Route::patch('/usuarios/{user}/aprobar', [UserController::class, 'aprobar']);
+    Route::delete('/usuarios/{user}/rechazar', [UserController::class, 'rechazar']);
+});

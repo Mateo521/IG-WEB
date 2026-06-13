@@ -7,6 +7,7 @@ use App\Models\Subrubro;
 use App\Models\Categoria;
 use App\Models\Producto;
 use App\Models\Consulta;
+use App\Models\User;
 
 class DashboardController extends Controller
 {
@@ -17,6 +18,7 @@ class DashboardController extends Controller
         return response()->json([
             'rubros'          => Rubro::count(),
             'subrubros'       => Subrubro::count(),
+            'usuarios'        => User::count(),
             'categorias'      => Categoria::count(),
             'productos'       => Producto::count(),
             'consultas'       => Consulta::count(),

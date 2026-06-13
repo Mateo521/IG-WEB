@@ -1,31 +1,28 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import api from '../services/api';
 
 import styles from './Register.module.css';
 
 function Register() {
-    const navigate = useNavigate();
     // Estado del formulario con nombre, email, password y confirmacion
     const [form, setForm] = useState({ name: '', email: '', password: '', password_confirmation: '' });
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const [registrado, setRegistrado] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
 
     const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
-    // Envia los datos de registro, guarda el token y redirige al dashboard
+    // Envia los datos de registro, muestra mensaje de pendiente sin auto-login
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
         setLoading(true);
         try {
-            const res = await api.post('/register', form);
-            localStorage.setItem('token', res.data.token);
-            localStorage.setItem('user', JSON.stringify(res.data.user));
-            navigate('/admin/dashboard');
+            await api.post('/register', form);
+            setRegistrado(true);
         } catch (err) {
-            // Tomamos el primer error de validacion que devuelva el backend
             const messages = err.response?.data?.errors;
             const first = messages ? Object.values(messages)[0]?.[0] : '';
             setError(first || err.response?.data?.message || 'Error al registrarse');
@@ -33,6 +30,27 @@ function Register() {
             setLoading(false);
         }
     };
+
+    if (registrado) {
+        return (
+            <div className={styles.page}>
+                <div className={styles.card}>
+                    <div className={styles.formPanel}>
+                        <h1 className={styles.title}>Cuenta Creada</h1>
+                        <p className={styles.subtitle}>Tu registro está pendiente de aprobación</p>
+                        <p className={styles.mensajeExito}>
+                            Un administrador revisará tu solicitud y activará tu cuenta.
+                            Te enviaremos un email cuando esté aprobada.
+                        </p>
+                        <Link to="/login" className={styles.btn}>Ir a Iniciar Sesión</Link>
+                        <Link to="/" className={styles.back}>← Volver al Catálogo</Link>
+                    </div>
+                    <div className={styles.divider} />
+                    <div className={styles.iconPanel} />
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className={styles.page}>

@@ -7,10 +7,6 @@
 .grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-areas:
-        "rubros    subrubros"
-        "productos productos"
-        "categorias consultas";
     gap: 1.5rem;
     width: 100%;
     flex: 1;
@@ -18,11 +14,26 @@
     align-content: start;
 }
 
+.gridNormal {
+    grid-template-areas:
+        "rubros    subrubros"
+        "productos productos"
+        "categorias consultas";
+}
+
+.gridAdmin {
+    grid-template-areas:
+        "rubros      subrubros"
+        "productos   categorias"
+        "consultas   usuarios";
+}
+
 .card--rubros     { grid-area: rubros; }
 .card--subrubros  { grid-area: subrubros; }
 .card--productos  { grid-area: productos; }
 .card--categorias { grid-area: categorias; }
 .card--consultas  { grid-area: consultas; }
+.card--usuarios   { grid-area: usuarios; }
 
 .card {
     position: relative;
@@ -56,32 +67,6 @@
 
 .card:hover .cardDesc {
     color: #fff;
-}
-
-.card--productos {
-    padding: clamp(1.5rem, 2.5vw, 2.5rem) clamp(1.5rem, 2.5vw, 2.5rem) clamp(1.25rem, 2.2vw, 2.25rem);
-}
-
-.card--productos .contador {
-    font-size: clamp(2.2rem, 4vw, 3.6rem);
-}
-
-.card--productos .iconBg {
-    width: clamp(110px, 12vw, 170px);
-    height: clamp(110px, 12vw, 170px);
-    opacity: 0.2;
-}
-
-.card--productos:hover .iconBg {
-    opacity: 0.8;
-}
-
-.card--productos .cardTitle {
-    font-size: clamp(1rem, 1.4vw, 1.3rem);
-}
-
-.card--productos .cardDesc {
-    font-size: clamp(0.82rem, 1vw, 0.92rem);
 }
 
 .iconBg {
@@ -143,15 +128,71 @@
     line-height: 1.5;
 }
 
+.card--productos {
+    padding: clamp(1.5rem, 2.5vw, 2.5rem) clamp(1.5rem, 2.5vw, 2.5rem) clamp(1.25rem, 2.2vw, 2.25rem);
+}
+
+.card--productos .contador {
+    font-size: clamp(2.2rem, 4vw, 3.6rem);
+}
+
+.card--productos .iconBg {
+    width: clamp(110px, 12vw, 170px);
+    height: clamp(110px, 12vw, 170px);
+    opacity: 0.2;
+}
+
+.card--productos:hover .iconBg {
+    opacity: 0.8;
+}
+
+.card--productos .cardTitle {
+    font-size: clamp(1rem, 1.4vw, 1.3rem);
+}
+
+.card--productos .cardDesc {
+    font-size: clamp(0.82rem, 1vw, 0.92rem);
+}
+
+.gridAdmin .card--productos {
+    padding: clamp(1.25rem, 2vw, 2rem) clamp(1.25rem, 2vw, 2rem) clamp(1rem, 1.8vw, 1.75rem);
+}
+
+.gridAdmin .card--productos .contador {
+    font-size: clamp(2rem, 3.5vw, 3rem);
+}
+
+.gridAdmin .card--productos .iconBg {
+    width: clamp(90px, 10vw, 130px);
+    height: clamp(90px, 10vw, 130px);
+}
+
+.gridAdmin .card--productos .cardTitle {
+    font-size: 1.15rem;
+}
+
+.gridAdmin .card--productos .cardDesc {
+    font-size: 0.92rem;
+}
+
 @media (max-width: 640px) {
-    .grid {
-        grid-template-columns: 1fr;
+    .gridNormal {
         grid-template-areas:
             "rubros"
             "subrubros"
             "productos"
             "categorias"
             "consultas";
+    }
+
+    .gridAdmin {
+        grid-template-areas:
+            "rubros"
+            "subrubros"
+            "productos"
+            "categorias"
+            "consultas"
+            "usuarios";
     }
 
     .card--productos {
@@ -198,6 +239,16 @@
         width: clamp(80px, 10vw, 130px);
         height: clamp(80px, 10vw, 130px);
     }
+    .gridAdmin .card--productos {
+        padding: clamp(0.9rem, 1.5vw, 1.25rem) clamp(0.9rem, 1.5vw, 1.25rem) clamp(0.75rem, 1.2vw, 1rem);
+    }
+    .gridAdmin .card--productos .contador {
+        font-size: clamp(1.5rem, 2.8vw, 2.2rem);
+    }
+    .gridAdmin .card--productos .iconBg {
+        width: clamp(60px, 8vw, 90px);
+        height: clamp(60px, 8vw, 90px);
+    }
     .grid {
         gap: clamp(0.75rem, 1.2vw, 1rem);
     }
@@ -225,6 +276,16 @@
     .card--productos .iconBg {
         width: 90px;
         height: 90px;
+    }
+    .gridAdmin .card--productos {
+        padding: 0.75rem 0.75rem 0.6rem;
+    }
+    .gridAdmin .card--productos .contador {
+        font-size: 1.4rem;
+    }
+    .gridAdmin .card--productos .iconBg {
+        width: 50px;
+        height: 50px;
     }
     .cardTitle {
         font-size: 0.95rem;

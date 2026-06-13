@@ -7,6 +7,7 @@ import Subrubros from './pages/Subrubros';
 import Categorias from './pages/Categorias';
 import Productos from './pages/Productos';
 import Consultas from './pages/Consultas';
+import Usuarios from './pages/Usuarios';
 import Catalogo from './pages/Catalogo';
 import ProductoDetalle from './pages/ProductoDetalle';
 import Layout from './components/Layout/Layout';
@@ -36,6 +37,7 @@ function App() {
                     <Route path="categorias" element={<Categorias />} />
                     <Route path="productos" element={<Productos />} />
                     <Route path="consultas" element={<Consultas />} />
+                    <Route path="usuarios" element={<Usuarios />} />
                 </Route>
             </Routes>
         </BrowserRouter>

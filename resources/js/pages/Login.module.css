@@ -151,6 +151,17 @@
     margin-bottom: 0.75rem;
 }
 
+.pendiente {
+    background: rgba(234, 179, 8, 0.12);
+    border: 1px solid #eab308;
+    color: #eab308;
+    padding: 0.5rem 0.85rem;
+    font-size: 0.8rem;
+    text-align: center;
+    margin-bottom: 0.75rem;
+    margin-top: -0.4rem;
+}
+
 .btn {
     width: 100%;
     padding: 0.8rem;
