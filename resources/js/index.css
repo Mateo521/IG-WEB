@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+:root {
+    --bg:             #0A0A0B;
+    --bg-card:        #2A2A30;
+    --bg-dark:        #09090B;
+
+    --text:           #FAFAFA;
+    --text-muted:     #A1A1AA;
+    --text-faint:     #52525B;
+
+    --primary:        #FAFAFA;
+    --primary-hover:  #D4D4D8;
+    --primary-light:  #3F3F46;
+    --primary-rgb:    250, 250, 250;
+
+    --danger:         #EF4444;
+    --danger-hover:   #DC2626;
+    --danger-bg:      #450A0A;
+    --success:        #22C55E;
+    --success-bg:     #052E16;
+    --warning:        #F59E0B;
+    --info:           #3B82F6;
+
+    --border:         #27272A;
+    --border-light:   #18181B;
+
+    --radius:         8px;
+    --radius-sm:      4px;
+    --radius-lg:      12px;
+    --radius-xl:      16px;
+    --radius-2xl:     24px;
+    --radius-full:    9999px;
+
+    --shadow-sm:      0 1px 2px rgba(0,0,0,0.3);
+    --shadow:         0 1px 3px rgba(0,0,0,0.4);
+    --shadow-md:      0 4px 6px -1px rgba(0,0,0,0.5);
+    --shadow-lg:      0 10px 15px -3px rgba(0,0,0,0.5);
+    --shadow-xl:      0 20px 25px -5px rgba(0,0,0,0.6);
+
+    --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+    --font-sans:     'IBM Plex Sans', sans-serif;
+    --font-display:  'Anton', sans-serif;
+    --font-mono:     'IBM Plex Mono', monospace;
+
+    --grain-opacity: 0.025;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-sans);
+    background: radial-gradient(ellipse at 50% 30%, #1A1A1E 0%, #0E0E10 60%, #08080A 100%);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 10000;
+    opacity: var(--grain-opacity);
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 256px 256px;
+}
+
+::selection {
+    background: var(--text);
+    color: var(--bg);
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.35);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.6);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}

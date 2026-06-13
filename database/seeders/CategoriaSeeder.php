@@ -7,6 +7,8 @@ use Illuminate\Database\Seeder;
 
 class CategoriaSeeder extends Seeder
 {
+    // Crea 12 categorias, cada una asociada a uno o mas subrubros via la tabla pivot.
+    // La ultima categoria esta vinculada a 2 subrubros para demostrar la relacion N:M.
     public function run(): void
     {
         $categorias = [

@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 
 class CategoriaController extends Controller
 {
+    // Devuelve todas las categorias con sus subrubros y productos
+    // Si recibe ?subrubro_id= X, filtra solo las categorias de ese subrubro
     public function index(Request $request)
     {
         $query = Categoria::with('subrubros', 'productos');
@@ -18,6 +20,7 @@ class CategoriaController extends Controller
         return response()->json($query->get());
     }
 
+    // Crea una categoria y la asocia a uno o mas subrubros mediante la tabla pivot
     public function store(Request $request)
     {
         $datos = $request->validate([
@@ -35,12 +38,14 @@ class CategoriaController extends Controller
         ], 201);
     }
 
+    // Muestra una categoria con sus subrubros y productos
     public function show($id)
     {
         $categoria = Categoria::with(['subrubros', 'productos'])->findOrFail($id);
         return response()->json($categoria);
     }
 
+    // Actualiza una categoria y resincroniza sus subrubros si se enviaron
     public function update(Request $request, $id)
     {
         $categoria = Categoria::findOrFail($id);
@@ -53,6 +58,8 @@ class CategoriaController extends Controller
 
         $categoria->update($datos);
 
+        // Si nos pasaron subrubros, sincronizamos la relacion muchos a muchos
+        // sync() reemplaza todos los registros pivot por los nuevos IDs
         if ($request->has('subrubros')) {
             $categoria->subrubros()->sync($request->subrubros);
         }
@@ -63,10 +70,11 @@ class CategoriaController extends Controller
         ]);
     }
 
+    // Elimina una categoria de la base de datos
     public function destroy($id)
     {
         $categoria = Categoria::findOrFail($id);
-        
+
         $categoria->delete();
 
         return response()->json(['mensaje' => 'Categoría eliminada correctamente']);

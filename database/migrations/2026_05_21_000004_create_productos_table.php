@@ -1,13 +1,12 @@
 <?php
-# php artisan make:model Producto -s
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
-    /**
-     * Run the migrations.
-     */
+    // Crea la tabla productos con precio decimal, ruta de imagen opcional,
+    // y clave foranea a categoria (luego migrada a relacion N:M en 2026_05_24_000004)
     public function up(): void
 {
     Schema::create('productos', function (Blueprint $table) {
@@ -25,9 +24,7 @@ return new class extends Migration {
         $table->timestamps();
     });
 }
-    /**
-     * Reverse the migrations.
-     */
+    // Revierte la migracion: elimina la tabla productos
     public function down(): void
     {
         Schema::dropIfExists('productos');

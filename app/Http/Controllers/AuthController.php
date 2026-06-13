@@ -9,6 +9,7 @@ use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
+    // Registra un nuevo usuario, valida los datos, lo crea y le devuelve un token de acceso
     public function register(Request $request)
     {
         $request->validate([
@@ -23,6 +24,7 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        // Generamos un token tipo API con Sanctum para que el frontend lo guarde y lo use despues
         $token = $user->createToken('auth-token')->plainTextToken;
 
         return response()->json([
@@ -31,6 +33,7 @@ class AuthController extends Controller
         ], 201);
     }
 
+    // Inicia sesion: busca al usuario por email, verifica la contrasena y devuelve un token
     public function login(Request $request)
     {
         $request->validate([
@@ -40,6 +43,7 @@ class AuthController extends Controller
 
         $user = User::where('email', $request->email)->first();
 
+        // Si el usuario no existe o la contrasena no coincide, lanzamos un error de validacion
         if (!$user || !Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
                 'email' => ['Las credenciales proporcionadas son incorrectas.'],
@@ -54,6 +58,7 @@ class AuthController extends Controller
         ]);
     }
 
+    // Cierra la sesion eliminando el token que el usuario esta usando en esta peticion
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();

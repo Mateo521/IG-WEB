@@ -1,0 +1,326 @@
+.page {
+    padding: 1.5rem 0;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.75rem;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.acciones {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+}
+
+.title {
+    font-family: var(--font-sans);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: -0.02em;
+}
+
+.btnNuevo {
+    padding: 0.5rem 1.3rem;
+    background: var(--success);
+    color: white;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 0.88rem;
+    font-weight: 600;
+    font-family: var(--font-sans);
+    text-decoration: none;
+    display: inline-block;
+    transition: var(--transition);
+}
+
+.btnNuevo:hover {
+    opacity: 0.9;
+}
+
+.btnPlantilla {
+    padding: 0.5rem 1rem;
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 0.83rem;
+    font-weight: 500;
+    font-family: var(--font-sans);
+    transition: var(--transition);
+}
+
+.btnPlantilla:hover {
+    border-color: var(--text-faint);
+    color: var(--text);
+}
+
+.btnImportar {
+    padding: 0.5rem 1.1rem;
+    background: transparent;
+    color: var(--info);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 0.88rem;
+    font-weight: 600;
+    font-family: var(--font-sans);
+    transition: var(--transition);
+}
+
+.btnImportar:hover:not(:disabled) {
+    border-color: var(--info);
+}
+
+.btnImportar:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.btnExportar {
+    padding: 0.5rem 1.1rem;
+    background: transparent;
+    color: var(--warning);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 0.88rem;
+    font-weight: 600;
+    font-family: var(--font-sans);
+    transition: var(--transition);
+}
+
+.btnExportar:hover:not(:disabled) {
+    border-color: var(--warning);
+}
+
+.btnExportar:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.resultadoImport {
+    margin-bottom: 1.25rem;
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius);
+    font-size: 0.88rem;
+}
+
+.resultadoOk {
+    background: var(--success-bg);
+    border: 1px solid var(--success);
+    color: var(--success);
+}
+
+.resultadoError {
+    background: var(--danger-bg);
+    border: 1px solid var(--danger);
+    color: var(--danger);
+}
+
+.resultadoHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+}
+
+.btnCerrarResultado {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    line-height: 1;
+    color: inherit;
+    opacity: 0.7;
+    padding: 0 0.25rem;
+}
+
+.btnCerrarResultado:hover {
+    opacity: 1;
+}
+
+.listaErrores {
+    margin-top: 0.6rem;
+    padding-left: 1.25rem;
+    list-style: disc;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    font-weight: 400;
+    color: var(--danger);
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.tableContainer {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: auto;
+    max-height: 65vh;
+}
+
+.table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: var(--bg-card);
+}
+
+.table th,
+.table td {
+    text-align: left;
+    padding: 0.85rem 1.1rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.table th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: #fff;
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: #111;
+}
+
+.table tbody tr {
+    transition: var(--transition);
+}
+
+.table tbody tr:hover td {
+    background: var(--bg-dark);
+    box-shadow: inset 0 0 0 1px var(--primary);
+}
+
+.table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.imgWrap {
+    position: relative;
+    display: inline-block;
+    width: 48px;
+    height: 48px;
+    border: none;
+    padding: 0;
+    background: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.img {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    display: block;
+}
+
+.imgWrap:hover .img {
+    filter: brightness(0.4);
+}
+
+.imgOverlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: var(--transition);
+    color: #fff;
+}
+
+.imgWrap:hover .imgOverlay {
+    opacity: 1;
+}
+
+.previewImg {
+    display: block;
+    max-width: 100%;
+    max-height: 70vh;
+    margin: 0 auto;
+    border-radius: var(--radius);
+    object-fit: contain;
+}
+
+.noImg {
+    color: var(--text-faint);
+    font-size: 0.82rem;
+}
+
+.actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.btnEdit {
+    padding: 0.3rem 0.85rem;
+    background: transparent;
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 600;
+    font-family: var(--font-sans);
+    text-decoration: none;
+    display: inline-block;
+    transition: var(--transition);
+}
+
+.btnEdit:hover {
+    background: var(--primary-light);
+}
+
+.btnDelete {
+    padding: 0.3rem 0.85rem;
+    background: transparent;
+    border: 1px solid var(--danger);
+    color: var(--danger);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 600;
+    font-family: var(--font-sans);
+    transition: var(--transition);
+}
+
+.btnDelete:hover {
+    background: var(--danger-bg);
+}
+
+.empty {
+    text-align: center;
+    color: var(--text-muted);
+    padding: 2.5rem !important;
+}
+
+@media (max-height: 800px) {
+    .page { padding: 1rem 0; }
+    .header { margin-bottom: 1.25rem; }
+    .title { font-size: 1.25rem; }
+}
+
+@media (max-height: 700px) {
+    .page { padding: 0.75rem 0; }
+    .header { margin-bottom: 1rem; }
+    .title { font-size: 1.1rem; }
+    .tableContainer { max-height: 55vh; }
+    .table th,
+    .table td { padding: 0.55rem 0.85rem; }
+}

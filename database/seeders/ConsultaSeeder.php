@@ -7,6 +7,8 @@ use Illuminate\Database\Seeder;
 
 class ConsultaSeeder extends Seeder
 {
+    // Crea 6 consultas de prueba vinculadas a distintos productos para testear
+    // el flujo de consultas de clientes
     public function run(): void
     {
         Consulta::create([

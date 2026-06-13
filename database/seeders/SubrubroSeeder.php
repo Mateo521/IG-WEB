@@ -7,6 +7,7 @@ use Illuminate\Database\Seeder;
 
 class SubrubroSeeder extends Seeder
 {
+    // Crea 6 subrubros, 2 por cada rubro, para tener datos de prueba con relaciones
     public function run(): void
     {
         Subrubro::create(['nombreSubrubro' => 'Subrubro 1.1', 'rubro_id' => 1]);

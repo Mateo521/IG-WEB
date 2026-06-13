@@ -1,0 +1,58 @@
+.layout {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg);
+}
+
+.main {
+    flex: 1;
+    overflow-y: auto;
+    padding: 2rem 1.5rem;
+    background: var(--bg);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.breadcrumbs {
+    padding: 0.35rem 1.5rem 0;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    gap: 0.35rem;
+    font-size: 0.78rem;
+    color: var(--text-faint);
+    animation: fadeIn 0.3s ease-out;
+}
+
+.crumb {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.sep {
+    color: var(--border);
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+}
+
+.crumbLink {
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.crumbLink:hover {
+    color: var(--text);
+}
+
+.crumbActive {
+    color: var(--text);
+    font-weight: 600;
+}

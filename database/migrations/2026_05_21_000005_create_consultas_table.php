@@ -6,9 +6,8 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+    // Crea la tabla consultas con los datos del cliente (nombre, email, mensaje)
+    // y clave foranea al producto sobre el cual se consulta
     public function up(): void
 {
     Schema::create('consultas', function (Blueprint $table) {
@@ -26,9 +25,7 @@ return new class extends Migration
     });
 }
 
-    /**
-     * Reverse the migrations.
-     */
+    // Revierte la migracion: elimina la tabla consultas
     public function down(): void
     {
         Schema::dropIfExists('consultas');

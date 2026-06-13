@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    // Crea la tabla pivot para la relacion muchos a muchos entre categorias y productos.
+    // La constraint unique evita duplicados en el par (categoria_id, producto_id)
     public function up(): void
     {
         Schema::create('categoria_producto', function (Blueprint $table) {
@@ -18,6 +20,7 @@ return new class extends Migration
         });
     }
 
+    // Revierte la migracion: elimina la tabla pivot
     public function down(): void
     {
         Schema::dropIfExists('categoria_producto');
