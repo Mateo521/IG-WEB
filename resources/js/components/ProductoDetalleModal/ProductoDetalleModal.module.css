@@ -1,0 +1,255 @@
+.modalWide {
+    max-width: 750px;
+}
+
+.layout {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.imgCol {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--bg-dark);
+}
+
+.img {
+    width: 100%;
+    height: 320px;
+    object-fit: cover;
+    display: block;
+}
+
+.noImg {
+    width: 100%;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-dark);
+    color: var(--text-faint);
+    font-size: 1rem;
+}
+
+.nombre {
+    font-family: 'Anton', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 0.35rem;
+    letter-spacing: -0.01em;
+}
+
+.precio {
+    font-family: 'Anton', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--primary);
+    margin-bottom: 0.75rem;
+}
+
+.meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.metaItem {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+}
+
+.metaItem strong {
+    color: var(--text);
+}
+
+.desc {
+    font-size: 0.9rem;
+    color: var(--text);
+    line-height: 1.65;
+    margin-bottom: 1rem;
+    white-space: pre-wrap;
+}
+
+.divisor {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 1rem 0;
+}
+
+.btnConsultar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.75rem;
+    background: var(--text);
+    border: none;
+    border-radius: var(--radius);
+    color: #000;
+    font-family: 'Anton', sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btnConsultar:hover {
+    background: var(--primary-hover);
+}
+
+.chevron {
+    transition: transform 0.3s ease;
+}
+
+.chevronOpen {
+    transform: rotate(180deg);
+}
+
+.formCollapse {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+}
+
+.formOpen {
+    max-height: 500px;
+}
+
+.formInner {
+    padding-top: 1rem;
+}
+
+.exito {
+    background: var(--success-bg);
+    border: 1px solid var(--success);
+    color: #166534;
+    padding: 0.65rem 1rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    margin-bottom: 0.75rem;
+}
+
+.error {
+    background: var(--danger-bg);
+    border: 1px solid var(--danger);
+    color: var(--danger);
+    padding: 0.65rem 1rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    margin-bottom: 0.75rem;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+}
+
+.input,
+.textarea {
+    width: 100%;
+    padding: 0.65rem 0.9rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-card);
+    font-family: inherit;
+    font-size: 0.88rem;
+    color: var(--text);
+    resize: vertical;
+    transition: var(--transition);
+    outline: none;
+}
+
+.input:hover,
+.textarea:hover {
+    border-color: var(--text-faint);
+}
+
+.input:focus,
+.textarea:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.12);
+}
+
+.btnEnviar {
+    align-self: flex-start;
+    padding: 0.6rem 1.5rem;
+    background: var(--primary);
+    color: black;
+    border: none;
+    border-radius: var(--radius);
+    font-family: 'Hind', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btnEnviar:hover:not(:disabled) {
+    background: var(--primary-hover);
+}
+
+.btnEnviar:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.notFound {
+    text-align: center;
+    color: var(--text-muted);
+    padding: 2rem;
+    font-size: 1rem;
+}
+
+.skeleton {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.skelImg {
+    height: 250px;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(90deg, var(--border) 25%, var(--border-light) 50%, var(--border) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+.skelBody {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.skelLine {
+    height: 1rem;
+    border-radius: var(--radius);
+    background: linear-gradient(90deg, var(--border) 25%, var(--border-light) 50%, var(--border) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+@media (max-width: 768px) {
+    .img {
+        height: 220px;
+    }
+
+    .nombre {
+        font-size: 1.25rem;
+    }
+
+    .precio {
+        font-size: 1.25rem;
+    }
+}

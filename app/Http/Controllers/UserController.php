@@ -49,6 +49,21 @@ class UserController extends Controller
         ]);
     }
 
+    public function eliminar(User $user)
+    {
+        if ($user->is_admin) {
+            throw ValidationException::withMessages([
+                'user' => ['No puedes eliminar un administrador.'],
+            ]);
+        }
+
+        $user->delete();
+
+        return response()->json([
+            'message' => 'Usuario dado de baja correctamente.',
+        ]);
+    }
+
     public function index()
     {
         $usuarios = User::orderBy('created_at', 'desc')->get();

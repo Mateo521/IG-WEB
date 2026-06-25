@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { Link } from 'react-router-dom';
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import api from '../services/api';
@@ -7,6 +6,7 @@ import SidebarFiltros from '../components/SidebarFiltros/SidebarFiltros';
 import Paginacion from '../components/Paginacion/Paginacion';
 import ProductoCardSkeleton from '../components/ProductoCardSkeleton/ProductoCardSkeleton';
 import ASCIIText from '../components/ASCIIText/ASCIIText';
+import ProductoDetalleModal from '../components/ProductoDetalleModal/ProductoDetalleModal';
 import styles from './Catalogo.module.css';
 
 // Estado inicial de los filtros, todos vacios
@@ -34,6 +34,11 @@ function Catalogo() {
     );
     // catalogoVisible: controla si el hero de ASCII ya se oculto para mostrar el contenido
     const [catalogoVisible, setCatalogoVisible] = useState(false);
+
+    const [productoSeleccionado, setProductoSeleccionado] = useState(null);
+
+    const abrirModal = (id) => setProductoSeleccionado(id);
+    const cerrarModal = () => setProductoSeleccionado(null);
 
     const heroRef = useRef(null);
     const contenidoRef = useRef(null);
@@ -115,7 +120,9 @@ function Catalogo() {
         setPagina(nuevaPagina);
         setCargando(true);
         tiempoCargaRef.current = Date.now();
-        if (contenidoRef.current) contenidoRef.current.scrollTop = 0;
+        requestAnimationFrame(() => {
+            contenidoRef.current?.scrollTo(0, 0);
+        });
     };
 
     // Genera un PDF con jsPDF con la tabla de productos filtrados
@@ -361,11 +368,17 @@ function Catalogo() {
                         <div className={styles.gridWrapper}>
                             <div className={`${styles.grid} ${vista === 'lista' ? styles.gridLista : ''}`}>
                                 {productos.map((p) => (
-                                    <Link
+                                    <div
                                         key={p.id}
-                                        to={`/producto/${p.id}`}
                                         className={`${styles.card} ${vista === 'lista' ? styles.cardLista : ''}`}
+                                        onClick={() => abrirModal(p.id)}
+                                        role="button"
+                                        tabIndex={0}
+                                        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') abrirModal(p.id); }}
                                     >
+                                        <svg className={styles.cardIcon} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M15.042 21.672 13.684 16.6m0 0-2.51 2.225.569-9.47 5.227 7.917-3.286-.672ZM12 2.25V4.5m5.834.166-1.591 1.591M20.25 10.5H18M7.757 14.743l-1.59 1.59M6 10.5H3.75m4.007-4.243-1.59-1.59" />
+                                        </svg>
                                         <div className={styles.imgWrap}>
                                             {p.rutaImg ? (
                                                 <img
@@ -390,7 +403,7 @@ function Catalogo() {
                                                     || ''}
                                             </span>
                                         </div>
-                                    </Link>
+                                    </div>
                                 ))}
 
                                 {!cargando && productos.length === 0 && (
@@ -415,6 +428,12 @@ function Catalogo() {
                     </div>
                 </div>
             </div>
+
+            <ProductoDetalleModal
+                productoId={productoSeleccionado}
+                isOpen={productoSeleccionado !== null}
+                onClose={cerrarModal}
+            />
         </div>
     );
 }

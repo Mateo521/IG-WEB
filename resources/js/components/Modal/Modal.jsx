@@ -14,13 +14,12 @@
 import { useEffect, useCallback, useRef } from 'react';
 import styles from './Modal.module.css';
 
-function Modal({ isOpen, onClose, title, children }) {
-    // Referencia al contenedor del modal para manejar el foco interno
+function Modal({ isOpen, onClose, title, children, className = '' }) {
     const modalRef = useRef(null);
-    // Guardamos qué elemento tenía el foco antes de abrir el modal para restaurarlo al cerrar
     const previousFocusRef = useRef(null);
+    const scrollYRef = useRef(0);
 
-    // Atajos de teclado: Escape cierra, Tab hace trap focus dentro del modal
+    // Atajos de teclado
     const handleKeyDown = useCallback(e => {
         if (e.key === 'Escape') onClose();
         if (e.key === 'Tab') {
@@ -50,12 +49,12 @@ function Modal({ isOpen, onClose, title, children }) {
 
     useEffect(() => {
         if (isOpen) {
-            // Guardamos el elemento activo antes de abrir el modal
             previousFocusRef.current = document.activeElement;
+            scrollYRef.current = window.scrollY;
+            document.body.style.position = 'fixed';
+            document.body.style.top = `-${scrollYRef.current}px`;
+            document.body.style.width = '100%';
             document.addEventListener('keydown', handleKeyDown);
-            // Evitamos el scroll del cuerpo mientras el modal está abierto
-            document.body.style.overflow = 'hidden';
-            // Damos tiempo a que el modal se renderice y luego enfocamos el primer elemento
             setTimeout(() => {
                 const focusable = modalRef.current?.querySelector(
                     'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
@@ -63,10 +62,13 @@ function Modal({ isOpen, onClose, title, children }) {
                 focusable?.focus();
             }, 50);
         }
-        // Limpieza: removemos el listener, restauramos el scroll y el foco anterior
         return () => {
             document.removeEventListener('keydown', handleKeyDown);
-            document.body.style.overflow = '';
+            const scrollY = scrollYRef.current;
+            document.body.style.position = '';
+            document.body.style.top = '';
+            document.body.style.width = '';
+            window.scrollTo(0, scrollY);
             previousFocusRef.current?.focus();
         };
     }, [isOpen, handleKeyDown]);
@@ -78,7 +80,7 @@ function Modal({ isOpen, onClose, title, children }) {
         // Overlay: al hacer click se cierra (role presentation para no interferir con accesibilidad)
         <div className={styles.overlay} onClick={onClose} role="presentation">
             <div
-                className={styles.modal}
+                className={`${styles.modal} ${className}`}
                 // Evitamos que el click dentro del modal se propague al overlay
                 onClick={e => e.stopPropagation()}
                 role="dialog"

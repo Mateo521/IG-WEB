@@ -19,6 +19,25 @@
     letter-spacing: -0.02em;
 }
 
+.total {
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--text-secondary);
+}
+
+.headerRight {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.noLeidas {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--warning);
+    margin-left: 0.35rem;
+}
+
 .tableContainer {
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
@@ -81,22 +100,20 @@
 .btnVer {
     padding: 0.3rem 0.65rem;
     background: transparent;
-    border: 1px solid var(--text-faint);
-    color: var(--text-muted);
+    border: 1px solid var(--primary);
+    color: var(--primary);
     border-radius: var(--radius-sm);
     cursor: pointer;
     font-size: 0.78rem;
     font-weight: 600;
     font-family: var(--font-sans);
     transition: var(--transition);
-    display: flex;
+    display: inline-flex;
     align-items: center;
 }
 
 .btnVer:hover {
-    border-color: var(--text);
-    color: var(--text);
-    background: var(--bg-dark);
+    background: var(--primary-light);
 }
 
 .btnDelete {
@@ -110,7 +127,7 @@
     font-weight: 600;
     font-family: var(--font-sans);
     transition: var(--transition);
-    display: flex;
+    display: inline-flex;
     align-items: center;
 }
 

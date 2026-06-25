@@ -26,6 +26,18 @@
     letter-spacing: -0.02em;
 }
 
+.total {
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--text-secondary);
+}
+
+.headerRight {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
 .btnNuevo {
     padding: 0.5rem 1.3rem;
     background: var(--success);
@@ -279,7 +291,8 @@
     font-weight: 600;
     font-family: var(--font-sans);
     text-decoration: none;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
     transition: var(--transition);
 }
 
@@ -297,6 +310,8 @@
     font-size: 0.78rem;
     font-weight: 600;
     font-family: var(--font-sans);
+    display: inline-flex;
+    align-items: center;
     transition: var(--transition);
 }
 

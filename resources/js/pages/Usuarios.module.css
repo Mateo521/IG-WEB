@@ -50,6 +50,14 @@
     border-bottom: 1px solid var(--border);
 }
 
+.table td {
+    vertical-align: middle;
+}
+
+.table td:last-child {
+    text-align: center;
+}
+
 .table th {
     position: sticky;
     top: 0;
@@ -60,6 +68,11 @@
     text-transform: uppercase;
     letter-spacing: 0.07em;
     color: #111;
+}
+
+.table th:last-child {
+    width: 200px;
+    text-align: center;
 }
 
 .table tbody tr {
@@ -80,9 +93,7 @@
 }
 
 .nombre {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    white-space: nowrap;
 }
 
 .badgeAdmin {
@@ -94,6 +105,7 @@
     font-weight: 600;
     letter-spacing: 0.03em;
     text-transform: uppercase;
+    margin-left: 0.5rem;
 }
 
 .badge {
@@ -116,38 +128,44 @@
 
 .acciones {
     display: flex;
+    align-items: center;
+    justify-content: center;
     gap: 0.5rem;
 }
 
 .btnAprobar,
-.btnRechazar {
-    padding: 0.35rem 0.85rem;
-    border-radius: var(--radius);
-    font-size: 0.8rem;
-    font-weight: 500;
-    font-family: var(--font-sans);
+.btnRechazar,
+.btnBaja {
+    padding: 0.3rem 0.85rem;
+    background: transparent;
+    border-radius: var(--radius-sm);
     cursor: pointer;
-    border: 1px solid var(--border);
+    font-size: 0.78rem;
+    font-weight: 600;
+    font-family: var(--font-sans);
     transition: var(--transition);
-    background: var(--bg-card);
-    color: var(--text);
+    display: inline-flex;
+    align-items: center;
+}
+
+.btnAprobar {
+    border: 1px solid var(--success);
+    color: var(--success);
 }
 
 .btnAprobar:hover {
-    background: rgba(34, 197, 94, 0.12);
-    border-color: #22c55e;
-    color: #22c55e;
+    background: var(--success-bg);
 }
 
-.btnRechazar:hover {
-    background: rgba(239, 68, 68, 0.12);
-    border-color: #ef4444;
-    color: #ef4444;
+.btnRechazar,
+.btnBaja {
+    border: 1px solid var(--danger);
+    color: var(--danger);
 }
 
-.textoAprobado {
-    color: #22c55e;
-    font-size: 0.82rem;
+.btnRechazar:hover,
+.btnBaja:hover {
+    background: var(--danger-bg);
 }
 
 .textoAdmin {

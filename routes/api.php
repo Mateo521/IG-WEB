@@ -47,4 +47,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/usuarios/pendientes', [UserController::class, 'pendientes']);
     Route::patch('/usuarios/{user}/aprobar', [UserController::class, 'aprobar']);
     Route::delete('/usuarios/{user}/rechazar', [UserController::class, 'rechazar']);
+    Route::delete('/usuarios/{user}', [UserController::class, 'eliminar']);
 });

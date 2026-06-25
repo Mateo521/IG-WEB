@@ -131,7 +131,9 @@ function Productos() {
             <div className={styles.header}>
                 <h1 className={styles.title}>Productos</h1>
 
-                <div className={styles.acciones}>
+                <div className={styles.headerRight}>
+                    <span className={styles.total}>{productos.length} producto{productos.length !== 1 ? 's' : ''}</span>
+                    <div className={styles.acciones}>
                     <input
                         type="file"
                         accept=".csv,text/csv"
@@ -167,6 +169,7 @@ function Productos() {
                     <button onClick={openCreateModal} className={styles.btnNuevo}>
                         + Nuevo Producto
                     </button>
+                </div>
                 </div>
             </div>
 

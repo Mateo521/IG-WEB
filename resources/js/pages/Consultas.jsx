@@ -49,10 +49,18 @@ function Consultas() {
     };
     const cerrarMensaje = () => setConsultaActual(null);
 
+    const noLeidas = consultas.filter(c => !c.visto).length;
+
     return (
         <div className={styles.page}>
             <div className={styles.header}>
                 <h1 className={styles.title}>Consultas</h1>
+                <div className={styles.headerRight}>
+                    <span className={styles.total}>{consultas.length} consulta{consultas.length !== 1 ? 's' : ''}</span>
+                    {noLeidas > 0 && (
+                        <span className={styles.noLeidas}>· {noLeidas} sin revisar</span>
+                    )}
+                </div>
             </div>
 
             <Modal isOpen={!!consultaActual} onClose={cerrarMensaje} title="Mensaje">

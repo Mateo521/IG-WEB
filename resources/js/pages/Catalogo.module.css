@@ -337,6 +337,25 @@
     border: 1px solid var(--border);
     transition: var(--transition);
     cursor: pointer;
+    position: relative;
+}
+
+.cardIcon {
+    position: absolute;
+    bottom: 0.75rem;
+    right: 0.75rem;
+    width: 20px;
+    height: 20px;
+    color: var(--text);
+    opacity: 0.4;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.card:hover .cardIcon {
+    opacity: 0.9;
+    transform: rotate(30deg) scale(1.1);
 }
 
 .card:hover {
